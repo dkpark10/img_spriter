@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "webpack practice",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "start": "webpack serve --mode development",
     "prebuild": "rimraf dist",
     "build": "webpack --progress --mode production",
@@ -16,6 +16,9 @@
     "@babel/preset-env": "^7.16.5",
     "@babel/preset-react": "^7.16.5",
     "@babel/preset-typescript": "^7.16.5",
+    "@testing-library/jest-dom": "^5.16.1",
+    "@testing-library/react": "^12.1.2",
+    "@testing-library/user-event": "^13.5.0",
     "@types/react": "^17.0.38",
     "@types/react-dom": "^17.0.11",
     "@types/react-redux": "^7.1.21",
@@ -34,12 +37,16 @@
     "webpack-dev-server": "^4.7.1"
   },
   "dependencies": {
+    "@babel/runtime": "^7.16.7",
     "axios": "^0.24.0",
+    "babel-plugin-transform-export-extensions": "^6.22.0",
     "express": "^4.17.2",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "react-icons": "^4.3.1",
     "react-redux": "^7.2.6",
     "react-router-dom": "^6.2.1",
+    "react-scripts": "^5.0.0",
     "redux": "^4.1.2",
     "redux-devtools-extension": "^2.13.9",
     "styled-components": "^5.3.3"

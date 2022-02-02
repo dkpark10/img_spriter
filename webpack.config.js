@@ -35,7 +35,14 @@ module.exports = {
           'ts-loader',
         ],
         exclude: /node_modules/,
-      }
+      },
+      {
+        test: /\.(js|jsx)$/,
+        use: [
+          'babel-loader'
+        ],
+        exclude: /node_modules/,
+      },
     ],
   },
   plugins: [
