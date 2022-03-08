@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "module": "es6",
+    "moduleResolution": "node",
+    "noResolve": false,
+    "noImplicitAny": false,
+    "removeComments": false,
+    "sourceMap": true,
+    "allowJs": true,
+    "jsx": "react-jsx",
+    "allowSyntheticDefaultImports": true,
+    "keyofStringsOnly": true,
+    "outDir": "./dist/",
+  },
+  "exclude": [
+    "node_modules",
+    "src/setupTests.ts",
+    "./node_modules/**/*"
+  ],
+  "include": ["./src/**/*", "@type"]
+ }
+ 

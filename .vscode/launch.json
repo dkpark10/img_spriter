@@ -1,0 +1,35 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "chrome",
+      "request": "launch",
+      "name": "Launch Chrome against localhost",
+      "url": "http://localhost:8080",
+      "webRoot": "${workspaceFolder}"
+    },
+    {
+      "name": "run debugger",
+      "processId": "${command:PickProcess}",
+      "request": "attach",
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "type": "node"
+    },
+    {
+      "type": "chrome",
+      "request": "launch",
+      "name": "run react debugger",
+      "url": "http://localhost:3010",
+      "sourceMaps": true,
+      "webRoot": "${workspaceFolder}/",
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "run vanilla js",
+      "program": "${file}"
+    }
+  ]
+}
