@@ -15,7 +15,7 @@ module.exports = {
     port: 3010
   },
   resolve: {
-    extensions: ['.tsx', '.ts', '.js','.jsx'],
+    extensions: ['.tsx', '.ts', '.js', '.jsx'],
   },
   devtool: 'inline-source-map',
   module: {
