@@ -12,6 +12,7 @@
     "allowSyntheticDefaultImports": true,
     "keyofStringsOnly": true,
     "outDir": "./dist/",
+    "typeRoots": ["src/types"]
   },
   "exclude": [
     "node_modules",
