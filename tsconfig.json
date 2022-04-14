@@ -1,18 +1,19 @@
 {
   "compilerOptions": {
-    "target": "es5",
-    "module": "es6",
+    "target": "es5",    // 컴파일 했을 시 생성되는 JS 버전
+    "module": "es6",    // import 문법 어떤걸 사용할지??
     "moduleResolution": "node",
     "noResolve": false,
-    "noImplicitAny": false,
-    "removeComments": false,
+    "noImplicitAny": true,    // any 타입 금지
+    "removeComments": false,  // 컴파일시 주석 제거
     "sourceMap": true,
-    "allowJs": true,
+    "allowJs": true,       // ts에서 js 파일을 import해서 사용할 지 여부
     "jsx": "react-jsx",
     "allowSyntheticDefaultImports": true,
     "keyofStringsOnly": true,
-    "outDir": "./dist/",
-    "typeRoots": ["src/types"]
+    "outDir": "./build",   // 컴파일 아웃풋 경로
+    "strictPropertyInitialization":false,   // 클래스 생성자에서 타입체크 강하게 여부
+    "typeRoots": ["./src/types"]
   },
   "exclude": [
     "node_modules",

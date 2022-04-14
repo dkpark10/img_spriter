@@ -7,27 +7,44 @@ import rootReducer from './reducer/index';
 
 describe("count", () => {
 
-  const getCountText = buttonType => {
+  const getResult = () => {
     const store = createStore(rootReducer);
     const result = render(
       <Provider store={store}>
         <App />
       </Provider>);
 
-    const count = result.getByText('0');
-    const button = result.getByText(buttonType);
-    fireEvent.click(button);
-
-    return count.textContent;
+    return result;
   }
 
-  it("increase", async () => {
-    const count = getCountText('increase');
-    expect(count).toBe('1');
+  test("increase", async () => {
+    const result = getResult();
+    const count = result.getByText('0');
+    const button = result.getByText('increase');
+    fireEvent.click(button);
+
+    expect(count.textContent).toBe('1');
   });
 
-  it("decrease", async () => {
-    const count = getCountText('decrease');
-    expect(count).toBe('-1');
+  test("increase", async () => {
+    const result = getResult();
+    const count = result.getByText('0');
+    const button = result.getByText('decrease');
+    fireEvent.click(button);
+
+    expect(count.textContent).toBe('-1');
+  });
+
+  test("show test", () => {
+    const result = getResult();
+    const showButton = result.getByText('show');
+    
+    fireEvent.click(showButton);
+    const title = result.getByText('Lulu');
+    expect(title).toBeInTheDocument();
+
+    fireEvent.click(showButton);
+    expect(title).not.toBeInTheDocument();
   });
 });
+

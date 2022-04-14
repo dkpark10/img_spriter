@@ -8,7 +8,6 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = (env, argv) => {
 
-  const isDevMode = argv.mode === 'development';
   const isProdMode = argv.mode === 'production';
 
   return {
@@ -74,7 +73,9 @@ module.exports = (env, argv) => {
       // 파일, 폴더 복사 플러그인
       new CopyWebpackPlugin({
         patterns: [
-          { from: '/public' }
+          { 
+            from: 'public' 
+          }
         ]
       })
     ],
