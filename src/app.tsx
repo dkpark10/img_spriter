@@ -1,15 +1,26 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { increment, decrement } from './reducer/counter';
 import { RootState } from './reducer/index';
 import { ThemeProvider } from 'styled-components';
 import { theme } from './styles/theme';
+import useAxios from './customhook/useaxios';
+import axios from 'axios';
 
 export default function App(): JSX.Element {
 
   const dispatch = useDispatch();
   const data = useSelector((state: RootState) => state.count.data);
   const [display, setDisplay] = useState<boolean>(false);
+
+  const [response, loading] = useAxios({
+    method: 'POST',
+    url: '/',
+    data:{
+      time: 1234
+    }
+  })
+  console.log(response);
 
   return (
     <>
@@ -21,7 +32,7 @@ export default function App(): JSX.Element {
           <label>{process.env.NODE_ENV}</label>
         </main>
         <button onClick={() => setDisplay(prev => !prev)}>show</button>
-        {display && <h1>Lulu</h1>}       
+        {display && <h1>Lulu</h1>}
       </ThemeProvider>
     </>
   )
