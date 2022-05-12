@@ -1,19 +1,17 @@
-import { useState, useEffect, useRef } from 'react';
-import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
-import { isEqual } from 'lodash';
+import { useState, useEffect, useRef } from "react";
+import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
+import { isEqual } from "lodash";
 
-axios.defaults.baseURL = 'http://localhost:8080';
+axios.defaults.baseURL = "http://localhost:8080";
 
 const useAxios = ({ url, method, data }: AxiosRequestConfig) => {
-
-  const [response, setResponse] = useState<AxiosResponse>(null);
+  const [response, setResponse] = useState<AxiosResponse>();
   const [loading, setLoading] = useState<boolean>(true);
   const prevData = useRef();
 
   useEffect(() => {
-
     if (data && isEqual(data, prevData.current) === true) {
-      return; 
+      return;
     }
     prevData.current = data;
 
@@ -22,11 +20,11 @@ const useAxios = ({ url, method, data }: AxiosRequestConfig) => {
         const result = await axios.request({
           url,
           method,
-          data
+          data,
         });
         setResponse(result);
       } catch (err) {
-        console.error(err);
+        //
       } finally {
         setLoading(false);
       }
@@ -36,6 +34,6 @@ const useAxios = ({ url, method, data }: AxiosRequestConfig) => {
   }, [url, method, data]);
 
   return [response, loading];
-}
+};
 
 export default useAxios;
