@@ -17,8 +17,11 @@
     "plugin:@typescript-eslint/recommended",
     "plugin:react/recommended"
   ],
+  "ignorePatterns": [
+    "node_modules/"
+  ],
   "rules": {
-    "no-console" : "off",
+    "no-console": "off",
     "import/no-extraneous-dependencies": [
       "error",
       {
@@ -26,12 +29,12 @@
       }
     ],
     "react/jsx-filename-extension": [
-      1,
+      "error",
       {
         "extensions": [
           ".js",
-          ".jsx",
           ".ts",
+          ".jsx",
           ".tsx"
         ]
       }
