@@ -1,10 +1,10 @@
-import React, { useState } from "react";
-import { ThemeProvider } from "styled-components";
-import { useDispatch, useSelector } from "react-redux";
-import { increment, decrement } from "./reducer/counter";
-import { RootState } from "./reducer/index";
-import theme from "./styles/theme";
-import image from "../public/img0.jpg";
+import React, { useState } from 'react';
+import { ThemeProvider } from 'styled-components';
+import { useDispatch, useSelector } from 'react-redux';
+import { increment, decrement } from './reducer/counter';
+import { RootState } from './reducer/index';
+import theme from './styles/theme';
+import image from '../public/img0.jpg';
 
 export default function App(): JSX.Element {
   const dispatch = useDispatch();
@@ -14,7 +14,7 @@ export default function App(): JSX.Element {
   return (
     <ThemeProvider theme={theme}>
       <h2>{data}</h2>
-      <img src={image} alt="hwaboon" />
+      <img src={image} style={{ width: '100px', height: '100px' }} alt="hwaboon" />
       <button type="button" onClick={() => dispatch(increment())}>increase</button>
       <button type="button" onClick={() => dispatch(decrement())}>decrease</button>
       <main>

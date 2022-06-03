@@ -1,4 +1,4 @@
-import React, { createContext, useState, useMemo } from "react";
+import React, { createContext, useState, useMemo } from 'react';
 
 interface IContext {
   data: number;
@@ -13,7 +13,7 @@ interface Props {
 export const ArticleContext = createContext<IContext>({
   data: 0,
   constantData: -1,
-  setData: () => { console.log(".."); },
+  setData: () => { console.log('..'); },
 });
 
 export default function ContextStore({ children }: Props) {

@@ -1,5 +1,5 @@
-export const INCREASECOUNT = "counter/INCREASECOUNT";
-export const DECREASECOUNT = "counter/DECREASECOUNT";
+export const INCREASECOUNT = 'counter/INCREASECOUNT';
+export const DECREASECOUNT = 'counter/DECREASECOUNT';
 
 export interface CountState {
   data: number;

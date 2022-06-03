@@ -49,21 +49,6 @@
         "tsx": "never"
       }
     ],
-    "indent": [
-      "error",
-      2,
-      {
-        "SwitchCase": 1
-      }
-    ],
-    "semi": [
-      "error",
-      "always"
-    ],
-    "quotes": [
-      "error",
-      "double"
-    ],
     "linebreak-style": 0
   },
   "settings": {
