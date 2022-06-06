@@ -87,7 +87,40 @@ publicPath 옵션은 번들된 파일 앞에 prefix 개념으로 문자열을 �
 나누어 작성한다.
 
 
+### devServer
 
+```
+devServer: {
+  port: 3000,
+  hot: true,
+},
+```
+
+port 번호는 말그대로
+hot 속성은 모듈 전체를 다시 로드하지 않고 변경사항만 확인하여 로드한다
+
+
+### devtool
+
+devtool sourcemap 옵션은 원본 코드와 난독화된 번들 파일을 매핑해주는 옵션
+[https://webpack.kr/configuration/devtool/](https://webpack.kr/configuration/devtool/)
+
+
+
+### plugin
+
+#### HtmlWebpackPlugin
+
+```
+new HtmlWebpackPlugin({
+  // template: 원본 타켓 파일
+  template: './src/index.html',
+  filename: 'index.html',
+}),
+```
+
+이 플러그인을 사용한다면 따로 html 파일에 link , script 태그에 자동으로 스크립트를 추가해준다.
+사실상 반드시 필수라 볼 수 있다.
 
 ## package.json
 
