@@ -41,7 +41,7 @@ export default {
         use: {
           loader: 'file-loader',
           options: {
-            name: '[name].[contenthash].[ext]',
+            name: 'assets/[name].[contenthash].[ext]',
           },
         },
       },
@@ -58,7 +58,7 @@ export default {
     new CopyWebpackPlugin({
       patterns: [
         {
-          from: 'public',
+          from: './public',
         },
       ],
     }),
