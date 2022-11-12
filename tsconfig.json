@@ -11,12 +11,14 @@
     "noImplicitReturns": true, // 함수내 모든 경로에서 리턴하지 않을경우 에러
     "allowJs": false, // ts에서 js 파일을 import해서 사용할 지 여부
     "jsx": "react-jsx",
+    "baseUrl": ".",
     "allowSyntheticDefaultImports": true,
     "keyofStringsOnly": true,
     "outDir": "./build", // 컴파일 아웃풋 경로
     "strictPropertyInitialization": true, // 클래스 생성자에서 타입체크 강하게 여부
     "typeRoots": [
-      "./src/types"
+      "./src/types",
+      "./node_modules/@types",
     ],
     "lib": [
       "es5",
@@ -34,6 +36,11 @@
   ],
   "include": [
     "./src/**/*",
-    "@type"
-  ]
+    "@types"
+  ],
+  "paths": {
+    "@/*": [
+      "src/*"
+    ]
+  },
 }

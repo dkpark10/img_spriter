@@ -13,6 +13,5 @@
     ],
     "@babel/preset-react",
     "@babel/preset-typescript" // Typescript(타입스크립트)가 컴파일 가능하도록 추가
-  ],
-  "plugins": ["@babel/plugin-transform-runtime"]
+  ]
 }
