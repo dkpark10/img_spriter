@@ -21,12 +21,12 @@ export default function Canvas() {
     height: 0,
   });
 
-  useEffect(() => {
+  const drawImage = () => {
     const image = new Image();
     image.src = imgSrc;
     ctx.current = canvasRef.current?.getContext('2d');
 
-    image.onload = () => {
+    const onLoadImage = () => {
       if (!canvasRef.current) {
         return;
       }
@@ -40,28 +40,13 @@ export default function Canvas() {
 
       ctx.current?.drawImage(image, 0, 0, naturalWidth, naturalHeight);
     };
-  }, []);
 
-  // useEffect(() => {
-  //   const image = new Image();
-  //   image.src = imgSrc;
-  //   ctx.current = canvasRef.current?.getContext('2d');
+    image.onload = onLoadImage;
+  }
 
-  //   image.onload = () => {
-  //     if (!canvasRef.current) {
-  //       return;
-  //     }
-
-  //     const { naturalWidth, naturalHeight } = image;
-  //     setSize((prev) => ({
-  //       ...prev,
-  //       width: naturalWidth,
-  //       height: naturalHeight,
-  //     }));
-
-  //     ctx.current?.drawImage(image, 0, 0, naturalWidth, naturalHeight);
-  //   };
-  // }, [prevRectangleCoord]);
+  useEffect(() => {
+    drawImage();
+  }, [prevRectangleCoord.rightBottomX, prevRectangleCoord.rightBottomY]);
 
   const onMouseDown = (e: React.MouseEvent<HTMLCanvasElement>) => {
     if (!canvasRef.current) {
@@ -78,13 +63,16 @@ export default function Canvas() {
     }));
   };
 
+  const setCtxStyle = (ctx: CanvasRenderingContext2D) => {
+    ctx.strokeStyle = 'red';
+    ctx.lineWidth = 0.5;
+    ctx.fillStyle = 'transparent';
+  }
+
   const onMouseMove = (e: React.MouseEvent<HTMLCanvasElement>) => {
     if (!canvasRef.current || !ctx.current || isMouseDown === false) {
       return;
     }
-
-    const image = new Image();
-    image.src = imgSrc;
 
     const { offsetLeft, offsetTop } = canvasRef.current;
     const mouseCoordY = e.pageY - offsetTop;
@@ -94,13 +82,9 @@ export default function Canvas() {
     const y = mouseCoordY - initCoord.y;
     const { rightBottomX, rightBottomY } = prevRectangleCoord;
 
-    ctx.current.strokeStyle = 'red';
-    ctx.current.lineWidth = 0.5;
+    ctx.current.clearRect(prevRectangleCoord.x, prevRectangleCoord.y, rightBottomX, rightBottomY);
+    setCtxStyle(ctx.current);
     ctx.current.strokeRect(initCoord.x, initCoord.y, x, y);
-
-    ctx.current.fillStyle = 'transparent';
-    ctx.current.globalAlpha = 0.05;
-    ctx.current.fillRect(prevRectangleCoord.x, prevRectangleCoord.y, rightBottomX, rightBottomY);
 
     setPrevRectangleCoord((prev) => ({
       ...prev,
