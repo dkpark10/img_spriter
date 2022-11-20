@@ -8,6 +8,7 @@ export default function Canvas() {
 
   const [isMouseDown, setIsMouseDown] = useState(false);
   const [initCoord, setInitCoord] = useState<Coord>({ y: 0, x: 0 });
+  const [initDraw, setInitDraw] = useState(true);
 
   const [prevRectangleCoord, setPrevRectangleCoord] = useState<PrevRectangleCoord>({
     y: 0,
@@ -32,11 +33,16 @@ export default function Canvas() {
       }
 
       const { naturalWidth, naturalHeight } = image;
-      setSize((prev) => ({
-        ...prev,
-        width: naturalWidth,
-        height: naturalHeight,
-      }));
+
+      if(initDraw === true){
+        setSize((prev) => ({
+          ...prev,
+          width: naturalWidth,
+          height: naturalHeight,
+        }));
+
+        setInitDraw(false);
+      }
 
       ctx.current?.drawImage(image, 0, 0, naturalWidth, naturalHeight);
     };
@@ -82,7 +88,8 @@ export default function Canvas() {
     const y = mouseCoordY - initCoord.y;
     const { rightBottomX, rightBottomY } = prevRectangleCoord;
 
-    ctx.current.clearRect(prevRectangleCoord.x, prevRectangleCoord.y, rightBottomX, rightBottomY);
+    ctx.current.clearRect(0, 0, size.width, size.height);
+    drawImage();
     setCtxStyle(ctx.current);
     ctx.current.strokeRect(initCoord.x, initCoord.y, x, y);
 

@@ -4,7 +4,7 @@
   "description": "img_spriter",
   "scripts": {
     "test": "jest",
-    "start": "webpack-dev-server --config webpack.dev.js",
+    "dev": "webpack-dev-server --config webpack.dev.js",
     "build": "webpack --config webpack.prod.js",
     "prebuild": "rimraf build",
     "servestart": "node server.js",
