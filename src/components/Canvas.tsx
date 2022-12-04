@@ -1,13 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
-import { Coord, Rectangle, Size } from 'custom-type';
+import { Coord, Size } from 'custom-type';
 
 interface CanvasStyle {
   backgroundImage: string;
 }
 
 const CanvasComponent = styled.canvas<CanvasStyle>`
-  background-image: url(${({backgroundImage}) => backgroundImage});
+  background-image: url(${({ backgroundImage }) => backgroundImage});
 `;
 
 const imgSrc = 'https://s.pstatic.net/static/www/img/uit/sp_weather_time_b8ecd0.png';
@@ -21,14 +21,10 @@ export default function Canvas() {
 
   const [canvasSize, setCanvasSize] = useState<Size>({ width: 0, height: 0 });
 
-  useEffect(() => {
-    drawImage();
-  }, []);
-
   const drawImage = () => {
     const image = new Image();
     image.src = imgSrc;
-    ctx.current = canvasRef.current?.getContext("2d");
+    ctx.current = canvasRef.current?.getContext('2d');
 
     image.onload = () => {
       const { naturalWidth, naturalHeight } = image;
@@ -40,6 +36,10 @@ export default function Canvas() {
       }));
     };
   };
+
+  useEffect(() => {
+    drawImage();
+  }, []);
 
   const onMouseDown = (e: React.MouseEvent<HTMLCanvasElement>) => {
     if (!canvasRef.current) {
@@ -67,9 +67,6 @@ export default function Canvas() {
     const mouseCoordY = e.pageY - offsetTop;
     const mouseCoordX = e.pageX - offsetLeft;
 
-    const y = mouseCoordY - initCoord.y;
-    const x = mouseCoordX - initCoord.x;
-
     const left = Math.min(mouseCoordX, initCoord.x);
     const top = Math.min(mouseCoordY, initCoord.y);
     const width = Math.abs(mouseCoordX - initCoord.x);
@@ -79,7 +76,7 @@ export default function Canvas() {
       0,
       0,
       canvasRef.current.width,
-      canvasRef.current.height
+      canvasRef.current.height,
     );
 
     ctx.current.strokeRect(left, top, width, height);

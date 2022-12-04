@@ -36,17 +36,17 @@ module.exports = {
         devDependencies: true,
       },
     ],
-    // 'react/jsx-filename-extension': [
-    //   'error',
-    //   {
-    //     extensions: [
-    //       '.js',
-    //       '.ts',
-    //       '.jsx',
-    //       '.tsx',
-    //     ],
-    //   },
-    // ],
+    'react/jsx-filename-extension': [
+      'error',
+      {
+        extensions: [
+          '.js',
+          '.ts',
+          '.jsx',
+          '.tsx',
+        ],
+      },
+    ],
     // 'import/extensions': [
     //   'error',
     //   'ignorePackages',
