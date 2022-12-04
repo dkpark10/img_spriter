@@ -9,7 +9,7 @@ const HeaderWrapper = styled.header`
   height: 59px;
 
   & input[type='text'] {
-    width: 400px;
+    width: 380px;
     border:none;
     height:29px;
     border-radius: 6px;
@@ -26,9 +26,9 @@ export default function Header() {
   return (
     <HeaderWrapper>
       <input
-        type="text"
-        name="imgsrc"
-        placeholder="이미지 주소"
+        type='text'
+        name='imgsrc'
+        placeholder='이미지 주소'
       />
     </HeaderWrapper>
   );

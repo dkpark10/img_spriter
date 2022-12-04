@@ -1,8 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
-import Canvas from './components/Canvas';
-import Header from './components/Header';
-import Title from './components/Title';
+import Canvas from './components/canvas';
+import Header from './components/header';
+import Title from './components/title';
+import DropBox from './components/drop_box';
 
 const CenterWrapper = styled.main`
   display: flex;
