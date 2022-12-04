@@ -1,58 +1,45 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Coord, PrevRectangleCoord, Size } from 'custom-type';
+import styled from 'styled-components';
+import { Coord, Rectangle, Size } from 'custom-type';
 
+interface CanvasStyle {
+  backgroundImage: string;
+}
+
+const CanvasComponent = styled.canvas<CanvasStyle>`
+  background-image: url(${({backgroundImage}) => backgroundImage});
+`;
+
+const imgSrc = 'https://s.pstatic.net/static/www/img/uit/sp_weather_time_b8ecd0.png';
 export default function Canvas() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const ctx = useRef<CanvasRenderingContext2D | null | undefined>(null);
-  const imgSrc = 'https://s.pstatic.net/static/www/img/uit/sp_weather_time_b8ecd0.png';
 
   const [isMouseDown, setIsMouseDown] = useState(false);
+
   const [initCoord, setInitCoord] = useState<Coord>({ y: 0, x: 0 });
-  const [initDraw, setInitDraw] = useState(true);
 
-  const [prevRectangleCoord, setPrevRectangleCoord] = useState<PrevRectangleCoord>({
-    y: 0,
-    x: 0,
-    rightBottomY: 0,
-    rightBottomX: 0,
-  });
+  const [canvasSize, setCanvasSize] = useState<Size>({ width: 0, height: 0 });
 
-  const [size, setSize] = useState<Size>({
-    width: 0,
-    height: 0,
-  });
+  useEffect(() => {
+    drawImage();
+  }, []);
 
   const drawImage = () => {
     const image = new Image();
     image.src = imgSrc;
-    ctx.current = canvasRef.current?.getContext('2d');
+    ctx.current = canvasRef.current?.getContext("2d");
 
-    const onLoadImage = () => {
-      if (!canvasRef.current) {
-        return;
-      }
-
+    image.onload = () => {
       const { naturalWidth, naturalHeight } = image;
 
-      if(initDraw === true){
-        setSize((prev) => ({
-          ...prev,
-          width: naturalWidth,
-          height: naturalHeight,
-        }));
-
-        setInitDraw(false);
-      }
-
-      ctx.current?.drawImage(image, 0, 0, naturalWidth, naturalHeight);
+      setCanvasSize((prev) => ({
+        ...prev,
+        width: naturalWidth,
+        height: naturalHeight,
+      }));
     };
-
-    image.onload = onLoadImage;
-  }
-
-  useEffect(() => {
-    drawImage();
-  }, [prevRectangleCoord.rightBottomX, prevRectangleCoord.rightBottomY]);
+  };
 
   const onMouseDown = (e: React.MouseEvent<HTMLCanvasElement>) => {
     if (!canvasRef.current) {
@@ -65,15 +52,11 @@ export default function Canvas() {
     const x = e.pageX - offsetLeft;
 
     setInitCoord((prev) => ({
-      ...prev, y, x,
+      ...prev,
+      y,
+      x,
     }));
   };
-
-  const setCtxStyle = (ctx: CanvasRenderingContext2D) => {
-    ctx.strokeStyle = 'red';
-    ctx.lineWidth = 0.5;
-    ctx.fillStyle = 'transparent';
-  }
 
   const onMouseMove = (e: React.MouseEvent<HTMLCanvasElement>) => {
     if (!canvasRef.current || !ctx.current || isMouseDown === false) {
@@ -84,22 +67,22 @@ export default function Canvas() {
     const mouseCoordY = e.pageY - offsetTop;
     const mouseCoordX = e.pageX - offsetLeft;
 
-    const x = mouseCoordX - initCoord.x;
     const y = mouseCoordY - initCoord.y;
-    const { rightBottomX, rightBottomY } = prevRectangleCoord;
+    const x = mouseCoordX - initCoord.x;
 
-    ctx.current.clearRect(0, 0, size.width, size.height);
-    drawImage();
-    setCtxStyle(ctx.current);
-    ctx.current.strokeRect(initCoord.x, initCoord.y, x, y);
+    const left = Math.min(mouseCoordX, initCoord.x);
+    const top = Math.min(mouseCoordY, initCoord.y);
+    const width = Math.abs(mouseCoordX - initCoord.x);
+    const height = Math.abs(mouseCoordY - initCoord.y);
 
-    setPrevRectangleCoord((prev) => ({
-      ...prev,
-      y: initCoord.y,
-      x: initCoord.x,
-      rightBottomY: y,
-      rightBottomX: x,
-    }));
+    ctx.current.clearRect(
+      0,
+      0,
+      canvasRef.current.width,
+      canvasRef.current.height
+    );
+
+    ctx.current.strokeRect(left, top, width, height);
   };
 
   const onMouseUp = () => {
@@ -112,18 +95,14 @@ export default function Canvas() {
   };
 
   return (
-    <div>
-      <canvas
-        style={{ zIndex: 1 }}
-        ref={canvasRef}
-        width={size.width}
-        height={size.height}
-        onMouseDown={onMouseDown}
-        onMouseMove={onMouseMove}
-        onMouseUp={onMouseUp}
-      />
-      <div>{initCoord.x}</div>
-      <div>{initCoord.y}</div>
-    </div>
+    <CanvasComponent
+      ref={canvasRef}
+      width={canvasSize.width}
+      height={canvasSize.height}
+      backgroundImage={imgSrc}
+      onMouseDown={onMouseDown}
+      onMouseMove={onMouseMove}
+      onMouseUp={onMouseUp}
+    />
   );
 }

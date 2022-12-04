@@ -4,17 +4,15 @@ declare module 'custom-type' {
     x: number;
   }
 
-  interface PrevRectangleCoord extends Coord {
-    rightBottomY: number;
-    rightBottomX: number;
+  interface Rectangle {
+    left: number;
+    top: number;
+    right: number;
+    bottom: number;
   }
 
   interface Size {
     width: number;
     height: number;
-  }
-
-  interface Test {
-    name: string;
   }
 }
