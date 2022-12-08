@@ -24,6 +24,7 @@ export default function Canvas() {
   const drawImage = () => {
     const image = new Image();
     image.src = imgSrc;
+    image.crossOrigin = 'Anonymous';
     ctx.current = canvasRef.current?.getContext('2d');
 
     image.onload = () => {
@@ -34,6 +35,8 @@ export default function Canvas() {
         width: naturalWidth,
         height: naturalHeight,
       }));
+
+      ctx.current?.drawImage(image, 0, 0);
     };
   };
 
@@ -42,7 +45,7 @@ export default function Canvas() {
   }, []);
 
   const onMouseDown = (e: React.MouseEvent<HTMLCanvasElement>) => {
-    if (!canvasRef.current) {
+    if (!canvasRef.current || !ctx.current) {
       return;
     }
 
