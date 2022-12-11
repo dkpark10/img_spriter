@@ -36,6 +36,7 @@ module.exports = {
         devDependencies: true,
       },
     ],
+    'import/export': 'off',
     'react/jsx-filename-extension': [
       'error',
       {

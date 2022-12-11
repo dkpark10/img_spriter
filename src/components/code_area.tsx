@@ -17,7 +17,7 @@ const CodeAreaContent = styled.div`
   padding: 20px;
 
   .number {
-    color: #e2862a;
+    color: #f08a15;
   }
 
   .img_src {

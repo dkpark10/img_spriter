@@ -3,13 +3,14 @@ import { useSetRecoilState, useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 import { Coord, Size } from 'custom-type';
 import { spriteSizeState, imageSrcState } from '../store/index';
+import SizeDot from './size_dot';
 
 interface CanvasStyle {
   backgroundImage: string;
 }
-
 const CanvasComponent = styled.canvas<CanvasStyle>`
   background-image: url(${({ backgroundImage }) => backgroundImage});
+  border: 1px solid red;
 `;
 
 export default function Canvas() {
@@ -25,8 +26,6 @@ export default function Canvas() {
   const setSpriteSize = useSetRecoilState(spriteSizeState);
 
   const imageSrc = useRecoilValue(imageSrcState);
-  console.log(imageSrc);
-  // const imageSrc = 'https://s.pstatic.net/static/www/img/uit/sp_weather_time_b8ecd0.png';
 
   useEffect(() => {
     const drawImage = () => {
@@ -106,14 +105,32 @@ export default function Canvas() {
   };
 
   return (
-    <CanvasComponent
-      ref={canvasRef}
-      width={canvasSize.width}
-      height={canvasSize.height}
-      backgroundImage={imageSrc}
-      onMouseDown={onMouseDown}
-      onMouseMove={onMouseMove}
-      onMouseUp={onMouseUp}
-    />
+    <>
+      <SizeDot
+        top={0}
+        left={0}
+      />
+      <SizeDot
+        top={0}
+        left={canvasSize.width}
+      />
+      <CanvasComponent
+        ref={canvasRef}
+        width={canvasSize.width}
+        height={canvasSize.height}
+        backgroundImage={imageSrc}
+        onMouseDown={onMouseDown}
+        onMouseMove={onMouseMove}
+        onMouseUp={onMouseUp}
+      />
+      <SizeDot
+        top={canvasSize.height}
+        left={0}
+      />
+      <SizeDot
+        top={canvasSize.height}
+        left={canvasSize.width}
+      />
+    </>
   );
 }
