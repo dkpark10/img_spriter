@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import Canvas from './components/canvas';
 import Header from './components/header';
 import Title from './components/title';
-import DropBox from './components/drop_box';
+import CodeArea from './components/code_area';
 
 const CenterWrapper = styled.main`
   display: flex;
@@ -19,6 +19,7 @@ export default function App() {
       <CenterWrapper>
         <Canvas />
       </CenterWrapper>
+      <CodeArea />
     </>
   );
 }

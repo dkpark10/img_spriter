@@ -1,6 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 import { Coord, Size } from 'custom-type';
+import { spriteSizeState, imageSrcState } from '../store/index';
 
 interface CanvasStyle {
   backgroundImage: string;
@@ -10,7 +12,6 @@ const CanvasComponent = styled.canvas<CanvasStyle>`
   background-image: url(${({ backgroundImage }) => backgroundImage});
 `;
 
-const imgSrc = 'https://s.pstatic.net/static/www/img/uit/sp_weather_time_b8ecd0.png';
 export default function Canvas() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const ctx = useRef<CanvasRenderingContext2D | null | undefined>(null);
@@ -21,28 +22,33 @@ export default function Canvas() {
 
   const [canvasSize, setCanvasSize] = useState<Size>({ width: 0, height: 0 });
 
-  const drawImage = () => {
-    const image = new Image();
-    image.src = imgSrc;
-    image.crossOrigin = 'Anonymous';
-    ctx.current = canvasRef.current?.getContext('2d');
+  const [, setSpriteSize] = useRecoilState(spriteSizeState);
 
-    image.onload = () => {
-      const { naturalWidth, naturalHeight } = image;
-
-      setCanvasSize((prev) => ({
-        ...prev,
-        width: naturalWidth,
-        height: naturalHeight,
-      }));
-
-      ctx.current?.drawImage(image, 0, 0);
-    };
-  };
+  const imageSrc = useRecoilValue(imageSrcState);
+  // const imageSrc = 'https://s.pstatic.net/static/www/img/uit/sp_weather_time_b8ecd0.png';
 
   useEffect(() => {
+    const drawImage = () => {
+      const image = new Image();
+      image.src = imageSrc;
+      image.crossOrigin = 'Anonymous';
+      ctx.current = canvasRef.current?.getContext('2d');
+
+      image.onload = () => {
+        const { naturalWidth, naturalHeight } = image;
+
+        setCanvasSize((prev) => ({
+          ...prev,
+          width: naturalWidth,
+          height: naturalHeight,
+        }));
+
+        ctx.current?.drawImage(image, 0, 0);
+      };
+    };
+
     drawImage();
-  }, []);
+  }, [imageSrc]);
 
   const onMouseDown = (e: React.MouseEvent<HTMLCanvasElement>) => {
     if (!canvasRef.current || !ctx.current) {
@@ -82,6 +88,10 @@ export default function Canvas() {
       canvasRef.current.height,
     );
 
+    setSpriteSize({
+      x: -left, y: -top, width, height,
+    });
+
     ctx.current.strokeRect(left, top, width, height);
   };
 
@@ -99,7 +109,7 @@ export default function Canvas() {
       ref={canvasRef}
       width={canvasSize.width}
       height={canvasSize.height}
-      backgroundImage={imgSrc}
+      backgroundImage={imageSrc}
       onMouseDown={onMouseDown}
       onMouseMove={onMouseMove}
       onMouseUp={onMouseUp}

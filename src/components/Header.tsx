@@ -1,5 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useRecoilState } from 'recoil';
+import { imageSrcState } from '../store/index';
 
 const HeaderWrapper = styled.header`
   width:100%;
@@ -23,12 +25,18 @@ const HeaderWrapper = styled.header`
 `;
 
 export default function Header() {
+  const [, setImageSrc] = useRecoilState(imageSrcState);
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setImageSrc(e.target.value);
+  };
+
   return (
     <HeaderWrapper>
       <input
         type='text'
         name='imgsrc'
         placeholder='이미지 주소'
+        onChange={onChange}
       />
     </HeaderWrapper>
   );
