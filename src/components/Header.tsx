@@ -13,10 +13,10 @@ const HeaderWrapper = styled.header`
   & input[type='text'] {
     width: 380px;
     border:none;
-    height:29px;
+    height:32px;
     border-radius: 6px;
     background-color: #e0e0e0;
-    padding:0 5px;
+    padding:0 6px;
 
     &:focus {
       outline: 1px solid #204de0;
@@ -25,7 +25,7 @@ const HeaderWrapper = styled.header`
 `;
 
 export default function Header() {
-  const [, setImageSrc] = useRecoilState(imageSrcState);
+  const [imgSrc, setImageSrc] = useRecoilState(imageSrcState);
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setImageSrc(e.target.value);
   };
@@ -37,6 +37,7 @@ export default function Header() {
         name='imgsrc'
         placeholder='이미지 주소'
         onChange={onChange}
+        value={imgSrc}
       />
     </HeaderWrapper>
   );

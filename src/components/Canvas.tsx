@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useSetRecoilState, useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 import { Coord, Size } from 'custom-type';
 import { spriteSizeState, imageSrcState } from '../store/index';
@@ -22,9 +22,10 @@ export default function Canvas() {
 
   const [canvasSize, setCanvasSize] = useState<Size>({ width: 0, height: 0 });
 
-  const [, setSpriteSize] = useRecoilState(spriteSizeState);
+  const setSpriteSize = useSetRecoilState(spriteSizeState);
 
   const imageSrc = useRecoilValue(imageSrcState);
+  console.log(imageSrc);
   // const imageSrc = 'https://s.pstatic.net/static/www/img/uit/sp_weather_time_b8ecd0.png';
 
   useEffect(() => {
@@ -89,7 +90,7 @@ export default function Canvas() {
     );
 
     setSpriteSize({
-      x: -left, y: -top, width, height,
+      x: left, y: top, width, height,
     });
 
     ctx.current.strokeRect(left, top, width, height);
