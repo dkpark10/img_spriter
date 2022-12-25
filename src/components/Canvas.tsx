@@ -1,24 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useSetRecoilState, useRecoilValue } from 'recoil';
-import styled from 'styled-components';
 import { Coord, Size } from 'custom-type';
 import { spriteSizeState, imageSrcState } from '../store/index';
 import SizeDot from './size_dot';
 
-interface CanvasStyle {
-  backgroundImage: string;
-}
-
-const CanvasWrapper = styled.div`
-  position: relative;
-`;
-
-const CanvasComponent = styled.canvas<CanvasStyle>`
-  background-image: url(${({ backgroundImage }) => backgroundImage});
-`;
-
 export default function Canvas() {
   const canvasWrapperRef = useRef<HTMLDivElement>(null);
+
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const ctx = useRef<CanvasRenderingContext2D | null | undefined>(null);
 
@@ -48,7 +36,7 @@ export default function Canvas() {
           height: naturalHeight,
         }));
 
-        ctx.current?.drawImage(image, 0, 0);
+        // ctx.current?.drawImage(image, 0, 0, naturalWidth, naturalHeight);
       };
     };
 
@@ -74,7 +62,12 @@ export default function Canvas() {
   };
 
   const onMouseMove = (e: React.MouseEvent<HTMLCanvasElement>) => {
-    if (!canvasRef.current || !canvasWrapperRef.current || !ctx.current || isMouseDown === false) {
+    if (
+      !canvasRef.current
+      || !canvasWrapperRef.current
+      || !ctx.current
+      || isMouseDown === false
+    ) {
       return;
     }
 
@@ -114,25 +107,18 @@ export default function Canvas() {
   };
 
   return (
-    <CanvasWrapper
-      ref={canvasWrapperRef}
-    >
-      <SizeDot
-        width={canvasSize.height}
-        height={canvasSize.width}
-      />
-      <CanvasComponent
-        className='border-orange-200'
+    <div className='relative' ref={canvasWrapperRef}>
+      <SizeDot width={canvasSize.height} height={canvasSize.width} />
+      <canvas
         ref={canvasRef}
-        width={canvasSize.width}
-        height={canvasSize.height}
-        backgroundImage={imageSrc}
+        className='border-2 border-solid border-zinc-700'
+        width={`${canvasSize.width}`}
+        height={`${canvasSize.height}`}
+        style={{ backgroundImage: `url(${imageSrc})` }}
         onMouseDown={onMouseDown}
         onMouseMove={onMouseMove}
         onMouseUp={onMouseUp}
       />
-      <h1>{initCoord.y}</h1>
-      <h1>{initCoord.x}</h1>
-    </CanvasWrapper>
+    </div>
   );
 }

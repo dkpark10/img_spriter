@@ -54,11 +54,11 @@ export default function SizeDot({ width, height }: Size) {
   return (
     <>
       {coords.map((coord, idx) => (
-        <SizeDotStyle
+        <div
+          className={`w-[19px] h-[19px] rounded-full absolute bg-teal-400 cursor-pointer
+          top-[${coord[0]}px] left-[${coord[1]}px]`}
           // eslint-disable-next-line react/no-array-index-key
           key={idx}
-          top={coord[0]}
-          left={coord[1]}
         />
       ))}
     </>
