@@ -15,7 +15,6 @@ const CanvasWrapper = styled.div`
 
 const CanvasComponent = styled.canvas<CanvasStyle>`
   background-image: url(${({ backgroundImage }) => backgroundImage});
-  border: 1px solid red;
 `;
 
 export default function Canvas() {
@@ -119,14 +118,11 @@ export default function Canvas() {
       ref={canvasWrapperRef}
     >
       <SizeDot
-        top={0}
-        left={0}
-      />
-      <SizeDot
-        top={0}
-        left={canvasSize.width}
+        width={canvasSize.height}
+        height={canvasSize.width}
       />
       <CanvasComponent
+        className='border-orange-200'
         ref={canvasRef}
         width={canvasSize.width}
         height={canvasSize.height}
@@ -134,14 +130,6 @@ export default function Canvas() {
         onMouseDown={onMouseDown}
         onMouseMove={onMouseMove}
         onMouseUp={onMouseUp}
-      />
-      <SizeDot
-        top={canvasSize.height}
-        left={0}
-      />
-      <SizeDot
-        top={canvasSize.height}
-        left={canvasSize.width}
       />
       <h1>{initCoord.y}</h1>
       <h1>{initCoord.x}</h1>

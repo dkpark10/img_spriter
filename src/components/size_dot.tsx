@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react';
 import styled from 'styled-components';
+import { Size } from 'custom-type';
 
 interface ISizeDot {
   top: number;
@@ -22,8 +23,13 @@ const SizeDotStyle = styled.div<ISizeDot>`
   }
 `;
 
-export default function SizeDot({ top, left }: ISizeDot) {
-  const dotRef = useRef<HTMLDivElement>(null);
+export default function SizeDot({ width, height }: Size) {
+  const coords = [
+    [0, 0],
+    [width, 0],
+    [0, height],
+    [width, height],
+  ];
 
   // const [isMouseDown, setIsMouseDown] = useState(false);
 
@@ -46,13 +52,15 @@ export default function SizeDot({ top, left }: ISizeDot) {
   // };
 
   return (
-    <SizeDotStyle
-      ref={dotRef}
-      top={top}
-      left={left}
-      // onMouseDown={onMouseDown}
-      // onMouseMove={onMouseMove}
-      // onMouseUp={onMouseUp}
-    />
+    <>
+      {coords.map((coord, idx) => (
+        <SizeDotStyle
+          // eslint-disable-next-line react/no-array-index-key
+          key={idx}
+          top={coord[0]}
+          left={coord[1]}
+        />
+      ))}
+    </>
   );
 }
