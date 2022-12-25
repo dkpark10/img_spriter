@@ -8,6 +8,11 @@ import SizeDot from './size_dot';
 interface CanvasStyle {
   backgroundImage: string;
 }
+
+const CanvasWrapper = styled.div`
+  /* position: relative; */
+`;
+
 const CanvasComponent = styled.canvas<CanvasStyle>`
   background-image: url(${({ backgroundImage }) => backgroundImage});
   border: 1px solid red;
@@ -89,7 +94,10 @@ export default function Canvas() {
     );
 
     setSpriteSize({
-      x: left, y: top, width, height,
+      x: left,
+      y: top,
+      width,
+      height,
     });
 
     ctx.current.strokeRect(left, top, width, height);
@@ -105,7 +113,7 @@ export default function Canvas() {
   };
 
   return (
-    <>
+    <CanvasWrapper>
       <SizeDot
         top={0}
         left={0}
@@ -131,6 +139,6 @@ export default function Canvas() {
         top={canvasSize.height}
         left={canvasSize.width}
       />
-    </>
+    </CanvasWrapper>
   );
 }

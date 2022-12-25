@@ -9,7 +9,6 @@ const CenterWrapper = styled.main`
   display: flex;
   justify-content: center;
   align-items: center;
-  position: relative;
 `;
 
 export default function App() {

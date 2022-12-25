@@ -11,7 +11,6 @@
     "noImplicitReturns": true, // 함수내 모든 경로에서 리턴하지 않을경우 에러
     "allowJs": false, // ts에서 js 파일을 import해서 사용할 지 여부
     "jsx": "react-jsx",
-    "baseUrl": ".",
     "allowSyntheticDefaultImports": true,
     "keyofStringsOnly": true,
     "outDir": "./build", // 컴파일 아웃풋 경로
@@ -27,7 +26,13 @@
     ], // async await 등 es6 이상 문법 사용
     "types": [
       "node"
-    ]
+    ],
+    "baseUrl": ".",
+    "paths": {
+      "@/*": [
+        "src/*",
+      ],
+    },
   },
   "exclude": [
     "node_modules",
@@ -38,9 +43,4 @@
     "./src/**/*",
     "@types"
   ],
-  "paths": {
-    "@/*": [
-      "src/*"
-    ]
-  },
 }
