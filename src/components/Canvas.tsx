@@ -10,7 +10,7 @@ interface CanvasStyle {
 }
 
 const CanvasWrapper = styled.div`
-  /* position: relative; */
+  position: relative;
 `;
 
 const CanvasComponent = styled.canvas<CanvasStyle>`
@@ -19,6 +19,7 @@ const CanvasComponent = styled.canvas<CanvasStyle>`
 `;
 
 export default function Canvas() {
+  const canvasWrapperRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const ctx = useRef<CanvasRenderingContext2D | null | undefined>(null);
 
@@ -56,12 +57,13 @@ export default function Canvas() {
   }, [imageSrc]);
 
   const onMouseDown = (e: React.MouseEvent<HTMLCanvasElement>) => {
-    if (!canvasRef.current || !ctx.current) {
+    if (!canvasRef.current || !canvasWrapperRef.current || !ctx.current) {
       return;
     }
 
     setIsMouseDown(true);
-    const { offsetLeft, offsetTop } = canvasRef.current;
+
+    const { offsetTop, offsetLeft } = canvasWrapperRef.current;
     const y = e.pageY - offsetTop;
     const x = e.pageX - offsetLeft;
 
@@ -73,11 +75,11 @@ export default function Canvas() {
   };
 
   const onMouseMove = (e: React.MouseEvent<HTMLCanvasElement>) => {
-    if (!canvasRef.current || !ctx.current || isMouseDown === false) {
+    if (!canvasRef.current || !canvasWrapperRef.current || !ctx.current || isMouseDown === false) {
       return;
     }
 
-    const { offsetLeft, offsetTop } = canvasRef.current;
+    const { offsetLeft, offsetTop } = canvasWrapperRef.current;
     const mouseCoordY = e.pageY - offsetTop;
     const mouseCoordX = e.pageX - offsetLeft;
 
@@ -113,7 +115,9 @@ export default function Canvas() {
   };
 
   return (
-    <CanvasWrapper>
+    <CanvasWrapper
+      ref={canvasWrapperRef}
+    >
       <SizeDot
         top={0}
         left={0}
@@ -139,6 +143,8 @@ export default function Canvas() {
         top={canvasSize.height}
         left={canvasSize.width}
       />
+      <h1>{initCoord.y}</h1>
+      <h1>{initCoord.x}</h1>
     </CanvasWrapper>
   );
 }
