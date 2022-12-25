@@ -1,28 +1,6 @@
 import React from 'react';
-import styled from 'styled-components';
 import { useRecoilState } from 'recoil';
 import { imageSrcState } from '../store/index';
-
-const HeaderWrapper = styled.header`
-  width:100%;
-  display:flex;
-  justify-content: center;
-  align-items: center;
-  height: 59px;
-
-  & input[type='text'] {
-    width: 380px;
-    border:none;
-    height:32px;
-    border-radius: 6px;
-    background-color: #e0e0e0;
-    padding:0 6px;
-
-    &:focus {
-      outline: 1px solid #204de0;
-    }
-  }
-`;
 
 export default function Header() {
   const [imgSrc, setImageSrc] = useRecoilState(imageSrcState);
@@ -31,14 +9,15 @@ export default function Header() {
   };
 
   return (
-    <HeaderWrapper>
+    <header className='w-full flex justify-center items-center h-[60px]'>
       <input
+        className='w-[408px] border-none h-[32px] rounded-md bg-[#e0e0e0] px-2'
         type='text'
         name='imgsrc'
         placeholder='이미지 주소'
         onChange={onChange}
         value={imgSrc}
       />
-    </HeaderWrapper>
+    </header>
   );
 }

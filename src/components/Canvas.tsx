@@ -107,11 +107,16 @@ export default function Canvas() {
   };
 
   return (
-    <div className='relative' ref={canvasWrapperRef}>
-      <SizeDot width={canvasSize.height} height={canvasSize.width} />
+    <div
+      className='relative border-2 border-solid border-zinc-700'
+      ref={canvasWrapperRef}
+    >
+      <SizeDot
+        target={canvasWrapperRef}
+        size={canvasSize}
+      />
       <canvas
         ref={canvasRef}
-        className='border-2 border-solid border-zinc-700'
         width={`${canvasSize.width}`}
         height={`${canvasSize.height}`}
         style={{ backgroundImage: `url(${imageSrc})` }}

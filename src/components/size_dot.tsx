@@ -1,66 +1,76 @@
-import React, { useState, useRef } from 'react';
-import styled from 'styled-components';
-import { Size } from 'custom-type';
+import React, { useState, useRef, RefObject } from 'react';
+import { Size, Coord } from 'custom-type';
 
-interface ISizeDot {
-  top: number;
-  left: number;
+interface Props {
+  size: Size;
+  target: RefObject<HTMLElement>;
 }
 
-const SizeDotStyle = styled.div<ISizeDot>`
-  background-color: transparent;
-  width: 9px;
-  height: 9px;
-  border-radius: 50%;
-  position: absolute;
-  top: ${({ top }) => top}px;
-  left: ${({ left }) => left}px;
-  transform: translate(-50%, -50%);
-  cursor: pointer;
+export default function SizeDot({ size, target }: Props) {
+  const [isMouseDown, setIsMouseDown] = useState(false);
 
-  &:hover {
-    background-color: #1e1d1d;
-  }
-`;
+  const [initCoord, setInitCoord] = useState<Coord>({ y: 0, x: 0 });
 
-export default function SizeDot({ width, height }: Size) {
-  const coords = [
-    [0, 0],
-    [width, 0],
-    [0, height],
-    [width, height],
-  ];
+  const onMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!target.current) {
+      return;
+    }
 
-  // const [isMouseDown, setIsMouseDown] = useState(false);
+    setIsMouseDown(true);
 
-  // const onMouseDown = () => {
-  //   setIsMouseDown(true);
-  // };
+    const { offsetTop, offsetLeft } = target.current;
+    const y = e.pageY - offsetTop;
+    const x = e.pageX - offsetLeft;
 
-  // const onMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-  //   if (isMouseDown === false || !dotRef.current) {
-  //     return;
-  //   }
+    setInitCoord((prev) => ({
+      ...prev,
+      y,
+      x,
+    }));
+  };
 
-  //   const { offsetLeft, offsetTop } = dotRef.current;
-  //   console.log(offsetLeft, offsetTop);
-  //   console.log(e.pageX, e.pageY);
-  // };
+  const onMouseMove = (e: React.MouseEvent<HTMLCanvasElement>) => {
+    if (!isMouseDown || !target.current) {
+      return;
+    }
 
-  // const onMouseUp = () => {
-  //   setIsMouseDown(false);
-  // };
+    const { offsetLeft, offsetTop } = target.current;
+  };
 
   return (
     <>
-      {coords.map((coord, idx) => (
-        <div
-          className={`w-[19px] h-[19px] rounded-full absolute bg-teal-400 cursor-pointer
-          top-[${coord[0]}px] left-[${coord[1]}px]`}
-          // eslint-disable-next-line react/no-array-index-key
-          key={idx}
-        />
-      ))}
+      <div
+        className={`absolute w-[12px] h-[12px] rounded-full bg-teal-400 
+        cursor-pointer translate-x-[-50%] translate-y-[-50%]`}
+        style={{ top: 0, left: 0 }}
+        role='button'
+        onMouseDown={onMouseDown}
+        tabIndex={0}
+      />
+      <div
+        className={`absolute w-[12px] h-[12px] rounded-full bg-teal-400 
+        cursor-pointer translate-x-[-50%] translate-y-[-50%]`}
+        style={{ top: size.height, left: 0 }}
+        role='button'
+        onMouseDown={onMouseDown}
+        tabIndex={0}
+      />
+      <div
+        className={`absolute w-[12px] h-[12px] rounded-full bg-teal-400 
+        cursor-pointer translate-x-[-50%] translate-y-[-50%]`}
+        style={{ top: 0, left: size.width }}
+        role='button'
+        onMouseDown={onMouseDown}
+        tabIndex={0}
+      />
+      <div
+        className={`absolute w-[12px] h-[12px] rounded-full bg-teal-400 
+        cursor-pointer translate-x-[-50%] translate-y-[-50%]`}
+        style={{ top: size.height, left: size.width }}
+        role='button'
+        onMouseDown={onMouseDown}
+        tabIndex={0}
+      />
     </>
   );
 }
