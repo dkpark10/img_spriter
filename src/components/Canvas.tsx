@@ -27,8 +27,9 @@ export default function Canvas() {
   useEffect(() => {
     const drawImage = () => {
       const image = new Image();
-      image.src = imageSrc;
       image.crossOrigin = 'Anonymous';
+      image.src = imageSrc;
+      image.alt = 'target_image';
       ctx.current = canvasRef.current?.getContext('2d');
 
       image.onload = () => {

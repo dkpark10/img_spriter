@@ -4,6 +4,7 @@ import Header from './components/header';
 import Title from './components/title';
 import CodeArea from './components/code_area';
 import SizeScaleRangeBar from './components/size_scale_range';
+import Footer from './components/footer';
 
 export default function App() {
   return (
@@ -13,6 +14,7 @@ export default function App() {
       <CodeArea />
       <SizeScaleRangeBar />
       <Canvas />
+      <Footer />
     </>
   );
 }
