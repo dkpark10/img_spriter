@@ -7,11 +7,14 @@ export default function Canvas() {
   const canvasWrapperRef = useRef<HTMLDivElement>(null);
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
+
   const ctx = useRef<CanvasRenderingContext2D | null | undefined>(null);
 
   const [isMouseDown, setIsMouseDown] = useState(false);
 
   const [initCoord, setInitCoord] = useState<Coord>({ y: 0, x: 0 });
+
+  const [error, setError] = useState(false);
 
   const [canvasSize, setCanvasSize] = useState<Size>({ width: 0, height: 0 });
 
@@ -31,18 +34,28 @@ export default function Canvas() {
       image.onload = () => {
         const { naturalWidth, naturalHeight } = image;
 
+        setError(false);
         setCanvasSize((prev) => ({
           ...prev,
           width: naturalWidth,
           height: naturalHeight,
         }));
-
-        // ctx.current?.drawImage(image, 0, 0, naturalWidth, naturalHeight);
       };
+
+      image.onerror = () => (setError(true));
     };
 
     drawImage();
   }, [imageSrc]);
+
+  const setStrokeStyle = () => {
+    if (!ctx.current) {
+      return;
+    }
+
+    ctx.current.strokeStyle = '#ff0077';
+    ctx.current.lineWidth = 0.5;
+  };
 
   const onMouseDown = (e: React.MouseEvent<HTMLCanvasElement>) => {
     if (!canvasRef.current || !canvasWrapperRef.current || !ctx.current) {
@@ -55,11 +68,7 @@ export default function Canvas() {
     const y = e.pageY - offsetTop;
     const x = e.pageX - offsetLeft;
 
-    setInitCoord((prev) => ({
-      ...prev,
-      y,
-      x,
-    }));
+    setInitCoord((prev) => ({ ...prev, y, x }));
   };
 
   const onMouseMove = (e: React.MouseEvent<HTMLCanvasElement>) => {
@@ -81,12 +90,9 @@ export default function Canvas() {
     const width = Math.abs(mouseCoordX - initCoord.x);
     const height = Math.abs(mouseCoordY - initCoord.y);
 
-    ctx.current.clearRect(
-      0,
-      0,
-      canvasRef.current.width,
-      canvasRef.current.height,
-    );
+    ctx.current.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
+
+    setStrokeStyle();
 
     setSpriteSize({
       x: left,
@@ -106,6 +112,10 @@ export default function Canvas() {
       x: 0,
     }));
   };
+
+  if (error) {
+    return <div className='text-center text-4xl'>이미지가 없습니다.</div>;
+  }
 
   return (
     <div className='flex justify-center items-center'>

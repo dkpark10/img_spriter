@@ -1,11 +1,20 @@
-import React from 'react';
+import React, { useState, useMemo } from 'react';
 import { useRecoilState } from 'recoil';
 import { imageSrcState } from '../store/index';
+import { debounce } from '../utils/index';
 
 export default function Header() {
   const [imgSrc, setImageSrc] = useRecoilState(imageSrcState);
+
+  const [printValue, setPrintValue] = useState(imgSrc);
+
+  const debounceChangeSrc = useMemo(() => debounce((src: string) => {
+    setImageSrc(src);
+  }, 250), [setImageSrc]);
+
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setImageSrc(e.target.value);
+    setPrintValue(e.target.value);
+    debounceChangeSrc(e.target.value);
   };
 
   return (
@@ -16,7 +25,7 @@ export default function Header() {
         name='imgsrc'
         placeholder='이미지 주소'
         onChange={onChange}
-        value={imgSrc}
+        value={printValue}
       />
     </header>
   );
