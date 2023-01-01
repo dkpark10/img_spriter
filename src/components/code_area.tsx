@@ -10,7 +10,7 @@ export default function CodeArea() {
   const imgSrc = useRecoilValue(imageSrcState);
 
   return (
-    <div className='flex items-center justify-center py-20'>
+    <div className='flex items-center justify-center m-3'>
       <div className='bg-[#292c39] text-[#cacaca] rounded-md p-4'>
         <div>{'.class {'}</div>
         <div>

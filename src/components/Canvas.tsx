@@ -1,8 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useSetRecoilState, useRecoilValue } from 'recoil';
 import { Coord, Size } from 'custom-type';
-import { spriteSizeState, imageSrcState } from '../store/index';
-import SizeDot from './size_dot';
+import { spriteSizeState, imageSrcState, imageScaleState } from '../store/index';
 
 export default function Canvas() {
   const canvasWrapperRef = useRef<HTMLDivElement>(null);
@@ -19,6 +18,8 @@ export default function Canvas() {
   const setSpriteSize = useSetRecoilState(spriteSizeState);
 
   const imageSrc = useRecoilValue(imageSrcState);
+
+  const imageScale = useRecoilValue(imageScaleState);
 
   useEffect(() => {
     const drawImage = () => {
@@ -107,23 +108,22 @@ export default function Canvas() {
   };
 
   return (
-    <div
-      className='relative border-2 border-solid border-zinc-700'
-      ref={canvasWrapperRef}
-    >
-      <SizeDot
-        target={canvasWrapperRef}
-        size={canvasSize}
-      />
-      <canvas
-        ref={canvasRef}
-        width={`${canvasSize.width}`}
-        height={`${canvasSize.height}`}
-        style={{ backgroundImage: `url(${imageSrc})` }}
-        onMouseDown={onMouseDown}
-        onMouseMove={onMouseMove}
-        onMouseUp={onMouseUp}
-      />
+    <div className='flex justify-center items-center'>
+      <div
+        className='relative border-2 border-solid border-zinc-700'
+        ref={canvasWrapperRef}
+      >
+        <canvas
+          className='bg-cover'
+          ref={canvasRef}
+          width={`${canvasSize.width * imageScale}`}
+          height={`${canvasSize.height * imageScale}`}
+          style={{ backgroundImage: `url(${imageSrc})` }}
+          onMouseDown={onMouseDown}
+          onMouseMove={onMouseMove}
+          onMouseUp={onMouseUp}
+        />
+      </div>
     </div>
   );
 }
