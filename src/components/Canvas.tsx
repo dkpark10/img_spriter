@@ -1,7 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useSetRecoilState, useRecoilValue } from 'recoil';
-import { Coord, Size } from 'custom-type';
-import { spriteSizeState, imageSrcState, imageScaleState } from '../store/index';
+import { useSetRecoilState, useRecoilValue, useRecoilState } from 'recoil';
+import { Coord } from 'custom-type';
+import {
+  spriteSizeState,
+  imageSizeState,
+  imageSrcState,
+  imageScaleState,
+} from '../store/index';
 
 export default function Canvas() {
   const canvasWrapperRef = useRef<HTMLDivElement>(null);
@@ -16,7 +21,7 @@ export default function Canvas() {
 
   const [error, setError] = useState(false);
 
-  const [canvasSize, setCanvasSize] = useState<Size>({ width: 0, height: 0 });
+  const [canvasSize, setCanvasSize] = useRecoilState(imageSizeState);
 
   const setSpriteSize = useSetRecoilState(spriteSizeState);
 
@@ -36,18 +41,17 @@ export default function Canvas() {
         const { naturalWidth, naturalHeight } = image;
 
         setError(false);
-        setCanvasSize((prev) => ({
-          ...prev,
+        setCanvasSize({
           width: naturalWidth,
           height: naturalHeight,
-        }));
+        });
       };
 
       image.onerror = () => (setError(true));
     };
 
     drawImage();
-  }, [imageSrc]);
+  }, [imageSrc, setCanvasSize]);
 
   const setStrokeStyle = () => {
     if (!ctx.current) {

@@ -6,6 +6,7 @@ import {
   Header,
   Footer,
   CodeArea,
+  SlicedImage,
   SizeScaleRangeBar,
 } from './components/index';
 
@@ -17,6 +18,7 @@ export default function App() {
       <CodeArea />
       <SizeScaleRangeBar />
       <Canvas />
+      <SlicedImage />
       <Footer />
     </>
   );
