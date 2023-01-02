@@ -131,8 +131,8 @@ export default function Canvas() {
         <canvas
           className='bg-cover'
           ref={canvasRef}
-          width={`${canvasSize.width * imageScale}`}
-          height={`${canvasSize.height * imageScale}`}
+          width={`${Math.floor(canvasSize.width * imageScale)}`}
+          height={`${Math.floor(canvasSize.height * imageScale)}`}
           style={{ backgroundImage: `url(${imageSrc})` }}
           onMouseDown={onMouseDown}
           onMouseMove={onMouseMove}

@@ -37,7 +37,7 @@ export default function CodeArea() {
         <div>
           &nbsp;&nbsp;&nbsp;background-size:&nbsp;
           <span className='text-[#f08a15]'>
-            {`${imageSize.width * imageScale}px ${imageSize.height * imageScale}px`}
+            {`${Math.floor(imageSize.width * imageScale)}px ${Math.floor(imageSize.height * imageScale)}px`}
           </span>;
         </div>
         <div>

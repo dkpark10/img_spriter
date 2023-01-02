@@ -25,7 +25,7 @@ export default function SlicedImage() {
           backgroundRepeat: 'no-repeat',
           backgroundPositionX: `${-x}px`,
           backgroundPositionY: `${-y}px`,
-          backgroundSize: `${imageSize.width * imageScale}px ${imageSize.height * imageScale}px`,
+          backgroundSize: `${Math.floor(imageSize.width * imageScale)}px ${Math.floor(imageSize.height * imageScale)}px`,
         }}
       />
     </div>
