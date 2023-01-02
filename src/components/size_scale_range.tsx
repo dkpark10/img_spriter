@@ -23,7 +23,7 @@ export default function ImageScaleRangeBar() {
           name='size_scale_bar'
           min={0.5}
           max={1.5}
-          step={0.1}
+          step={0.02}
           value={scale}
           onChange={onChange}
         />

@@ -1,4 +1,17 @@
-export * from './canvas';
-export * from './code_area';
-export * from './header';
-export * from './title';
+import Canvas from './canvas';
+import CodeArea from './code_area';
+import Header from './header';
+import Title from './title';
+import Footer from './footer';
+import SizeScaleRangeBar from './size_scale_range';
+import SlicedImage from './slicedimg';
+
+export {
+  Canvas,
+  CodeArea,
+  Header,
+  Title,
+  Footer,
+  SizeScaleRangeBar,
+  SlicedImage,
+};
