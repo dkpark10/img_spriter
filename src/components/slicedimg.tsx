@@ -15,9 +15,12 @@ export default function SlicedImage() {
 
   const imageSize = useRecoilValue(imageSizeState);
 
+  if (width <= 3 && height <= 3) return <div />;
+
   return (
     <div className='flex items-center justify-center m-3'>
       <div
+        className='border border-solid border-zinc-700'
         style={{
           width,
           height,

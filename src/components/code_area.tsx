@@ -22,7 +22,7 @@ export default function CodeArea() {
   return (
     <div className='flex items-center justify-center m-3'>
       <div className='bg-[#292c39] text-[#cacaca] rounded-md p-4'>
-        <div>{'.class {'}</div>
+        <div>{'.sprite_img {'}</div>
         <div>
           &nbsp;&nbsp;&nbsp;background:&nbsp;
           <span className='text-[#44e149]'>url</span>

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useSetRecoilState, useRecoilValue, useRecoilState } from 'recoil';
+import { useRecoilValue, useRecoilState } from 'recoil';
 import { Coord } from 'custom-type';
 import {
   spriteSizeState,
@@ -24,7 +24,7 @@ export default function Canvas() {
 
   const [canvasSize, setCanvasSize] = useRecoilState(imageSizeState);
 
-  const setSpriteSize = useSetRecoilState(spriteSizeState);
+  const [spriteSize, setSpriteSize] = useRecoilState(spriteSizeState);
 
   const imageSrc = useRecoilValue(imageSrcState);
 
@@ -39,12 +39,10 @@ export default function Canvas() {
       ctx.current = canvasRef.current?.getContext('2d');
 
       image.onload = () => {
-        const { naturalWidth, naturalHeight } = image;
-
         setError(false);
         setCanvasSize({
-          width: naturalWidth,
-          height: naturalHeight,
+          width: image.naturalWidth,
+          height: image.naturalHeight,
         });
       };
 
@@ -55,13 +53,25 @@ export default function Canvas() {
   }, [imageSrc, setCanvasSize, setError, error]);
 
   const setStrokeStyle = () => {
-    if (!ctx.current) {
-      return;
-    }
+    if (!ctx.current) return;
 
     ctx.current.strokeStyle = '#ff0077';
     ctx.current.lineWidth = 0.5;
   };
+
+  /**
+   * @description scale이 바꿀 때 마다 스트로크를 그린다.
+   */
+  useEffect(() => {
+    const {
+      x, y, width, height,
+    } = spriteSize;
+
+    setStrokeStyle();
+
+    console.log(x, y, width, height);
+    ctx.current?.strokeRect(x, y, width, height);
+  }, [spriteSize, imageScale]);
 
   const onMouseDown = (e: React.MouseEvent<HTMLCanvasElement>) => {
     if (!canvasRef.current || !canvasWrapperRef.current || !ctx.current) {
@@ -98,8 +108,6 @@ export default function Canvas() {
 
     ctx.current.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
 
-    setStrokeStyle();
-
     setSpriteSize({
       x: left,
       y: top,
@@ -126,7 +134,7 @@ export default function Canvas() {
   return (
     <main className='flex justify-center items-center'>
       <div
-        className='relative border-2 border-solid border-zinc-700'
+        className='relative border border-solid border-zinc-700'
         ref={canvasWrapperRef}
       >
         <canvas
