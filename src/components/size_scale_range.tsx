@@ -1,13 +1,17 @@
 import React from 'react';
-import { useRecoilState } from 'recoil';
-import { imageScaleState } from '../store/index';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { imageScaleState, imageLoadStatusState } from '../store/index';
 
 export default function ImageScaleRangeBar() {
   const [scale, setImageScale] = useRecoilState(imageScaleState);
 
+  const imageLoadError = useRecoilValue(imageLoadStatusState);
+
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setImageScale(Number(e.target.value));
   };
+
+  if (imageLoadError) return <div />;
 
   return (
     <div className='flex items-center justify-center mt-5'>

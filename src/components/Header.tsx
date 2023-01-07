@@ -19,7 +19,7 @@ export default function Header() {
         className='w-[408px] border-none h-[32px] rounded-md bg-[#e0e0e0] px-2'
         type='text'
         name='imgsrc'
-        placeholder='이미지 주소'
+        placeholder='이미지 주소를 입력하세요.'
         onChange={setPrintValue}
         value={printValue}
       />

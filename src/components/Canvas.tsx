@@ -6,6 +6,7 @@ import {
   imageSizeState,
   imageSrcState,
   imageScaleState,
+  imageLoadStatusState,
 } from '../store/index';
 
 export default function Canvas() {
@@ -19,7 +20,7 @@ export default function Canvas() {
 
   const [initCoord, setInitCoord] = useState<Coord>({ y: 0, x: 0 });
 
-  const [error, setError] = useState(false);
+  const [error, setError] = useRecoilState(imageLoadStatusState);
 
   const [canvasSize, setCanvasSize] = useRecoilState(imageSizeState);
 
@@ -51,7 +52,7 @@ export default function Canvas() {
     };
 
     drawImage();
-  }, [imageSrc, setCanvasSize]);
+  }, [imageSrc, setCanvasSize, setError, error]);
 
   const setStrokeStyle = () => {
     if (!ctx.current) {
