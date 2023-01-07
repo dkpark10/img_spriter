@@ -123,7 +123,7 @@ export default function Canvas() {
   }
 
   return (
-    <div className='flex justify-center items-center'>
+    <main className='flex justify-center items-center'>
       <div
         className='relative border-2 border-solid border-zinc-700'
         ref={canvasWrapperRef}
@@ -139,6 +139,6 @@ export default function Canvas() {
           onMouseUp={onMouseUp}
         />
       </div>
-    </div>
+    </main>
   );
 }
