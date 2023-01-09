@@ -1,7 +1,7 @@
 import React from 'react';
 import { useRecoilValue } from 'recoil';
 import {
-  imageSrcState, spriteSizeState, imageScaleState, imageSizeState,
+  imageSrcState, spriteSizeState, imageScaleState, imageSizeState, imageLoadStatusState,
 } from '../store/index';
 
 export default function SlicedImage() {
@@ -15,7 +15,12 @@ export default function SlicedImage() {
 
   const imageSize = useRecoilValue(imageSizeState);
 
-  if (width <= 3 && height <= 3) return <div />;
+  const imageLoadError = useRecoilValue(imageLoadStatusState);
+
+  console.log(imageLoadError);
+
+  if ((width <= 3 && height <= 3)
+    || imageLoadError) return <div />;
 
   return (
     <div className='flex items-center justify-center m-3'>

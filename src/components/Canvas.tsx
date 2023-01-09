@@ -69,9 +69,8 @@ export default function Canvas() {
 
     setStrokeStyle();
 
-    console.log(x, y, width, height);
     ctx.current?.strokeRect(x, y, width, height);
-  }, [spriteSize, imageScale]);
+  }, [spriteSize, imageScale, error]);
 
   const onMouseDown = (e: React.MouseEvent<HTMLCanvasElement>) => {
     if (!canvasRef.current || !canvasWrapperRef.current || !ctx.current) {
