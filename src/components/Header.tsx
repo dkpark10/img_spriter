@@ -8,10 +8,14 @@ export default function Header() {
   const [imgSrc, setImageSrc] = useRecoilState(imageSrcState);
 
   const debounceChangeSrc = useMemo(() => debounce((src: string) => {
-    setImageSrc(src);
-  }, 250), [setImageSrc]);
+    setImageSrc(({
+      ...imgSrc,
+      src,
+      isLocal: false,
+    }));
+  }, 250), [setImageSrc, imgSrc]);
 
-  const [printValue, setPrintValue] = useInput(imgSrc, debounceChangeSrc);
+  const [printValue, setPrintValue] = useInput(imgSrc.src, debounceChangeSrc);
 
   return (
     <header className='w-full flex justify-center items-center h-[60px]'>

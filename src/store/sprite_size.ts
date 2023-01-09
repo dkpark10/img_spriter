@@ -10,6 +10,11 @@ export const IMAGE_LOAD = 'imageLoad';
 
 interface SizeState extends Coord, Size {}
 
+interface ImageSrcState {
+  src: string;
+  isLocal: boolean;
+}
+
 export const spriteSizeState = atom<SizeState>({
   key: SPRITE_SIZE,
   default: {
@@ -28,9 +33,13 @@ export const imageSizeState = atom<Size>({
   },
 });
 
-export const imageSrcState = atom<string>({
+export const imageSrcState = atom<ImageSrcState>({
   key: REPEAT_COORD,
-  default: 'https://s.pstatic.net/static/www/img/uit/sp_weather_time_b8ecd0.png',
+  default: {
+    src: '',
+    isLocal: false,
+  },
+  // default: 'https://s.pstatic.net/static/www/img/uit/sp_weather_time_b8ecd0.png',
   // default: 'https://cmnt.zum.com/plugin/zum-comment/images/spr_social_comment_m_20190902.png',
   // default: 'https://s.pstatic.net/static/www/img/uit/sp_main_947f65.png',
   // default: 'https://i.pinimg.com/564x/6a/ea/1c/6aea1c0bc96840a03644ed7b460fac9e.jpg',

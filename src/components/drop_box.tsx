@@ -22,7 +22,12 @@ export default function DropDropBox() {
         return;
       }
 
-      setImageSrc(event.target?.result);
+      const imageSrc = event.target?.result;
+      setImageSrc((prev) => ({
+        ...prev,
+        src: imageSrc,
+        isLocal: true,
+      }));
     };
 
     reader.readAsDataURL(e.target.files[0]);

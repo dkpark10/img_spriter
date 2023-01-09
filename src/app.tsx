@@ -4,6 +4,7 @@ import {
   Title,
   Canvas,
   Header,
+  DragBox,
   Footer,
   CodeArea,
   SlicedImage,
@@ -14,7 +15,8 @@ export default function App() {
   return (
     <>
       <Title />
-      <Header />
+      {/* <Header /> */}
+      <DragBox />
       <CodeArea />
       <SizeScaleRangeBar />
       <Canvas />

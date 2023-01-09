@@ -26,7 +26,7 @@ export default function CodeArea() {
         <div>
           &nbsp;&nbsp;&nbsp;background:&nbsp;
           <span className='text-[#44e149]'>url</span>
-          {`('${imgSrc}') no-repeat;`}
+          {`('${imgSrc.src}') no-repeat;`}
         </div>
         <div>
           &nbsp;&nbsp;&nbsp;background-position:&nbsp;

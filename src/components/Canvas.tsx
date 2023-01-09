@@ -34,7 +34,7 @@ export default function Canvas() {
     const drawImage = () => {
       const image = new Image();
       image.crossOrigin = 'Anonymous';
-      image.src = imageSrc;
+      image.src = imageSrc.src;
       image.alt = 'target_image';
       ctx.current = canvasRef.current?.getContext('2d');
 
