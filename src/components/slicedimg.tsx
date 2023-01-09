@@ -1,5 +1,5 @@
-import React from 'react';
-import { useRecoilValue } from 'recoil';
+import React, { useEffect } from 'react';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import {
   imageSrcState, spriteSizeState, imageScaleState, imageSizeState, imageLoadStatusState,
 } from '../store/index';
@@ -7,15 +7,24 @@ import {
 export default function SlicedImage() {
   const { src } = useRecoilValue(imageSrcState);
 
-  const {
+  const [{
     x, y, width, height,
-  } = useRecoilValue(spriteSizeState);
+  }, setImageSize] = useRecoilState(spriteSizeState);
 
   const imageScale = useRecoilValue(imageScaleState);
 
   const imageSize = useRecoilValue(imageSizeState);
 
   const imageLoadError = useRecoilValue(imageLoadStatusState);
+
+  useEffect(() => {
+    setImageSize({
+      x: 0,
+      y: 0,
+      width: 0,
+      height: 0,
+    });
+  }, [src, setImageSize]);
 
   if ((width <= 3 && height <= 3)
     || imageLoadError) return <div />;
