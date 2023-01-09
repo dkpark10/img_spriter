@@ -15,8 +15,7 @@ export default function App() {
   return (
     <>
       <Title />
-      {/* <Header /> */}
-      <DragBox />
+      <Header />
       <CodeArea />
       <SizeScaleRangeBar />
       <Canvas />

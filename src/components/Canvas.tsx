@@ -26,7 +26,7 @@ export default function Canvas() {
 
   const [spriteSize, setSpriteSize] = useRecoilState(spriteSizeState);
 
-  const imageSrc = useRecoilValue(imageSrcState);
+  const { src } = useRecoilValue(imageSrcState);
 
   const imageScale = useRecoilValue(imageScaleState);
 
@@ -34,7 +34,7 @@ export default function Canvas() {
     const drawImage = () => {
       const image = new Image();
       image.crossOrigin = 'Anonymous';
-      image.src = imageSrc.src;
+      image.src = src;
       image.alt = 'target_image';
       ctx.current = canvasRef.current?.getContext('2d');
 
@@ -50,7 +50,7 @@ export default function Canvas() {
     };
 
     drawImage();
-  }, [imageSrc, setCanvasSize, setError, error]);
+  }, [src, setCanvasSize, setError, error]);
 
   const setStrokeStyle = () => {
     if (!ctx.current) return;
@@ -127,7 +127,7 @@ export default function Canvas() {
   };
 
   if (error) {
-    return <div className='text-center text-4xl'>이미지가 없습니다.</div>;
+    return <div className='absolute-center text-4xl'>이미지가 없습니다.</div>;
   }
 
   return (
@@ -141,7 +141,7 @@ export default function Canvas() {
           ref={canvasRef}
           width={`${Math.floor(canvasSize.width * imageScale)}`}
           height={`${Math.floor(canvasSize.height * imageScale)}`}
-          style={{ backgroundImage: `url(${imageSrc})` }}
+          style={{ backgroundImage: `url(${src})` }}
           onMouseDown={onMouseDown}
           onMouseMove={onMouseMove}
           onMouseUp={onMouseUp}

@@ -5,7 +5,7 @@ import {
 } from '../store/index';
 
 export default function SlicedImage() {
-  const imageSrc = useRecoilValue(imageSrcState);
+  const { src } = useRecoilValue(imageSrcState);
 
   const {
     x, y, width, height,
@@ -17,8 +17,6 @@ export default function SlicedImage() {
 
   const imageLoadError = useRecoilValue(imageLoadStatusState);
 
-  console.log(imageLoadError);
-
   if ((width <= 3 && height <= 3)
     || imageLoadError) return <div />;
 
@@ -29,7 +27,7 @@ export default function SlicedImage() {
         style={{
           width,
           height,
-          backgroundImage: `url(${imageSrc})`,
+          backgroundImage: `url(${src})`,
           backgroundRepeat: 'no-repeat',
           backgroundPositionX: `${-x}px`,
           backgroundPositionY: `${-y}px`,

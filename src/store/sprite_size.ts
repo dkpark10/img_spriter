@@ -36,7 +36,7 @@ export const imageSizeState = atom<Size>({
 export const imageSrcState = atom<ImageSrcState>({
   key: REPEAT_COORD,
   default: {
-    src: '',
+    src: 'https://s.pstatic.net/static/www/img/uit/sp_weather_time_b8ecd0.png',
     isLocal: false,
   },
   // default: 'https://s.pstatic.net/static/www/img/uit/sp_weather_time_b8ecd0.png',

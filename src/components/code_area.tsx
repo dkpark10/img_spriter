@@ -6,6 +6,7 @@ import {
   imageSrcState,
   imageScaleState,
   imageSizeState,
+  imageLoadStatusState,
 } from '../store/index';
 
 export default function CodeArea() {
@@ -19,6 +20,12 @@ export default function CodeArea() {
 
   const imageSize = useRecoilValue(imageSizeState);
 
+  const imageLoadError = useRecoilValue(imageLoadStatusState);
+
+  if (imageLoadError) {
+    return <div />;
+  }
+
   return (
     <div className='flex items-center justify-center m-3'>
       <div className='bg-[#292c39] text-[#cacaca] rounded-md p-4'>
@@ -26,7 +33,7 @@ export default function CodeArea() {
         <div>
           &nbsp;&nbsp;&nbsp;background:&nbsp;
           <span className='text-[#44e149]'>url</span>
-          {`('${imgSrc.src}') no-repeat;`}
+          {`('${imgSrc.isLocal ? '이미지의 실제 경로를 입력하여 사용하세요.' : imgSrc.src}') no-repeat;`}
         </div>
         <div>
           &nbsp;&nbsp;&nbsp;background-position:&nbsp;

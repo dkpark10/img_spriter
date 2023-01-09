@@ -43,15 +43,15 @@ export default function DropDropBox() {
         onChange={onChagne}
       />
       <button
-        className='relative bg-[#a5a6a9] w-[354px] h-[221px] hover:bg-[#352772]
+        className='relative bg-[#a5a6a9] w-[354px] h-[186px] hover:bg-[#352772]
         hover:text-[white] text-[#252525] rounded-md cursor-pointer'
         onClick={onClick}
         type='button'
       >
         <span className='inline-flex items-center justify-center
-          border-dashed border-2 border-indigo-600 w-[334px] h-[201px]'
+          border-dashed border-2 border-indigo-600 w-[334px] h-[166px]'
         >
-          이미지 파일을 올려놓으세요.
+          이미지 파일을 업로드하세요.
         </span>
       </button>
     </section>
