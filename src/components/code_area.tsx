@@ -2,7 +2,7 @@
 import React from 'react';
 import { useRecoilValue } from 'recoil';
 import {
-  spriteSizeState,
+  rectSizeeState,
   imageSrcState,
   imageScaleState,
   imageSizeState,
@@ -12,7 +12,7 @@ import {
 export default function CodeArea() {
   const {
     x, y, width, height,
-  } = useRecoilValue(spriteSizeState);
+  } = useRecoilValue(rectSizeeState);
 
   const imgSrc = useRecoilValue(imageSrcState);
 

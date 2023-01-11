@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import {
-  imageSrcState, spriteSizeState, imageScaleState, imageSizeState, imageLoadStatusState,
+  imageSrcState, rectSizeeState, imageScaleState, imageSizeState, imageLoadStatusState,
 } from '../store/index';
 
 export default function SlicedImage() {
@@ -9,7 +9,7 @@ export default function SlicedImage() {
 
   const [{
     x, y, width, height,
-  }, setImageSize] = useRecoilState(spriteSizeState);
+  }, setImageSize] = useRecoilState(rectSizeeState);
 
   const imageScale = useRecoilValue(imageScaleState);
 

@@ -2,7 +2,7 @@ import { atom } from 'recoil';
 import { Size, Coord } from 'custom-type';
 
 export const REPEAT_COORD = 'repeatCoord';
-export const SPRITE_SIZE = 'spriteSize';
+export const RECT_SIZE = 'rectSize';
 export const IMG_SRC = 'imageSrc';
 export const IMG_SIZE = 'imageSize';
 export const SCALE_SIZE = 'scaleSize';
@@ -15,8 +15,8 @@ interface ImageSrcState {
   isLocal: boolean;
 }
 
-export const spriteSizeState = atom<SizeState>({
-  key: SPRITE_SIZE,
+export const rectSizeeState = atom<SizeState>({
+  key: RECT_SIZE,
   default: {
     x: 0,
     y: 0,

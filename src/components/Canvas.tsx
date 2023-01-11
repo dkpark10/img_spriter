@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useRecoilValue, useRecoilState } from 'recoil';
 import { Coord } from 'custom-type';
 import {
-  spriteSizeState,
+  rectSizeeState,
   imageSizeState,
   imageSrcState,
   imageScaleState,
@@ -24,7 +24,7 @@ export default function Canvas() {
 
   const [canvasSize, setCanvasSize] = useRecoilState(imageSizeState);
 
-  const [spriteSize, setSpriteSize] = useRecoilState(spriteSizeState);
+  const [spriteSize, setSpriteSize] = useRecoilState(rectSizeeState);
 
   const { src } = useRecoilValue(imageSrcState);
 
