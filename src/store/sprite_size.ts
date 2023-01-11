@@ -1,5 +1,5 @@
 import { atom } from 'recoil';
-import { Size, Coord } from 'custom-type';
+import { Size, RectState, ImageSrcState } from 'custom-type';
 
 export const REPEAT_COORD = 'repeatCoord';
 export const RECT_SIZE = 'rectSize';
@@ -8,14 +8,7 @@ export const IMG_SIZE = 'imageSize';
 export const SCALE_SIZE = 'scaleSize';
 export const IMAGE_LOAD = 'imageLoad';
 
-interface SizeState extends Coord, Size {}
-
-interface ImageSrcState {
-  src: string;
-  isLocal: boolean;
-}
-
-export const rectSizeeState = atom<SizeState>({
+export const rectSizeeState = atom<RectState>({
   key: RECT_SIZE,
   default: {
     x: 0,
