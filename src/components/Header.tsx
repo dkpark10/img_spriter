@@ -1,24 +1,17 @@
-import React, { useState } from 'react';
-import { useSetRecoilState } from 'recoil';
+import React from 'react';
+import { useRecoilState } from 'recoil';
 import { TabName } from 'custom-type';
 import InputSrc from './input_src';
 import DropBox from './drop_box';
-import { imageSrcState } from '../store';
+import { currentTabState } from '../store';
 
 export default function Header() {
   const tabNames: TabName[] = ['이미지 경로 검색', '이미지 파일 업로드'];
 
-  const setImageSrc = useSetRecoilState(imageSrcState);
-
-  const [currentTab, setCurrentTab] = useState<TabName>('이미지 경로 검색');
+  const [currentTab, setCurrentTab] = useRecoilState(currentTabState);
 
   const onClick = (tabName: TabName) => {
     setCurrentTab(tabName);
-    setImageSrc((prev) => ({
-      ...prev,
-      src: '',
-      isLocal: false,
-    }));
   };
 
   return (

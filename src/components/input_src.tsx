@@ -1,11 +1,11 @@
 import React, { useMemo } from 'react';
 import { useRecoilState } from 'recoil';
-import { imageSrcState } from '../store';
+import { pathImageSrcState } from '../store';
 import { debounce } from '../utils';
 import { useInput } from '../hooks';
 
 export default function Header() {
-  const [imgSrc, setImageSrc] = useRecoilState(imageSrcState);
+  const [imgSrc, setImageSrc] = useRecoilState(pathImageSrcState);
 
   const debounceChangeSrc = useMemo(() => debounce((src: string) => {
     setImageSrc(({
