@@ -4,13 +4,6 @@ declare module 'custom-type' {
     x: number;
   }
 
-  interface Rectangle {
-    left: number;
-    top: number;
-    right: number;
-    bottom: number;
-  }
-
   interface Size {
     width: number;
     height: number;
@@ -25,7 +18,16 @@ declare module 'custom-type' {
 
   type TabName = '이미지 경로 검색' | '이미지 파일 업로드';
 
-  interface GatherImageStatus extends ImageSrcState, RectState {}
-
-  type ImageStatusByTab = Record<TabName, GatherImageStatus>;
+  interface ImageState {
+    src: string;
+    isLocal: boolean;
+    recyCoordX: number;
+    rectCoordY: number;
+    rectWidth: number;
+    rectHeight: number;
+    imageSizeWidth: number;
+    imageSizeHeight: number;
+    scale: number;
+    loadError: boolean;
+  }
 }
