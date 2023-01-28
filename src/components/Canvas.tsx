@@ -1,13 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useRecoilValue, useRecoilState } from 'recoil';
-import { Coord } from 'custom-type';
-import {
-  rectSizeeState,
-  imageSizeState,
-  imageSrcState,
-  imageScaleState,
-  imageLoadStatusState,
-} from '../store/index';
+import { useRecoilState } from 'recoil';
+import { Coord, ImageState } from 'custom-type';
+import { currentImageState } from '../store/index';
 
 export default function Canvas() {
   const canvasWrapperRef = useRef<HTMLDivElement>(null);
@@ -20,37 +14,33 @@ export default function Canvas() {
 
   const [initCoord, setInitCoord] = useState<Coord>({ y: 0, x: 0 });
 
-  const [error, setError] = useRecoilState(imageLoadStatusState);
-
-  const [canvasSize, setCanvasSize] = useRecoilState(imageSizeState);
-
-  const [spriteSize, setSpriteSize] = useRecoilState(rectSizeeState);
-
-  const { src } = useRecoilValue(imageSrcState);
-
-  const imageScale = useRecoilValue(imageScaleState);
+  const [imageState, setImageState] = useRecoilState(currentImageState);
 
   useEffect(() => {
     const drawImage = () => {
       const image = new Image();
       image.crossOrigin = 'Anonymous';
-      image.src = src;
+      image.src = imageState.src;
       image.alt = 'target_image';
-      ctx.current = canvasRef.current?.getContext('2d');
 
       image.onload = () => {
-        setError(false);
-        setCanvasSize({
-          width: image.naturalWidth,
-          height: image.naturalHeight,
-        });
+        setImageState(
+          (prev): ImageState => ({
+            ...prev,
+            loadError: false,
+            imageSizeWidth: image.naturalWidth,
+            imageSizeHeight: image.naturalHeight,
+          }),
+        );
       };
 
-      image.onerror = () => (setError(true));
+      image.onerror = () => (setImageState((prev): ImageState => ({ ...prev, loadError: true })));
     };
 
     drawImage();
-  }, [src, setCanvasSize, setError, error]);
+    setInitCoord({ y: 0, x: 0});
+    setIsMouseDown(false);
+  }, [imageState.src, setImageState]);
 
   const setStrokeStyle = () => {
     if (!ctx.current) return;
@@ -64,13 +54,16 @@ export default function Canvas() {
    */
   useEffect(() => {
     const {
-      x, y, width, height,
-    } = spriteSize;
+      rectCoordX,
+      rectCoordY,
+      rectWidth,
+      rectHeight,
+    } = imageState;
 
     setStrokeStyle();
 
-    ctx.current?.strokeRect(x, y, width, height);
-  }, [spriteSize, imageScale, error]);
+    ctx.current?.strokeRect(rectCoordX, rectCoordY, rectWidth, rectHeight);
+  }, [imageState]);
 
   const onMouseDown = (e: React.MouseEvent<HTMLCanvasElement>) => {
     if (!canvasRef.current || !canvasWrapperRef.current || !ctx.current) {
@@ -87,6 +80,8 @@ export default function Canvas() {
   };
 
   const onMouseMove = (e: React.MouseEvent<HTMLCanvasElement>) => {
+    ctx.current = canvasRef.current?.getContext('2d');
+
     if (
       !canvasRef.current
       || !canvasWrapperRef.current
@@ -95,7 +90,6 @@ export default function Canvas() {
     ) {
       return;
     }
-
     const { offsetLeft, offsetTop } = canvasWrapperRef.current;
     const mouseCoordY = e.pageY - offsetTop;
     const mouseCoordX = e.pageX - offsetLeft;
@@ -107,12 +101,15 @@ export default function Canvas() {
 
     ctx.current.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
 
-    setSpriteSize({
-      x: left,
-      y: top,
-      width,
-      height,
-    });
+    setImageState(
+      (prev): ImageState => ({
+        ...prev,
+        rectCoordX: left,
+        rectCoordY: top,
+        rectWidth: width,
+        rectHeight: height,
+      }),
+    );
 
     ctx.current.strokeRect(left, top, width, height);
   };
@@ -126,7 +123,7 @@ export default function Canvas() {
     }));
   };
 
-  if (error) {
+  if (imageState.loadError) {
     return <div className='absolute-center text-4xl'>이미지가 없습니다.</div>;
   }
 
@@ -139,9 +136,9 @@ export default function Canvas() {
         <canvas
           className='bg-cover'
           ref={canvasRef}
-          width={`${Math.floor(canvasSize.width * imageScale)}`}
-          height={`${Math.floor(canvasSize.height * imageScale)}`}
-          style={{ backgroundImage: `url(${src})` }}
+          width={`${Math.floor(imageState.imageSizeWidth * imageState.scale)}`}
+          height={`${Math.floor(imageState.imageSizeHeight * imageState.scale)}`}
+          style={{ backgroundImage: `url(${imageState.src})` }}
           onMouseDown={onMouseDown}
           onMouseMove={onMouseMove}
           onMouseUp={onMouseUp}

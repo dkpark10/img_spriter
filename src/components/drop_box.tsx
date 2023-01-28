@@ -1,9 +1,10 @@
 import React, { useRef, useState } from 'react';
 import { useSetRecoilState } from 'recoil';
-import { fileImageSrcState } from '../store';
+import { ImageState } from 'custom-type';
+import { fileImageState } from '../store';
 
 export default function DropDropBox() {
-  const setImageSrc = useSetRecoilState(fileImageSrcState);
+  const setImageSrc = useSetRecoilState(fileImageState);
 
   const inputFileRef = useRef<HTMLInputElement>(null);
 
@@ -21,7 +22,7 @@ export default function DropDropBox() {
       }
 
       const imageSrc = event.target?.result;
-      setImageSrc((prev) => ({
+      setImageSrc((prev): ImageState => ({
         ...prev,
         src: imageSrc,
         isLocal: true,

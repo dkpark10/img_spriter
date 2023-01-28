@@ -1,46 +1,38 @@
 import React, { useEffect } from 'react';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilState } from 'recoil';
+import { ImageState } from 'custom-type';
 import {
-  imageSrcState, rectSizeeState, imageScaleState, imageSizeState, imageLoadStatusState,
+  currentImageState,
 } from '../store/index';
 
 export default function SlicedImage() {
-  const { src } = useRecoilValue(imageSrcState);
-
-  const [{
-    x, y, width, height,
-  }, setImageSize] = useRecoilState(rectSizeeState);
-
-  const imageScale = useRecoilValue(imageScaleState);
-
-  const imageSize = useRecoilValue(imageSizeState);
-
-  const imageLoadError = useRecoilValue(imageLoadStatusState);
+  const [imageState, setImageState] = useRecoilState(currentImageState);
 
   useEffect(() => {
-    setImageSize({
-      x: 0,
-      y: 0,
-      width: 0,
-      height: 0,
-    });
-  }, [src, setImageSize]);
+    setImageState((prev):ImageState => ({
+      ...prev,
+      rectCoordX: 0,
+      rectCoordY: 0,
+      rectWidth: 0,
+      rectHeight: 0,
+    }));
+  }, [setImageState]);
 
-  if ((width <= 3 && height <= 3)
-    || imageLoadError) return <div />;
+  if ((imageState.rectWidth <= 3 && imageState.rectHeight <= 3)
+    || imageState.loadError) return <div />;
 
   return (
     <div className='flex items-center justify-center m-3'>
       <div
         className='border border-solid border-zinc-700'
         style={{
-          width,
-          height,
-          backgroundImage: `url(${src})`,
+          width: imageState.rectWidth,
+          height: imageState.rectHeight,
+          backgroundImage: `url(${imageState.src})`,
           backgroundRepeat: 'no-repeat',
-          backgroundPositionX: `${-x}px`,
-          backgroundPositionY: `${-y}px`,
-          backgroundSize: `${Math.floor(imageSize.width * imageScale)}px ${Math.floor(imageSize.height * imageScale)}px`,
+          backgroundPositionX: `${-imageState.rectCoordX}px`,
+          backgroundPositionY: `${-imageState.rectCoordY}px`,
+          backgroundSize: `${Math.floor(imageState.imageSizeWidth * imageState.scale)}px ${Math.floor(imageState.imageSizeHeight * imageState.scale)}px`,
         }}
       />
     </div>

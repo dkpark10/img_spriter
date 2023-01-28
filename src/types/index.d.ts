@@ -21,7 +21,7 @@ declare module 'custom-type' {
   interface ImageState {
     src: string;
     isLocal: boolean;
-    recyCoordX: number;
+    rectCoordX: number;
     rectCoordY: number;
     rectWidth: number;
     rectHeight: number;
