@@ -9,7 +9,8 @@
     "prebuild": "rimraf build",
     "servestart": "node server.js",
     "lint": "eslint './src/**/*.{ts,tsx,js,jsx}'",
-    "lint:fix": "eslint --fix \"./src/**/*.{ts,tsx,js,jsx}\""
+    "lint:fix": "eslint --fix \"./src/**/*.{ts,tsx,js,jsx}\"",
+    "gh-deploy": "gh-pages -d build"
   },
   "homepage": "dkpark10.github.io/repo",
   "author": "dkpark10",
@@ -44,6 +45,7 @@
     "eslint-plugin-react-hooks": "^4.3.0",
     "file-loader": "^6.2.0",
     "fork-ts-checker-webpack-plugin": "^6.5.0",
+    "gh-pages": "^5.0.0",
     "html-webpack-plugin": "^5.5.0",
     "postcss": "^8.4.20",
     "postcss-loader": "^7.0.2",
