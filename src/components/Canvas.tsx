@@ -38,7 +38,7 @@ export default function Canvas() {
     };
 
     drawImage();
-    setInitCoord({ y: 0, x: 0});
+    setInitCoord({ y: 0, x: 0 });
     setIsMouseDown(false);
   }, [imageState.src, setImageState]);
 

@@ -68,7 +68,7 @@ export const currentImageState = selector({
     return fileImageSrc;
   },
 
-  set: ({ set, get }, newValue) => {
+  set: ({ set, get }, newValue: ImageState) => {
     const currentTab = get(currentTabState);
 
     if (currentTab === '이미지 경로 검색') {
