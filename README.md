@@ -130,3 +130,4 @@ new HtmlWebpackPlugin({
 wrongcode1
 wrongcode2
 wrongcode3
+rightcode1
