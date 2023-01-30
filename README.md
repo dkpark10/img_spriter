@@ -126,3 +126,5 @@ new HtmlWebpackPlugin({
 
 
 ## .babelrc
+
+wrongcode1
