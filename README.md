@@ -128,3 +128,4 @@ new HtmlWebpackPlugin({
 ## .babelrc
 
 wrongcode1
+wrongcode2
