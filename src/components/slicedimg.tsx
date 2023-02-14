@@ -6,10 +6,10 @@ import {
 } from '../store/index';
 
 export default function SlicedImage() {
-  const [imageState, setImageState] = useRecoilState(currentImageState);
+  const [imageState, setImageState] = useRecoilState<ImageState>(currentImageState);
 
   useEffect(() => {
-    setImageState((prev):ImageState => ({
+    setImageState((prev) => ({
       ...prev,
       rectCoordX: 0,
       rectCoordY: 0,

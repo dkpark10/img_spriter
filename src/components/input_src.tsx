@@ -1,19 +1,20 @@
 import React, { useMemo } from 'react';
 import { useRecoilState } from 'recoil';
+import { ImageState } from 'custom-type';
 import { pathImageState } from '../store';
 import { debounce } from '../utils';
 import { useInput } from '../hooks';
 
 export default function Header() {
-  const [imgSrc, setImageSrc] = useRecoilState(pathImageState);
+  const [imgSrc, setImageSrc] = useRecoilState<ImageState>(pathImageState);
 
   const debounceChangeSrc = useMemo(() => debounce((src: string) => {
-    setImageSrc(({
-      ...imgSrc,
+    setImageSrc((prev) => ({
+      ...prev,
       src,
       isLocal: false,
     }));
-  }, 250), [setImageSrc, imgSrc]);
+  }, 250), [setImageSrc]);
 
   const [printValue, setPrintValue] = useInput(imgSrc.src, debounceChangeSrc);
 

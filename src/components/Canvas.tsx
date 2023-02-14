@@ -14,7 +14,7 @@ export default function Canvas() {
 
   const [initCoord, setInitCoord] = useState<Coord>({ y: 0, x: 0 });
 
-  const [imageState, setImageState] = useRecoilState(currentImageState);
+  const [imageState, setImageState] = useRecoilState<ImageState>(currentImageState);
 
   useEffect(() => {
     const drawImage = () => {
@@ -25,7 +25,7 @@ export default function Canvas() {
 
       image.onload = () => {
         setImageState(
-          (prev): ImageState => ({
+          (prev) => ({
             ...prev,
             loadError: false,
             imageSizeWidth: image.naturalWidth,
@@ -34,11 +34,11 @@ export default function Canvas() {
         );
       };
 
-      image.onerror = () => (setImageState((prev): ImageState => ({ ...prev, loadError: true })));
+      image.onerror = () => (setImageState((prev) => ({ ...prev, loadError: true })));
     };
 
     drawImage();
-    setInitCoord({ y: 0, x: 0});
+    setInitCoord({ y: 0, x: 0 });
     setIsMouseDown(false);
   }, [imageState.src, setImageState]);
 

@@ -8,7 +8,7 @@ import { currentTabState } from '../store';
 export default function Header() {
   const tabNames: TabName[] = ['이미지 경로 검색', '이미지 파일 업로드'];
 
-  const [currentTab, setCurrentTab] = useRecoilState(currentTabState);
+  const [currentTab, setCurrentTab] = useRecoilState<TabName>(currentTabState);
 
   const onClick = (tabName: TabName) => {
     setCurrentTab(tabName);

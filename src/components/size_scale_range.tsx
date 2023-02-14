@@ -1,15 +1,18 @@
 import React from 'react';
 import { useRecoilState } from 'recoil';
+import { ImageState } from 'custom-type';
 import { currentImageState } from '../store/index';
 
 export default function ImageScaleRangeBar() {
-  const [imageState, setImageState] = useRecoilState(currentImageState);
+  const [imageState, setImageState] = useRecoilState<ImageState>(currentImageState);
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setImageState((prev) => ({
-      ...prev,
-      scale: Number(e.target.value),
-    }));
+    setImageState(
+      (prev) => ({
+        ...prev,
+        scale: Number(e.target.value),
+      }),
+    );
   };
 
   if (imageState.loadError) return <div />;

@@ -4,7 +4,7 @@ import { ImageState } from 'custom-type';
 import { fileImageState } from '../store';
 
 export default function DropDropBox() {
-  const setImageSrc = useSetRecoilState(fileImageState);
+  const setImageSrc = useSetRecoilState<ImageState>(fileImageState);
 
   const inputFileRef = useRef<HTMLInputElement>(null);
 
@@ -22,7 +22,7 @@ export default function DropDropBox() {
       }
 
       const imageSrc = event.target?.result;
-      setImageSrc((prev): ImageState => ({
+      setImageSrc((prev) => ({
         ...prev,
         src: imageSrc,
         isLocal: true,
