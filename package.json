@@ -2,13 +2,14 @@
   "name": "img_spriter",
   "version": "1.1.0",
   "description": "img_spriter",
+  "license": "MIT",
   "scripts": {
     "test": "jest",
     "cy:test": "cypress open",
     "dev": "webpack-dev-server --config webpack.dev.js",
     "build": "webpack --config webpack.prod.js",
-    "prebuild": "rimraf build",
-    "servestart": "node server.js",
+    "predeploy": "yarn build",
+    "deploy": "gh-pages-clean gh-pages -d build",
     "lint": "eslint './src/**/*.{ts,tsx,js,jsx}'",
     "lint:fix": "eslint --fix \"./src/**/*.{ts,tsx,js,jsx}\""
   },
@@ -64,6 +65,7 @@
     "webpack-merge": "^5.8.0"
   },
   "dependencies": {
+    "gh-pages": "^5.0.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "recoil": "^0.7.6"
