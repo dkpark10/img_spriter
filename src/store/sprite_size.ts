@@ -20,7 +20,7 @@ export const currentTabState = atom<TabName>({
 export const pathImageState = atom<ImageState>({
   key: PATH_IMG_SRC,
   default: {
-    src: 'https://s.pstatic.net/static/www/img/uit/sp_weather_time_b8ecd0.png',
+    src: 'sample.png',
     isLocal: false,
     rectCoordX: 0,
     rectCoordY: 0,
