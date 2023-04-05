@@ -17,6 +17,7 @@ module.exports = {
     'airbnb-typescript',
     'plugin:@typescript-eslint/recommended',
     'plugin:react/recommended',
+    'plugin:cypress/recommended',
   ],
   parserOptions: {
     project: './tsconfig.json',

@@ -25,7 +25,8 @@
       "dom"
     ], // async await 등 es6 이상 문법 사용
     "types": [
-      "node"
+      "node",
+      "cypress",
     ],
     "baseUrl": ".",
     "paths": {
@@ -40,6 +41,7 @@
     "./node_modules/**/*"
   ],
   "include": [
+    "**/*.ts",
     "./src/**/*",
     "@types"
   ],
