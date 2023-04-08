@@ -9,7 +9,7 @@
     "removeComments": false, // 컴파일시 주석 제거
     "sourceMap": true,
     "noImplicitReturns": true, // 함수내 모든 경로에서 리턴하지 않을경우 에러
-    "allowJs": false, // ts에서 js 파일을 import해서 사용할 지 여부
+    "allowJs": true, // ts에서 js 파일을 import해서 사용할 지 여부
     "jsx": "react-jsx",
     "allowSyntheticDefaultImports": true,
     "keyofStringsOnly": true,
@@ -27,6 +27,7 @@
     "types": [
       "node",
       "cypress",
+      "@4tw/cypress-drag-drop"
     ],
     "baseUrl": ".",
     "paths": {

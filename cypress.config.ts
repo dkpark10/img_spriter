@@ -1,4 +1,5 @@
 import { defineConfig } from 'cypress';
+import webpackConfig from './webpack.dev';
 
 export default defineConfig({
   e2e: {
@@ -8,10 +9,17 @@ export default defineConfig({
     },
   },
 
+  env: {
+    'cypress-react-selector': {
+      root: '#root',
+    },
+  },
+
   component: {
     devServer: {
       framework: 'react',
       bundler: 'webpack',
+      webpackConfig,
     },
   },
 });
