@@ -2,6 +2,8 @@ import { defineConfig } from 'cypress';
 import webpackConfig from './webpack.dev';
 
 export default defineConfig({
+  viewportWidth: 860,
+  viewportHeight: 1234,
   e2e: {
     baseUrl: 'http://localhost:3000',
     setupNodeEvents(on, config) {

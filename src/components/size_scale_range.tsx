@@ -20,10 +20,7 @@ export default function ImageScaleRangeBar() {
   return (
     <div className='flex items-center justify-center mt-5'>
       <div>
-        <div
-          data-testid='scale_text'
-          className='text-center'
-        >
+        <div className='text-center'>
           이미지 사이즈 조절:&nbsp;
           {imageState.scale}
         </div>
