@@ -21,17 +21,17 @@ describe('이미지 스프라이트 테스트', () => {
   // });
 
   it('탭 전환시 이전 드래그 했던 정보들을 렌더링 한다.', () => {
+    const tab1Width = 100;
+    const tab1Height = 123;
+
+    const tab2Width = 199;
+    const tab2Height = 111;
+
     cy.get('canvas').then(($canvas) => {
       const canvasElement = $canvas[0];
       const {
         height, width, x, y,
       } = canvasElement.getBoundingClientRect();
-
-      const tab1Width = 100;
-      const tab1Height = 123;
-
-      const tab2Width = 199;
-      const tab2Height = 111;
 
       cy.log(String(`${x} - ${y} ${width} - ${height}`));
 
@@ -40,7 +40,11 @@ describe('이미지 스프라이트 테스트', () => {
         .trigger('mousemove', { which: 1, pageX: 0, pageY: 0 })
         .trigger('mouseup')
         .trigger('mousedown', { which: 1, pageX: x, pageY: y })
-        .trigger('mousemove', { which: 1, pageX: x + tab1Width, pageY: y + tab1Height })
+        .trigger('mousemove', {
+          which: 1,
+          pageX: x + tab1Width,
+          pageY: y + tab1Height,
+        })
         .trigger('mouseup');
 
       cy.contains('width').should('contain.text', `${tab1Width}px`);
@@ -51,13 +55,26 @@ describe('이미지 스프라이트 테스트', () => {
       cy.get('[data-testid="file_button"]').selectFile('./public/sample2.jpg', {
         action: 'drag-drop',
       });
+    });
+
+    cy.get('canvas').then(($canvas) => {
+      const canvasElement = $canvas[0];
+      const {
+        height, width, x, y,
+      } = canvasElement.getBoundingClientRect();
+
+      cy.log(String(`${x} - ${y} ${width} - ${height}`));
 
       cy.get('canvas')
         .trigger('mousedown', { which: 1, pageX: 0, pageY: 0 })
         .trigger('mousemove', { which: 1, pageX: 0, pageY: 0 })
         .trigger('mouseup')
         .trigger('mousedown', { which: 1, pageX: x, pageY: y })
-        .trigger('mousemove', { which: 1, pageX: x + tab2Width, pageY: y + tab2Height })
+        .trigger('mousemove', {
+          which: 1,
+          pageX: x + tab2Width,
+          pageY: y + tab2Height,
+        })
         .trigger('mouseup');
 
       cy.contains('width').should('contain.text', `${tab2Width}px`);
