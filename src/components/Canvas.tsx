@@ -124,7 +124,11 @@ export default function Canvas() {
   };
 
   if (imageState.loadError) {
-    return <div className='absolute-center text-4xl'>이미지가 없습니다.</div>;
+    return (
+      <div className='absolute-center text-4xl'>
+        {imageState.isLocal ? '이미지가 없습니다.' : '이미지가 없거나 해당 서버의 보안정책 때문에 가져올 수 없습니다.'}
+      </div>
+    );
   }
 
   return (
