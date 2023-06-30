@@ -32,7 +32,7 @@ export default function DropDropBox() {
     reader.readAsDataURL(file);
   };
 
-  const onChagne = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) {
       return;
     }
@@ -69,13 +69,13 @@ export default function DropDropBox() {
         className='hidden'
         type='file'
         accept='image/*'
-        onChange={onChagne}
+        onChange={onChange}
       />
       <button
         className='relative bg-[#a5a6a9] w-[354px] h-[186px] hover:bg-[#352772]
         hover:text-[white] text-[#252525] rounded-md cursor-pointer'
         type='button'
-        data-testid='file_button'
+        data-test-id='file_button'
         onClick={onClick}
         onDragEnter={onDragEnter}
         onDragOver={onDragEnter}

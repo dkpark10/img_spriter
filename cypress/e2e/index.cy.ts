@@ -54,7 +54,7 @@ describe('이미지 스프라이트 테스트', () => {
 
       cy.contains('이미지가 없습니다.').should('exist');
 
-      cy.get('[data-testid="file_button"]').selectFile('./public/sample2.jpg', {
+      cy.get('[data-test-id="file_button"]').selectFile('./public/sample2.jpg', {
         action: 'drag-drop',
       });
     });
