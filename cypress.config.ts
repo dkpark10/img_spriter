@@ -12,9 +12,9 @@ export default defineConfig({
   },
 
   env: {
-    'cypress-react-selector': {
-      root: '#root',
-    },
+    // 'cypress-react-selector': {
+    //   root: '#root',
+    // },
   },
 
   component: {
