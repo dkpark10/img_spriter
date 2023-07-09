@@ -25,7 +25,7 @@ export default function Canvas() {
 
       image.onload = () => {
         setImageState(
-          (prev) => ({
+          (prev: ImageState) => ({
             ...prev,
             loadError: false,
             imageSizeWidth: image.naturalWidth,
