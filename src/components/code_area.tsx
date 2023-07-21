@@ -13,7 +13,7 @@ export default function CodeArea() {
   }
 
   return (
-    <div className='flex items-center justify-center m-3'>
+    <code className='flex items-center justify-center m-3'>
       <div className='bg-[#292c39] text-[#cacaca] rounded-md p-4'>
         <div>{'.sprite_img {'}</div>
         <div>
@@ -47,6 +47,6 @@ export default function CodeArea() {
         </div>
         <div>{'}'}</div>
       </div>
-    </div>
+    </code>
   );
 }
