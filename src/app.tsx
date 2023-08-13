@@ -1,5 +1,6 @@
 import React from 'react';
 
+import ErrorBoundary from './components/common/image-error-boundary';
 import {
   Title,
   Canvas,
@@ -9,7 +10,8 @@ import {
   CodeArea,
   SlicedImage,
   SizeScaleRangeBar,
-} from './components/index';
+  ImageLoadError,
+} from './components';
 
 export default function App() {
   return (
@@ -18,7 +20,9 @@ export default function App() {
       <Header />
       <CodeArea />
       <SizeScaleRangeBar />
-      <Canvas />
+      <ErrorBoundary fallback={<ImageLoadError />}>
+        <Canvas />
+      </ErrorBoundary>
       <SlicedImage />
       <Footer />
     </>

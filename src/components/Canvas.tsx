@@ -34,7 +34,9 @@ export default function Canvas() {
         );
       };
 
-      image.onerror = () => (setImageState((prev) => ({ ...prev, loadError: true })));
+      image.onerror = () => {
+        setImageState((prev) => ({ ...prev, loadError: true }));
+      }
     };
 
     drawImage();
@@ -124,11 +126,7 @@ export default function Canvas() {
   };
 
   if (imageState.loadError) {
-    return (
-      <div className='absolute-center text-3xl'>
-        {imageState.isLocal ? '이미지가 없습니다.' : '이미지가 없거나 해당 서버의 보안정책 때문에 가져올 수 없습니다.'}
-      </div>
-    );
+    throw new Error('이미지 로드 에러');
   }
 
   return (

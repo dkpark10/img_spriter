@@ -6,6 +6,7 @@ import DragBox from './drop_box';
 import Footer from './footer';
 import SizeScaleRangeBar from './size_scale_range';
 import SlicedImage from './slicedimg';
+import ImageLoadError from './img_load_err';
 
 export {
   Canvas,
@@ -16,4 +17,5 @@ export {
   SizeScaleRangeBar,
   SlicedImage,
   DragBox,
+  ImageLoadError,
 };
