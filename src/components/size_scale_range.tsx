@@ -15,8 +15,6 @@ export default function ImageScaleRangeBar() {
     );
   };
 
-  if (imageState.loadError) return <div />;
-
   return (
     <div className='flex items-center justify-center mt-5'>
       <div>

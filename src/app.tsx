@@ -1,6 +1,6 @@
 import React from 'react';
 
-import ErrorBoundary from './components/common/image-error-boundary';
+import ImageErrorBoundary from './components/common/image-error-boundary';
 import {
   Title,
   Canvas,
@@ -18,12 +18,12 @@ export default function App() {
     <>
       <Title />
       <Header />
-      <CodeArea />
-      <SizeScaleRangeBar />
-      <ErrorBoundary fallback={<ImageLoadError />}>
+      <ImageErrorBoundary fallback={<ImageLoadError />}>
+        <CodeArea />
+        <SizeScaleRangeBar />
         <Canvas />
-      </ErrorBoundary>
-      <SlicedImage />
+        <SlicedImage />
+      </ImageErrorBoundary>
       <Footer />
     </>
   );

@@ -18,8 +18,7 @@ export default function SlicedImage() {
     }));
   }, [setImageState]);
 
-  if ((imageState.rectWidth <= 3 && imageState.rectHeight <= 3)
-    || imageState.loadError) return <div />;
+  if ((imageState.rectWidth <= 3 && imageState.rectHeight <= 3)) return <div />;
 
   return (
     <div className='flex items-center justify-center m-3'>

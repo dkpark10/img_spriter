@@ -8,10 +8,6 @@ import {
 export default function CodeArea() {
   const imageState = useRecoilValue(currentImageState);
 
-  if (imageState.loadError) {
-    return <div />;
-  }
-
   return (
     <code className='flex items-center justify-center m-3'>
       <div className='bg-[#292c39] text-[#cacaca] rounded-md p-4'>
