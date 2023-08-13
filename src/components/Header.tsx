@@ -23,12 +23,11 @@ export default function Header() {
           return (
             <div
               className={`inline-flex justify-center items-center rounded-t-md  w-[170px] h-[34px] ${currentTabClass}`}
-              // eslint-disable-next-line react/no-array-index-key
-              key={idx}
+              key={tabName}
               role='button'
               tabIndex={idx}
               onClick={() => onClick(tabName)}
-              onKeyPress={() => onClick(tabName)}
+              onKeyUp={() => onClick(tabName)}
             >
               {tabName}
             </div>
