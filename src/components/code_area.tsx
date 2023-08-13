@@ -17,9 +17,15 @@ export default function CodeArea() {
       <div className='bg-[#292c39] text-[#cacaca] rounded-md p-4'>
         <div>{'.sprite_img {'}</div>
         <div>
-          &nbsp;&nbsp;&nbsp;background:&nbsp;
+          &nbsp;&nbsp;&nbsp;background-image:&nbsp;
           <span className='text-[#44e149]'>url</span>
-          {`('${imageState.isLocal ? '이미지의 실제 경로를 입력하여 사용하세요.' : imageState.src}') no-repeat;`}
+          {`('${imageState.isLocal ? '이미지의 실제 경로를 입력하여 사용하세요.' : imageState.src}');`}
+        </div>
+        <div>
+          &nbsp;&nbsp;&nbsp;background-repeat:&nbsp;
+          <span className='text-[#f08a15]'>
+            no-repeat
+          </span>;
         </div>
         <div>
           &nbsp;&nbsp;&nbsp;background-position:&nbsp;

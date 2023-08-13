@@ -3,16 +3,16 @@ import { useRecoilState } from 'recoil';
 import { ImageState } from 'custom-type';
 import { pathImageState } from '../store';
 import { debounce } from '../utils';
-import { useInput } from '../hooks';
+import { useInput } from "../hooks";
 
 export default function Header() {
   const [imgSrc, setImageSrc] = useRecoilState<ImageState>(pathImageState);
 
-  useEffect(() => {
-    if (imgSrc.isLocal) {
-      console.log(imgSrc.isLocal);
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (imgSrc.isLocal) {
+  //     console.log(imgSrc.isLocal);
+  //   }
+  // }, []);
 
   const debounceChangeSrc = useMemo(
     () => debounce((src: string) => {
