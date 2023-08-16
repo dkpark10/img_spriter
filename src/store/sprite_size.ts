@@ -1,7 +1,5 @@
+import { TabName, ImageState } from 'custom-type';
 import { atom, selector } from 'recoil';
-import {
-  TabName, ImageState,
-} from 'custom-type';
 
 export const RECT_SIZE = 'rectSize';
 export const PATH_IMG_SRC = 'pathImageSrc';

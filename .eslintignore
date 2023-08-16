@@ -1,2 +1,4 @@
 wepback.**.*
 **.config.*
+jest.*
+.eslintrc.*

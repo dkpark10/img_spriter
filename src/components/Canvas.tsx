@@ -1,6 +1,6 @@
+import { Coord, ImageState } from 'custom-type';
 import React, { useEffect, useRef, useState } from 'react';
 import { useRecoilState } from 'recoil';
-import { Coord, ImageState } from 'custom-type';
 import { currentImageState } from '../store/index';
 
 export default function Canvas() {
@@ -24,19 +24,17 @@ export default function Canvas() {
       image.alt = 'target_image';
 
       image.onload = () => {
-        setImageState(
-          (prev: ImageState) => ({
-            ...prev,
-            loadError: false,
-            imageSizeWidth: image.naturalWidth,
-            imageSizeHeight: image.naturalHeight,
-          }),
-        );
+        setImageState((prev: ImageState) => ({
+          ...prev,
+          loadError: false,
+          imageSizeWidth: image.naturalWidth,
+          imageSizeHeight: image.naturalHeight,
+        }));
       };
 
       image.onerror = () => {
         setImageState((prev) => ({ ...prev, loadError: true }));
-      }
+      };
     };
 
     drawImage();
@@ -55,12 +53,7 @@ export default function Canvas() {
    * @description scale이 바꿀 때 마다 스트로크를 그린다.
    */
   useEffect(() => {
-    const {
-      rectCoordX,
-      rectCoordY,
-      rectWidth,
-      rectHeight,
-    } = imageState;
+    const { rectCoordX, rectCoordY, rectWidth, rectHeight } = imageState;
 
     setStrokeStyle();
 
@@ -84,12 +77,7 @@ export default function Canvas() {
   const onMouseMove = (e: React.MouseEvent<HTMLCanvasElement>) => {
     ctx.current = canvasRef.current?.getContext('2d');
 
-    if (
-      !canvasRef.current
-      || !canvasWrapperRef.current
-      || !ctx.current
-      || isMouseDown === false
-    ) {
+    if (!canvasRef.current || !canvasWrapperRef.current || !ctx.current || isMouseDown === false) {
       return;
     }
     const { offsetLeft, offsetTop } = canvasWrapperRef.current;
@@ -130,13 +118,10 @@ export default function Canvas() {
   }
 
   return (
-    <main className='flex justify-center items-center'>
-      <div
-        className='relative border border-solid border-zinc-700'
-        ref={canvasWrapperRef}
-      >
+    <main className="flex justify-center items-center">
+      <div className="relative border border-solid border-zinc-700" ref={canvasWrapperRef}>
         <canvas
-          className='bg-cover'
+          className="bg-cover"
           ref={canvasRef}
           width={`${Math.floor(imageState.imageSizeWidth * imageState.scale)}`}
           height={`${Math.floor(imageState.imageSizeHeight * imageState.scale)}`}

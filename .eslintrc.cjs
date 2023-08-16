@@ -1,38 +1,46 @@
 module.exports = {
-  root: true,
-  env: {
-    browser: true,
-    es2021: true,
-    node: true,
-    jest: true,
+  "root": true,
+  "env": {
+    "browser": true,
+    "es6": true,
+    "node": true
   },
-  parser: '@typescript-eslint/parser',
-  plugins: [
-    'react',
-    '@typescript-eslint',
-  ],
-  extends: [
-    'prettier',
-    'plugin:prettier/recommended',
-    'airbnb',
-    'airbnb/hooks',
-    'airbnb-typescript',
-    'plugin:@typescript-eslint/recommended',
-    'plugin:react/recommended',
-    'plugin:cypress/recommended',
-  ],
-  parserOptions: {
-    project: './tsconfig.json',
-    tsconfigRootDir: __dirname,
-    sourceType: 'module',
-    createDefaultProgram: true,
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "ecmaVersion": "latest",
+    "sourceType": "module",
+    "project": "./tsconfig.json"
   },
-  rules: {
-    'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',
-    'jsx-quotes': [
-      'error',
-      'prefer-single',
+  "extends": [
+    "prettier",
+    "airbnb",
+    "airbnb-typescript",
+    "airbnb/hooks",
+    "plugin:react/recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:@typescript-eslint/recommended-requiring-type-checking",
+    "plugin:prettier/recommended"
+  ],
+  "plugins": [
+    "react",
+    "@typescript-eslint"
+  ],
+  "rules": {
+    "import/extensions": [
+      "error",
+      {
+        "tsx": "never",
+        "ts": "never",
+        "js": "never",
+        "jsx": "never"
+      }
     ],
+    "react/react-in-jsx-scope": "off",
+    "import/prefer-default-export": "off",
+    'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',
     'import/no-extraneous-dependencies': [
       'error',
       {
@@ -51,32 +59,6 @@ module.exports = {
         ],
       },
     ],
-    'import/extensions': [
-      'error',
-      'ignorePackages',
-      {
-        js: 'never',
-        jsx: 'never',
-        ts: 'never',
-        tsx: 'never',
-      },
-    ],
     'linebreak-style': 0,
-  },
-  settings: {
-    'import/resolver': {
-      node: {
-        extensions: [
-          '.js',
-          '.jsx',
-          '.ts',
-          '.tsx',
-        ],
-        moduleDirectory: [
-          'node_modules',
-          '@types',
-        ],
-      },
-    },
-  },
-};
+  }
+}

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-export type Return = [string, (e:React.ChangeEvent<HTMLInputElement>) => void];
+export type Return = [string, (e: React.ChangeEvent<HTMLInputElement>) => void];
 
 export function useInput(init: string, callback?: (arg: string) => void): Return {
   const [value, setValue] = useState(init);
