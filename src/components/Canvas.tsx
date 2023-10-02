@@ -34,11 +34,8 @@ export default function Canvas() {
         ctx.current = canvasRef.current?.getContext('2d');
 
         if (!ctx.current) return;
-        ctx.current.strokeStyle = '#ff0077';
-        ctx.current.lineWidth = 1;
         ctx.current.drawImage(image, 0, 0);
         const extractedColorPixelData = getCanvasImageData(ctx.current, 0, 0, image.naturalWidth, image.naturalHeight);
-        console.log(extractedColorPixelData);
 
         setImageState((prev: ImageState) => ({
           ...prev,
@@ -67,6 +64,8 @@ export default function Canvas() {
       return;
     }
 
+    ctx.current.strokeStyle = '#ff0077';
+    ctx.current.lineWidth = 1;
     setMouseAction((prev) => ({
       ...prev,
       isDown: true,

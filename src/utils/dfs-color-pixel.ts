@@ -1,5 +1,6 @@
 /* eslint-disable no-continue */
-import type { ColorPixelDataList } from 'custom-type';
+import type { ColorPixelDataList, ColorPixelData, Coord } from 'custom-type';
+import { Queue } from './queue';
 import { isNonColorPixel } from './get-canvas-image-data';
 
 const outOfRange = (x: number, y: number, width: number, height: number) => x < 0 || y < 0 || x >= width || y >= height;
@@ -23,25 +24,29 @@ export const getColorPixelMaxSize = (
   const dirX = [1, -1, 0, 0];
   const visited = Array.from({ length: height }, () => Array.from({ length: width }, () => false));
 
-  const dfs = (y: number, x: number) => {
-    visited[y][x] = true;
-    left = Math.min(left, x);
-    top = Math.min(top, y);
-    right = Math.max(right, x);
-    bottom = Math.max(bottom, y);
+  const q = new Queue<Coord>();
+  q.push({ y: initY, x: initX });
+
+  while (!q.isEmpty()) {
+    const { y: currentY, x: currentX } = q.pop() as Coord;
+    visited[currentY][currentX] = true;
+    left = Math.min(left, currentX);
+    top = Math.min(top, currentY);
+    right = Math.max(right, currentX);
+    bottom = Math.max(bottom, currentY);
 
     for (let i = 0; i < 4; i += 1) {
-      const nextY = y + dirY[i];
-      const nextX = x + dirX[i];
+      const nextY = currentY + dirY[i];
+      const nextX = currentX + dirX[i];
 
       if (outOfRange(nextX, nextY, width, height)) continue;
       const { r, g, b, a } = tempPixelColorList[nextY][nextX];
       if (isNonColorPixel({ r, g, b, a })) continue;
       if (visited[nextY][nextX]) continue;
-      dfs(nextY, nextX);
+      visited[nextY][nextX] = true;
+      q.push({ y: nextY, x: nextX });
     }
-  };
+  }
 
-  dfs(initY, initX);
   return [left - thresHold, top - thresHold, right - left + thresHold * 3, bottom - top + thresHold * 3];
 };
