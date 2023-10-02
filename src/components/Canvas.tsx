@@ -2,8 +2,14 @@ import type { Coord, ImageState, ColorPixelDataList } from 'custom-type';
 import React, { useEffect, useRef, useState } from 'react';
 import { useRecoilState } from 'recoil';
 import { currentImageState } from '@/store/index';
-import { getCanvasImageData } from '@/utils/get-canvas-image-data';
+import { getCanvasImageData, isNonColorPixel } from '@/utils/get-canvas-image-data';
 import { getColorPixelMaxSize } from '@/utils/dfs-color-pixel';
+
+const drawRect = (ctx: CanvasRenderingContext2D, l: number, t: number, w: number, h: number) => {
+  ctx.strokeRect(l, t, w, h);
+  ctx.strokeRect(l, t, w, h);
+  ctx.strokeRect(l, t, w, h);
+};
 
 export default function Canvas() {
   const canvasWrapperRef = useRef<HTMLDivElement>(null);
@@ -15,7 +21,7 @@ export default function Canvas() {
     isMove: false,
   });
 
-  const [initCoord, setInitCoord] = useState<Coord>({ y: 0, x: 0 });
+  const [currentCoord, setCurrentCoord] = useState<Coord>({ y: 0, x: 0 });
   const [imageState, setImageState] = useRecoilState<ImageState>(currentImageState);
   const [colorPixelData, setColorPixelData] = useState<ColorPixelDataList>([]);
 
@@ -31,9 +37,6 @@ export default function Canvas() {
 
         if (!ctx.current) return;
         ctx.current.drawImage(image, 0, 0);
-        ctx.current.strokeStyle = '#ff0077';
-        ctx.current.lineWidth = 0.5;
-
         const extractedColorPixelData = getCanvasImageData(ctx.current, 0, 0, image.naturalWidth, image.naturalHeight);
         setColorPixelData(extractedColorPixelData);
 
@@ -51,7 +54,7 @@ export default function Canvas() {
     };
 
     drawImage();
-    setInitCoord({ y: 0, x: 0 });
+    setCurrentCoord({ y: 0, x: 0 });
     setMouseAction({
       isDown: false,
       isMove: false,
@@ -72,14 +75,14 @@ export default function Canvas() {
     const y = e.pageY - offsetTop;
     const x = e.pageX - offsetLeft;
 
-    setInitCoord((prev) => ({ ...prev, y, x }));
+    setCurrentCoord((prev) => ({ ...prev, y, x }));
   };
 
   const onMouseMove = (e: React.MouseEvent<HTMLCanvasElement>) => {
-    if (!canvasRef.current || !canvasWrapperRef.current || !ctx.current || mouseAction.isDown === false) {
-      return;
-    }
+    if (!canvasRef.current || !canvasWrapperRef.current || !ctx.current || mouseAction.isDown === false) return;
 
+    ctx.current.strokeStyle = '#ff0077';
+    ctx.current.lineWidth = 0.5;
     setMouseAction((prev) => ({
       ...prev,
       isMove: true,
@@ -89,10 +92,10 @@ export default function Canvas() {
     const mouseCoordY = e.pageY - offsetTop;
     const mouseCoordX = e.pageX - offsetLeft;
 
-    const left = Math.min(mouseCoordX, initCoord.x);
-    const top = Math.min(mouseCoordY, initCoord.y);
-    const width = Math.abs(mouseCoordX - initCoord.x);
-    const height = Math.abs(mouseCoordY - initCoord.y);
+    const left = Math.min(mouseCoordX, currentCoord.x);
+    const top = Math.min(mouseCoordY, currentCoord.y);
+    const width = Math.abs(mouseCoordX - currentCoord.x);
+    const height = Math.abs(mouseCoordY - currentCoord.y);
 
     setImageState(
       (prev): ImageState => ({
@@ -105,26 +108,27 @@ export default function Canvas() {
     );
 
     ctx.current.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
-    ctx.current.strokeRect(left, top, width, height);
-    ctx.current.strokeRect(left, top, width, height);
-    ctx.current.strokeRect(left, top, width, height);
+    drawRect(ctx.current, left, top, width, height);
   };
 
   const onMouseUp = () => {
-    const { y, x } = initCoord;
+    if (!canvasRef.current || !canvasWrapperRef.current || !ctx.current) return;
+
+    const { y, x } = currentCoord;
     const { imageSizeWidth, imageSizeHeight } = imageState;
 
-    if (
-      colorPixelData[y][x].a !== 0 &&
-      colorPixelData[y][x].b !== 0 &&
-      colorPixelData[y][x].g !== 0 &&
-      colorPixelData[y][x].r !== 0
-    ) {
-      const [left, top, right, bottom] = getColorPixelMaxSize(y, x, imageSizeWidth, imageSizeHeight, colorPixelData);
+    /** @description 마우스를 이동하지 않고 클릭만 했다면 */
+    if (!isNonColorPixel(colorPixelData[y][x]) && mouseAction.isMove === false) {
+      const [left, top, drawWidth, drawHeight] = getColorPixelMaxSize(
+        y,
+        x,
+        imageSizeWidth,
+        imageSizeHeight,
+        colorPixelData,
+      );
 
-      ctx.current?.strokeRect(left, top, right - left, bottom - top);
-      ctx.current?.strokeRect(left, top, right - left, bottom - top);
-      ctx.current?.strokeRect(left, top, right - left, bottom - top);
+      ctx.current?.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
+      drawRect(ctx.current, left, top, drawWidth, drawHeight);
     }
 
     setMouseAction({
@@ -132,7 +136,7 @@ export default function Canvas() {
       isMove: false,
     });
 
-    setInitCoord((prev) => ({
+    setCurrentCoord((prev) => ({
       ...prev,
       y: 0,
       x: 0,

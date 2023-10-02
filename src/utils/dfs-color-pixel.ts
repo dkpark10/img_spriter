@@ -42,5 +42,5 @@ export const getColorPixelMaxSize = (
   };
 
   dfs(initY, initX);
-  return [left, top, right, bottom];
+  return [left, top, right - left, bottom - top];
 };
