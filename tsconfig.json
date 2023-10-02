@@ -44,6 +44,7 @@
   "include": [
     "**/*.ts",
     "./src/**/*",
-    "@types"
-, "cypress.config.ㅓs"  ],
+    "@types",
+    "cypress.config.ts"
+  ],
 }

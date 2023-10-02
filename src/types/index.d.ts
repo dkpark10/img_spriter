@@ -30,4 +30,13 @@ declare module 'custom-type' {
     scale: number;
     loadError: boolean;
   }
+
+  interface ColorPixelData {
+    r: number;
+    g: number;
+    b: number;
+    a: number;
+  }
+
+  type ColorPixelDataList = Array<Array<ColorPixelData>>;
 }

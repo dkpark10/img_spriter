@@ -1,8 +1,9 @@
-import { Coord, ImageState } from 'custom-type';
+import type { Coord, ImageState, ColorPixelDataList } from 'custom-type';
 import React, { useEffect, useRef, useState } from 'react';
 import { useRecoilState } from 'recoil';
 import { currentImageState } from '@/store/index';
-import { getCanvasImageData, type ColorPixelDataList } from '@/utils/get-canvas-image-data';
+import { getCanvasImageData } from '@/utils/get-canvas-image-data';
+import { getColorPixelMaxSize } from '@/utils/dfs-color-pixel';
 
 export default function Canvas() {
   const canvasWrapperRef = useRef<HTMLDivElement>(null);

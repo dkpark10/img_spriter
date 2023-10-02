@@ -1,11 +1,4 @@
-export interface ColorPixelData {
-  r: number;
-  g: number;
-  b: number;
-  a: number;
-}
-
-export type ColorPixelDataList = Array<Array<ColorPixelData>>;
+import type { ColorPixelData, ColorPixelDataList } from 'custom-type';
 
 export const isNonColorPixel = (colorPixelData: ColorPixelData) => {
   const { r, g, b, a } = colorPixelData;
