@@ -48,5 +48,15 @@ export const getColorPixelMaxSize = (
     }
   }
 
-  return [left - thresHold, top - thresHold, right - left + thresHold * 3, bottom - top + thresHold * 3];
+  left -= thresHold;
+  top -= thresHold;
+  right = right - left + thresHold * 3;
+  bottom = bottom - top + thresHold * 3;
+
+  left = left <= 0 ? 0 : left;
+  top = top <= 0 ? 0 : top;
+  right = right >= width ? width : right;
+  bottom = bottom >= height ? height : bottom;
+
+  return [left, top, right, bottom];
 };

@@ -1,9 +1,9 @@
-import type { Coord, ImageState, ColorPixelDataList } from 'custom-type';
+import type { Coord, ImageState } from 'custom-type';
 import React, { useEffect, useRef, useState } from 'react';
 import { useRecoilState } from 'recoil';
 import { currentImageState } from '@/store/index';
 import { getCanvasImageData, isNonColorPixel } from '@/utils/get-canvas-image-data';
-import { getColorPixelMaxSize } from '@/utils/dfs-color-pixel';
+import { getColorPixelMaxSize } from '@/utils/bfs-color-pixel';
 
 const drawRect = (ctx: CanvasRenderingContext2D, l: number, t: number, w: number, h: number) => {
   ctx.strokeRect(l, t, w, h);

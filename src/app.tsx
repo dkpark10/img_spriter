@@ -8,7 +8,7 @@ export default function App() {
     <>
       <Title />
       <Header />
-      {!imageState.loadError ? (
+      {!imageState.loadError && imageState.src ? (
         <>
           <CodeArea />
           <SizeScaleRangeBar />
