@@ -1,11 +1,11 @@
-interface ColorPixelData {
-  [key: number]: {
+export type ColorPixelData = Array<
+  Array<{
     r: number;
-    b: number;
     g: number;
+    b: number;
     a: number;
-  };
-}
+  }>
+>;
 
 export const getCanvasImageData = (
   ctx: CanvasRenderingContext2D,
@@ -16,7 +16,9 @@ export const getCanvasImageData = (
 ) => {
   const imageData = ctx.getImageData(x, y, width, height);
   const pixelData = imageData.data;
-  const colorPixelData: ColorPixelData = {};
+  const colorPixelData: ColorPixelData = Array.from({ length: height }, () =>
+    Array.from({ length: width }, () => ({ r: 0, g: 0, b: 0, a: 0 })),
+  );
 
   const len = pixelData.length;
   for (let i = 0; i < len; i += 4) {
@@ -27,7 +29,10 @@ export const getCanvasImageData = (
 
     // eslint-disable-next-line no-continue
     if (r === 0 || g === 0 || b === 0 || a === 0) continue;
-    colorPixelData[i] = { r, g, b, a };
+    const pixelY = Math.floor(i / 4 / width);
+    const pixelX = (i / 4) % width;
+
+    colorPixelData[pixelY][pixelX] = { r, g, b, a };
   }
 
   return colorPixelData;

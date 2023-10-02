@@ -2,20 +2,21 @@ import { Coord, ImageState } from 'custom-type';
 import React, { useEffect, useRef, useState } from 'react';
 import { useRecoilState } from 'recoil';
 import { currentImageState } from '@/store/index';
-import { getCanvasImageData } from '@/utils/get-canvas-image-data';
+import { getCanvasImageData, type ColorPixelData } from '@/utils/get-canvas-image-data';
 
 export default function Canvas() {
   const canvasWrapperRef = useRef<HTMLDivElement>(null);
-
   const canvasRef = useRef<HTMLCanvasElement>(null);
-
   const ctx = useRef<CanvasRenderingContext2D | null | undefined>(null);
 
-  const [isMouseDown, setIsMouseDown] = useState(false);
+  const [mouseAction, setMouseAction] = useState({
+    isDown: false,
+    isMove: false,
+  });
 
   const [initCoord, setInitCoord] = useState<Coord>({ y: 0, x: 0 });
-
   const [imageState, setImageState] = useRecoilState<ImageState>(currentImageState);
+  const [colorPixelData, setColorPixelData] = useState<ColorPixelData>([]);
 
   useEffect(() => {
     const drawImage = () => {
@@ -32,6 +33,9 @@ export default function Canvas() {
         ctx.current.strokeStyle = '#ff0077';
         ctx.current.lineWidth = 0.5;
 
+        const extractedColorPixelData = getCanvasImageData(ctx.current, 0, 0, image.naturalWidth, image.naturalHeight);
+        setColorPixelData(extractedColorPixelData);
+
         setImageState((prev: ImageState) => ({
           ...prev,
           loadError: false,
@@ -47,7 +51,10 @@ export default function Canvas() {
 
     drawImage();
     setInitCoord({ y: 0, x: 0 });
-    setIsMouseDown(false);
+    setMouseAction({
+      isDown: false,
+      isMove: false,
+    });
   }, [imageState.src, setImageState]);
 
   const onMouseDown = (e: React.MouseEvent<HTMLCanvasElement>) => {
@@ -55,7 +62,10 @@ export default function Canvas() {
       return;
     }
 
-    setIsMouseDown(true);
+    setMouseAction((prev) => ({
+      ...prev,
+      isDown: true,
+    }));
 
     const { offsetTop, offsetLeft } = canvasWrapperRef.current;
     const y = e.pageY - offsetTop;
@@ -65,9 +75,15 @@ export default function Canvas() {
   };
 
   const onMouseMove = (e: React.MouseEvent<HTMLCanvasElement>) => {
-    if (!canvasRef.current || !canvasWrapperRef.current || !ctx.current || isMouseDown === false) {
+    if (!canvasRef.current || !canvasWrapperRef.current || !ctx.current || mouseAction.isDown === false) {
       return;
     }
+
+    setMouseAction((prev) => ({
+      ...prev,
+      isMove: true,
+    }));
+
     const { offsetLeft, offsetTop } = canvasWrapperRef.current;
     const mouseCoordY = e.pageY - offsetTop;
     const mouseCoordX = e.pageX - offsetLeft;
@@ -90,10 +106,15 @@ export default function Canvas() {
     ctx.current.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
     ctx.current.strokeRect(left, top, width, height);
     ctx.current.strokeRect(left, top, width, height);
+    ctx.current.strokeRect(left, top, width, height);
   };
 
   const onMouseUp = () => {
-    setIsMouseDown(false);
+    setMouseAction({
+      isDown: false,
+      isMove: false,
+    });
+
     setInitCoord((prev) => ({
       ...prev,
       y: 0,
