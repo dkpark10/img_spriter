@@ -111,6 +111,22 @@ export default function Canvas() {
   };
 
   const onMouseUp = () => {
+    const { y, x } = initCoord;
+    const { imageSizeWidth, imageSizeHeight } = imageState;
+
+    if (
+      colorPixelData[y][x].a !== 0 &&
+      colorPixelData[y][x].b !== 0 &&
+      colorPixelData[y][x].g !== 0 &&
+      colorPixelData[y][x].r !== 0
+    ) {
+      const [left, top, right, bottom] = getColorPixelMaxSize(y, x, imageSizeWidth, imageSizeHeight, colorPixelData);
+
+      ctx.current?.strokeRect(left, top, right - left, bottom - top);
+      ctx.current?.strokeRect(left, top, right - left, bottom - top);
+      ctx.current?.strokeRect(left, top, right - left, bottom - top);
+    }
+
     setMouseAction({
       isDown: false,
       isMove: false,

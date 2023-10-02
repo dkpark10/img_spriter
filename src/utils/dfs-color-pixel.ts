@@ -1,3 +1,4 @@
+/* eslint-disable no-continue */
 import type { ColorPixelDataList } from 'custom-type';
 import { isNonColorPixel } from './get-canvas-image-data';
 
@@ -19,24 +20,23 @@ export const getColorPixelMaxSize = (
 
   const dirY = [0, 0, 1, -1];
   const dirX = [1, -1, 0, 0];
+  const visited = Array.from({ length: height }, () => Array.from({ length: width }, () => false));
 
   const dfs = (y: number, x: number) => {
-    if (outOfRange(x, y, width, height)) return;
-
+    visited[y][x] = true;
     left = Math.min(left, x);
     top = Math.min(top, y);
-    right = Math.min(right, x);
-    bottom = Math.min(bottom, y);
+    right = Math.max(right, x);
+    bottom = Math.max(bottom, y);
 
     for (let i = 0; i < 4; i += 1) {
       const nextY = y + dirY[i];
       const nextX = x + dirX[i];
 
       const { r, g, b, a } = tempPixelColorList[nextY][nextX];
-      // eslint-disable-next-line no-continue
       if (isNonColorPixel({ r, g, b, a })) continue;
-      // eslint-disable-next-line no-continue
       if (outOfRange(nextX, nextY, width, height)) continue;
+      if (visited[nextY][nextX]) continue;
       dfs(nextY, nextX);
     }
   };
