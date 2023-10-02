@@ -2,7 +2,7 @@ import { Coord, ImageState } from 'custom-type';
 import React, { useEffect, useRef, useState } from 'react';
 import { useRecoilState } from 'recoil';
 import { currentImageState } from '@/store/index';
-import { getCanvasImageData, type ColorPixelData } from '@/utils/get-canvas-image-data';
+import { getCanvasImageData, type ColorPixelDataList } from '@/utils/get-canvas-image-data';
 
 export default function Canvas() {
   const canvasWrapperRef = useRef<HTMLDivElement>(null);
@@ -16,7 +16,7 @@ export default function Canvas() {
 
   const [initCoord, setInitCoord] = useState<Coord>({ y: 0, x: 0 });
   const [imageState, setImageState] = useRecoilState<ImageState>(currentImageState);
-  const [colorPixelData, setColorPixelData] = useState<ColorPixelData>([]);
+  const [colorPixelData, setColorPixelData] = useState<ColorPixelDataList>([]);
 
   useEffect(() => {
     const drawImage = () => {

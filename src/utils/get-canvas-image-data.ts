@@ -1,11 +1,16 @@
-export type ColorPixelData = Array<
-  Array<{
-    r: number;
-    g: number;
-    b: number;
-    a: number;
-  }>
->;
+export interface ColorPixelData {
+  r: number;
+  g: number;
+  b: number;
+  a: number;
+}
+
+export type ColorPixelDataList = Array<Array<ColorPixelData>>;
+
+export const isNonColorPixel = (colorPixelData: ColorPixelData) => {
+  const { r, g, b, a } = colorPixelData;
+  return r === 0 || g === 0 || b === 0 || a === 0;
+};
 
 export const getCanvasImageData = (
   ctx: CanvasRenderingContext2D,
@@ -16,7 +21,7 @@ export const getCanvasImageData = (
 ) => {
   const imageData = ctx.getImageData(x, y, width, height);
   const pixelData = imageData.data;
-  const colorPixelData: ColorPixelData = Array.from({ length: height }, () =>
+  const colorPixelData: ColorPixelDataList = Array.from({ length: height }, () =>
     Array.from({ length: width }, () => ({ r: 0, g: 0, b: 0, a: 0 })),
   );
 
@@ -28,7 +33,7 @@ export const getCanvasImageData = (
     const a = pixelData[i + 3];
 
     // eslint-disable-next-line no-continue
-    if (r === 0 || g === 0 || b === 0 || a === 0) continue;
+    if (isNonColorPixel({ r, g, b, a })) continue;
     const pixelY = Math.floor(i / 4 / width);
     const pixelX = (i / 4) % width;
 
