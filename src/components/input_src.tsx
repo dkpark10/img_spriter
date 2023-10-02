@@ -10,12 +10,13 @@ export default function Header() {
 
   const debounceChangeSrc = useMemo(
     () =>
-      debounce((src: string) => {
+      debounce((src: string[]) => {
         setImageSrc(
           (prev): ImageState => ({
             ...prev,
-            src,
+            src: src[0],
             isLocal: false,
+            loadError: false,
           }),
         );
       }, 250),
