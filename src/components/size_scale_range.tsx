@@ -1,20 +1,27 @@
 import { ImageState } from 'custom-type';
-import React from 'react';
+import React, { useState } from 'react';
 import { useRecoilState } from 'recoil';
-import { currentImageState } from '../store/index';
+import { currentImageState } from '@/store/index';
+import { debounce } from '@/utils/debounce';
 
 export default function ImageScaleRangeBar() {
   const [imageState, setImageState] = useRecoilState<ImageState>(currentImageState);
+  const [currentScale, setCurrentScale] = useState(1);
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setImageState((prev) => ({
-      ...prev,
-      scale: Number(e.target.value),
-      rectHeight: 0,
-      rectWidth: 0,
-      rectCoordX: 0,
-      rectCoordY: 0,
-    }));
+    setCurrentScale(Number(e.target.value));
+    const debounceChange = debounce(() => {
+      setImageState((prev) => ({
+        ...prev,
+        scale: currentScale,
+        rectHeight: 0,
+        rectWidth: 0,
+        rectCoordX: 0,
+        rectCoordY: 0,
+      }));
+    }, 450);
+
+    debounceChange();
   };
 
   return (
@@ -32,7 +39,7 @@ export default function ImageScaleRangeBar() {
           min={0.5}
           max={1.5}
           step={0.02}
-          value={imageState.scale}
+          value={currentScale}
           onChange={onChange}
         />
       </div>

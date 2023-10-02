@@ -29,9 +29,7 @@ describe('이미지 스프라이트 테스트', () => {
 
     cy.get('canvas').then(($canvas) => {
       const canvasElement = $canvas[0];
-      const {
-        height, width, x, y,
-      } = canvasElement.getBoundingClientRect();
+      const { height, width, x, y } = canvasElement.getBoundingClientRect();
 
       cy.log(String(`${x} - ${y} ${width} - ${height}`));
 
@@ -61,9 +59,7 @@ describe('이미지 스프라이트 테스트', () => {
 
     cy.get('canvas').then(($canvas) => {
       const canvasElement = $canvas[0];
-      const {
-        height, width, x, y,
-      } = canvasElement.getBoundingClientRect();
+      const { height, width, x, y } = canvasElement.getBoundingClientRect();
 
       cy.log(String(`${x} - ${y} ${width} - ${height}`));
 

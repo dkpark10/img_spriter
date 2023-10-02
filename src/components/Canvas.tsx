@@ -8,7 +8,6 @@ import { getColorPixelMaxSize } from '@/utils/dfs-color-pixel';
 const drawRect = (ctx: CanvasRenderingContext2D, l: number, t: number, w: number, h: number) => {
   ctx.strokeRect(l, t, w, h);
   ctx.strokeRect(l, t, w, h);
-  ctx.strokeRect(l, t, w, h);
 };
 
 export default function Canvas() {
@@ -37,7 +36,7 @@ export default function Canvas() {
 
         if (!ctx.current) return;
         ctx.current.strokeStyle = '#ff0077';
-        ctx.current.lineWidth = 0.5;
+        ctx.current.lineWidth = 1;
         ctx.current.drawImage(image, 0, 0);
         const extractedColorPixelData = getCanvasImageData(ctx.current, 0, 0, image.naturalWidth, image.naturalHeight);
         setColorPixelData(extractedColorPixelData);
