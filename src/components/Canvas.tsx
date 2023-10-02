@@ -24,6 +24,13 @@ export default function Canvas() {
       image.alt = 'target_image';
 
       image.onload = () => {
+        ctx.current = canvasRef.current?.getContext('2d');
+
+        if (!ctx.current) return;
+        ctx.current.drawImage(image, 0, 0);
+        ctx.current.strokeStyle = '#ff0077';
+        ctx.current.lineWidth = 0.5;
+
         setImageState((prev: ImageState) => ({
           ...prev,
           loadError: false,
@@ -42,24 +49,6 @@ export default function Canvas() {
     setIsMouseDown(false);
   }, [imageState.src, setImageState]);
 
-  const setStrokeStyle = () => {
-    if (!ctx.current) return;
-
-    ctx.current.strokeStyle = '#ff0077';
-    ctx.current.lineWidth = 0.5;
-  };
-
-  /**
-   * @description scale이 바꿀 때 마다 스트로크를 그린다.
-   */
-  useEffect(() => {
-    const { rectCoordX, rectCoordY, rectWidth, rectHeight } = imageState;
-
-    setStrokeStyle();
-
-    ctx.current?.strokeRect(rectCoordX, rectCoordY, rectWidth, rectHeight);
-  }, [imageState]);
-
   const onMouseDown = (e: React.MouseEvent<HTMLCanvasElement>) => {
     if (!canvasRef.current || !canvasWrapperRef.current || !ctx.current) {
       return;
@@ -75,8 +64,6 @@ export default function Canvas() {
   };
 
   const onMouseMove = (e: React.MouseEvent<HTMLCanvasElement>) => {
-    ctx.current = canvasRef.current?.getContext('2d');
-
     if (!canvasRef.current || !canvasWrapperRef.current || !ctx.current || isMouseDown === false) {
       return;
     }
@@ -89,8 +76,6 @@ export default function Canvas() {
     const width = Math.abs(mouseCoordX - initCoord.x);
     const height = Math.abs(mouseCoordY - initCoord.y);
 
-    ctx.current.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
-
     setImageState(
       (prev): ImageState => ({
         ...prev,
@@ -101,6 +86,8 @@ export default function Canvas() {
       }),
     );
 
+    ctx.current.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
+    ctx.current.strokeRect(left, top, width, height);
     ctx.current.strokeRect(left, top, width, height);
   };
 
