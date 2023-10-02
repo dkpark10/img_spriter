@@ -25,6 +25,7 @@ export default function DropDropBox() {
       setImageSrc((prev) => ({
         ...prev,
         src: imageSrc,
+        loadError: false,
         isLocal: true,
       }));
     };

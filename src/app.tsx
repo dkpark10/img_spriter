@@ -1,29 +1,27 @@
 import React from 'react';
 
-import ImageErrorBoundary from './components/common/image-error-boundary';
-import {
-  Title,
-  Canvas,
-  Header,
-  DragBox,
-  Footer,
-  CodeArea,
-  SlicedImage,
-  SizeScaleRangeBar,
-  ImageLoadError,
-} from './components';
+import { useRecoilValue } from 'recoil';
+import ImageErrorBoundary from '@/components/common/image-error-boundary';
+import { Title, Canvas, Header, Footer, CodeArea, SlicedImage, SizeScaleRangeBar, ImageLoadError } from './components';
+import { currentImageState } from '@/store/index';
 
 export default function App() {
+  const imageState = useRecoilValue(currentImageState);
+
   return (
     <>
       <Title />
       <Header />
-      <ImageErrorBoundary fallback={<ImageLoadError />}>
-        <CodeArea />
-        <SizeScaleRangeBar />
-        <Canvas />
-        <SlicedImage />
-      </ImageErrorBoundary>
+      {!imageState.loadError ? (
+        <>
+          <CodeArea />
+          <SizeScaleRangeBar />
+          <Canvas />
+          <SlicedImage />
+        </>
+      ) : (
+        <ImageLoadError />
+      )}
       <Footer />
     </>
   );

@@ -152,10 +152,6 @@ export default function Canvas() {
     }));
   };
 
-  if (imageState.loadError) {
-    throw new Error('이미지 로드 에러');
-  }
-
   return (
     <main className="flex justify-center items-center">
       <div className="relative border border-solid border-zinc-700" ref={canvasWrapperRef}>
