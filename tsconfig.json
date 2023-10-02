@@ -45,5 +45,5 @@
     "**/*.ts",
     "./src/**/*",
     "@types"
-  ],
+, "cypress.config.ㅓs"  ],
 }
