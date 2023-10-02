@@ -10,6 +10,10 @@ export default function ImageScaleRangeBar() {
     setImageState((prev) => ({
       ...prev,
       scale: Number(e.target.value),
+      rectHeight: 0,
+      rectWidth: 0,
+      rectCoordX: 0,
+      rectCoordY: 0,
     }));
   };
 
