@@ -11,6 +11,7 @@ export const getColorPixelMaxSize = (
   width: number,
   height: number,
   pixelColorList: ColorPixelDataList,
+  thresHold: number,
 ) => {
   const tempPixelColorList = pixelColorList;
   let left = initX;
@@ -42,5 +43,5 @@ export const getColorPixelMaxSize = (
   };
 
   dfs(initY, initX);
-  return [left, top, right - left, bottom - top];
+  return [left - thresHold, top - thresHold, right - left + thresHold * 3, bottom - top + thresHold * 3];
 };

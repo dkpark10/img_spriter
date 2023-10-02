@@ -36,6 +36,8 @@ export default function Canvas() {
         ctx.current = canvasRef.current?.getContext('2d');
 
         if (!ctx.current) return;
+        ctx.current.strokeStyle = '#ff0077';
+        ctx.current.lineWidth = 0.5;
         ctx.current.drawImage(image, 0, 0);
         const extractedColorPixelData = getCanvasImageData(ctx.current, 0, 0, image.naturalWidth, image.naturalHeight);
         setColorPixelData(extractedColorPixelData);
@@ -81,8 +83,6 @@ export default function Canvas() {
   const onMouseMove = (e: React.MouseEvent<HTMLCanvasElement>) => {
     if (!canvasRef.current || !canvasWrapperRef.current || !ctx.current || mouseAction.isDown === false) return;
 
-    ctx.current.strokeStyle = '#ff0077';
-    ctx.current.lineWidth = 0.5;
     setMouseAction((prev) => ({
       ...prev,
       isMove: true,
@@ -125,10 +125,20 @@ export default function Canvas() {
         imageSizeWidth,
         imageSizeHeight,
         colorPixelData,
+        2,
       );
 
       ctx.current?.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
       drawRect(ctx.current, left, top, drawWidth, drawHeight);
+      setImageState(
+        (prev): ImageState => ({
+          ...prev,
+          rectCoordX: left,
+          rectCoordY: top,
+          rectWidth: drawWidth,
+          rectHeight: drawHeight,
+        }),
+      );
     }
 
     setMouseAction({
