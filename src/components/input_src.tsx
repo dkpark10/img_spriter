@@ -1,12 +1,12 @@
 import { ImageState } from 'custom-type';
-import { useMemo, useEffect } from 'react';
+import { useMemo } from 'react';
 import { useRecoilState } from 'recoil';
-import { pathImageState } from '../store';
-import { debounce } from '../utils';
-import { useInput } from '../hooks';
+import { pathImageAtom } from '@/store';
+import { debounce } from '@/utils';
+import { useInput } from '@/hooks';
 
 export default function Header() {
-  const [imgSrc, setImageSrc] = useRecoilState<ImageState>(pathImageState);
+  const [imgSrc, setImageSrc] = useRecoilState<ImageState>(pathImageAtom);
 
   const debounceChangeSrc = useMemo(
     () =>

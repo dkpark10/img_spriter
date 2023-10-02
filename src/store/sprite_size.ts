@@ -9,13 +9,14 @@ export const SCALE_SIZE = 'scaleSize';
 export const IMAGE_LOAD = 'imageLoad';
 export const CURRENT_TAB = 'currentTab';
 export const CURRENT_IMAGE_STATE = 'currentImageState';
+export const PIXEL_DATA = 'pixelData';
 
-export const currentTabState = atom<TabName>({
+export const currentTabAtom = atom<TabName>({
   key: CURRENT_TAB,
   default: '이미지 경로 검색',
 });
 
-export const pathImageState = atom<ImageState>({
+export const pathImageAtom = atom<ImageState>({
   key: PATH_IMG_SRC,
   default: {
     src: 'sample.png',
@@ -28,6 +29,7 @@ export const pathImageState = atom<ImageState>({
     imageSizeHeight: 0,
     scale: 1,
     loadError: false,
+    colorPixelData: [],
   },
 
   // default: 'https://s.pstatic.net/static/www/img/uit/sp_weather_time_b8ecd0.png',
@@ -36,7 +38,7 @@ export const pathImageState = atom<ImageState>({
   // default: 'https://i.pinimg.com/564x/6a/ea/1c/6aea1c0bc96840a03644ed7b460fac9e.jpg',
 });
 
-export const fileImageState = atom<ImageState>({
+export const fileImageAtom = atom<ImageState>({
   key: FILE_IMG_SRC,
   default: {
     src: '',
@@ -49,15 +51,16 @@ export const fileImageState = atom<ImageState>({
     imageSizeHeight: 0,
     scale: 1,
     loadError: false,
+    colorPixelData: [],
   },
 });
 
 export const currentImageState = selector({
   key: CURRENT_IMAGE_STATE,
   get: ({ get }) => {
-    const currentTab = get(currentTabState);
-    const pathImageSrc = get(pathImageState);
-    const fileImageSrc = get(fileImageState);
+    const currentTab = get(currentTabAtom);
+    const pathImageSrc = get(pathImageAtom);
+    const fileImageSrc = get(fileImageAtom);
 
     if (currentTab === '이미지 경로 검색') {
       return pathImageSrc;
@@ -67,13 +70,13 @@ export const currentImageState = selector({
   },
 
   set: ({ set, get }, newValue) => {
-    const currentTab = get(currentTabState);
+    const currentTab = get(currentTabAtom);
 
     if (currentTab === '이미지 경로 검색') {
-      set(pathImageState, newValue);
+      set(pathImageAtom, newValue);
       return;
     }
 
-    set(fileImageState, newValue);
+    set(fileImageAtom, newValue);
   },
 });

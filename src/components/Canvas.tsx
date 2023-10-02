@@ -22,7 +22,6 @@ export default function Canvas() {
 
   const [currentCoord, setCurrentCoord] = useState<Coord>({ y: 0, x: 0 });
   const [imageState, setImageState] = useRecoilState<ImageState>(currentImageState);
-  const [colorPixelData, setColorPixelData] = useState<ColorPixelDataList>([]);
 
   useEffect(() => {
     const drawImage = () => {
@@ -39,13 +38,14 @@ export default function Canvas() {
         ctx.current.lineWidth = 1;
         ctx.current.drawImage(image, 0, 0);
         const extractedColorPixelData = getCanvasImageData(ctx.current, 0, 0, image.naturalWidth, image.naturalHeight);
-        setColorPixelData(extractedColorPixelData);
+        console.log(extractedColorPixelData);
 
         setImageState((prev: ImageState) => ({
           ...prev,
           loadError: false,
           imageSizeWidth: image.naturalWidth,
           imageSizeHeight: image.naturalHeight,
+          colorPixelData: extractedColorPixelData,
         }));
       };
 
@@ -114,7 +114,7 @@ export default function Canvas() {
     if (!canvasRef.current || !canvasWrapperRef.current || !ctx.current) return;
 
     const { y, x } = currentCoord;
-    const { imageSizeWidth, imageSizeHeight } = imageState;
+    const { imageSizeWidth, imageSizeHeight, colorPixelData } = imageState;
 
     /** @description 마우스를 이동하지 않고 클릭만 했다면 */
     if (!isNonColorPixel(colorPixelData[y][x]) && mouseAction.isMove === false) {

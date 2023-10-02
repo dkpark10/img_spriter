@@ -1,10 +1,10 @@
 import { ImageState } from 'custom-type';
 import React, { useRef, useState } from 'react';
 import { useSetRecoilState } from 'recoil';
-import { fileImageState } from '../store';
+import { fileImageAtom } from '@/store';
 
 export default function DropDropBox() {
-  const setImageSrc = useSetRecoilState<ImageState>(fileImageState);
+  const setImageSrc = useSetRecoilState<ImageState>(fileImageAtom);
 
   const inputFileRef = useRef<HTMLInputElement>(null);
 

@@ -18,6 +18,15 @@ declare module 'custom-type' {
 
   type TabName = '이미지 경로 검색' | '이미지 파일 업로드';
 
+  interface ColorPixelData {
+    r: number;
+    g: number;
+    b: number;
+    a: number;
+  }
+
+  type ColorPixelDataList = Array<Array<ColorPixelData>>;
+
   interface ImageState {
     src: string;
     isLocal: boolean;
@@ -29,14 +38,6 @@ declare module 'custom-type' {
     imageSizeHeight: number;
     scale: number;
     loadError: boolean;
+    colorPixelData: ColorPixelDataList;
   }
-
-  interface ColorPixelData {
-    r: number;
-    g: number;
-    b: number;
-    a: number;
-  }
-
-  type ColorPixelDataList = Array<Array<ColorPixelData>>;
 }

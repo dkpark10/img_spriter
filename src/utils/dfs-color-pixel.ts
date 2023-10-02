@@ -34,9 +34,9 @@ export const getColorPixelMaxSize = (
       const nextY = y + dirY[i];
       const nextX = x + dirX[i];
 
+      if (outOfRange(nextX, nextY, width, height)) continue;
       const { r, g, b, a } = tempPixelColorList[nextY][nextX];
       if (isNonColorPixel({ r, g, b, a })) continue;
-      if (outOfRange(nextX, nextY, width, height)) continue;
       if (visited[nextY][nextX]) continue;
       dfs(nextY, nextX);
     }

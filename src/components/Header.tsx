@@ -3,12 +3,12 @@ import React from 'react';
 import { useRecoilState } from 'recoil';
 import InputSrc from './input_src';
 import DropBox from './drop_box';
-import { currentTabState } from '../store';
+import { currentTabAtom } from '@/store';
 
 export default function Header() {
   const tabNames: TabName[] = ['이미지 경로 검색', '이미지 파일 업로드'];
 
-  const [currentTab, setCurrentTab] = useRecoilState<TabName>(currentTabState);
+  const [currentTab, setCurrentTab] = useRecoilState<TabName>(currentTabAtom);
 
   const onClick = (tabName: TabName) => {
     setCurrentTab(tabName);
