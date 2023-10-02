@@ -1,8 +1,7 @@
-import React, { ReactNode } from "react";
+import React, { ReactNode, type PropsWithChildren } from 'react';
 
-interface ErrorBoundaryProps {
-  children: ReactNode;
-  fallback?: ReactNode;
+interface ErrorBoundaryProps extends PropsWithChildren {
+  fallback: ReactNode;
 }
 
 interface ErrorBoundaryState {

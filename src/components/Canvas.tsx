@@ -1,7 +1,8 @@
 import { Coord, ImageState } from 'custom-type';
 import React, { useEffect, useRef, useState } from 'react';
 import { useRecoilState } from 'recoil';
-import { currentImageState } from '../store/index';
+import { currentImageState } from '@/store/index';
+import { getCanvasImageData } from '@/utils/get-canvas-image-data';
 
 export default function Canvas() {
   const canvasWrapperRef = useRef<HTMLDivElement>(null);
