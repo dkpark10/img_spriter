@@ -28,7 +28,7 @@ export const getCanvasImageData = (
     // eslint-disable-next-line no-continue
     if (isNonColorPixel({ r, g, b, a })) continue;
     const pixelY = Math.floor(i / 4 / width);
-    const pixelX = (i / 4) % width;
+    const pixelX = Math.floor((i / 4) % width);
 
     colorPixelData[pixelY][pixelX] = { r, g, b, a };
   }

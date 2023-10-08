@@ -39,7 +39,7 @@ export default function ImageScaleRangeBar() {
           min={0.5}
           max={1.5}
           step={0.02}
-          value={currentScale}
+          value={imageState.scale}
           onChange={onChange}
         />
       </div>

@@ -31,17 +31,26 @@ export default function Canvas() {
       image.alt = 'target_image';
 
       image.onload = () => {
-        ctx.current = canvasRef.current?.getContext('2d');
+        ctx.current = canvasRef.current?.getContext('2d', { willReadFrequently: true });
 
         if (!ctx.current) return;
         ctx.current.drawImage(image, 0, 0);
-        const extractedColorPixelData = getCanvasImageData(ctx.current, 0, 0, image.naturalWidth, image.naturalHeight);
+        const imageWidth = image.naturalWidth * imageState.scale;
+        const imageHeight = image.naturalHeight * imageState.scale;
+
+        const extractedColorPixelData = getCanvasImageData(
+          ctx.current,
+          0,
+          0,
+          Math.floor(imageWidth),
+          Math.floor(imageHeight),
+        );
 
         setImageState((prev: ImageState) => ({
           ...prev,
           loadError: false,
-          imageSizeWidth: image.naturalWidth,
-          imageSizeHeight: image.naturalHeight,
+          imageSizeWidth: imageWidth,
+          imageSizeHeight: imageHeight,
           colorPixelData: extractedColorPixelData,
         }));
       };
@@ -57,7 +66,7 @@ export default function Canvas() {
       isDown: false,
       isMove: false,
     });
-  }, [imageState.src, setImageState]);
+  }, [imageState.src, setImageState, imageState.scale]);
 
   const onMouseDown = (e: React.MouseEvent<HTMLCanvasElement>) => {
     if (!canvasRef.current || !canvasWrapperRef.current || !ctx.current) {
@@ -66,10 +75,7 @@ export default function Canvas() {
 
     ctx.current.strokeStyle = '#ff0077';
     ctx.current.lineWidth = 1;
-    setMouseAction((prev) => ({
-      ...prev,
-      isDown: true,
-    }));
+    setMouseAction((prev) => ({ ...prev, isDown: true }));
 
     const { offsetTop, offsetLeft } = canvasWrapperRef.current;
     const y = e.pageY - offsetTop;
@@ -81,10 +87,7 @@ export default function Canvas() {
   const onMouseMove = (e: React.MouseEvent<HTMLCanvasElement>) => {
     if (!canvasRef.current || !canvasWrapperRef.current || !ctx.current || mouseAction.isDown === false) return;
 
-    setMouseAction((prev) => ({
-      ...prev,
-      isMove: true,
-    }));
+    setMouseAction((prev) => ({ ...prev, isMove: true }));
 
     const { offsetLeft, offsetTop } = canvasWrapperRef.current;
     const mouseCoordY = e.pageY - offsetTop;
@@ -139,16 +142,8 @@ export default function Canvas() {
       );
     }
 
-    setMouseAction({
-      isDown: false,
-      isMove: false,
-    });
-
-    setCurrentCoord((prev) => ({
-      ...prev,
-      y: 0,
-      x: 0,
-    }));
+    setMouseAction({ isDown: false, isMove: false });
+    setCurrentCoord((prev) => ({ ...prev, y: 0, x: 0 }));
   };
 
   return (
