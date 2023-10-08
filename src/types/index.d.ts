@@ -19,10 +19,10 @@ declare module 'custom-type' {
   type TabName = '이미지 경로 검색' | '이미지 파일 업로드';
 
   interface ColorPixelData {
-    r: number;
-    g: number;
-    b: number;
-    a: number;
+    r: string;
+    g: string;
+    b: string;
+    a: string;
   }
 
   type ColorPixelDataList = Array<Array<ColorPixelData>>;

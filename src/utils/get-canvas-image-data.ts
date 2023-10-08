@@ -2,7 +2,7 @@ import type { ColorPixelData, ColorPixelDataList } from 'custom-type';
 
 export const isNonColorPixel = (colorPixelData: ColorPixelData) => {
   const { r, g, b, a } = colorPixelData;
-  return r === 0 || g === 0 || b === 0 || a === 0;
+  return r === '0' || g === '0' || b === '0' || a === '0';
 };
 
 export const getCanvasImageData = (
@@ -15,15 +15,15 @@ export const getCanvasImageData = (
   const imageData = ctx.getImageData(x, y, width, height);
   const pixelData = imageData.data;
   const colorPixelData: ColorPixelDataList = Array.from({ length: height }, () =>
-    Array.from({ length: width }, () => ({ r: 0, g: 0, b: 0, a: 0 })),
+    Array.from({ length: width }, () => ({ r: '0', g: '0', b: '0', a: '0' })),
   );
 
   const len = pixelData.length;
   for (let i = 0; i < len; i += 4) {
-    const r = pixelData[i];
-    const g = pixelData[i + 1];
-    const b = pixelData[i + 2];
-    const a = pixelData[i + 3];
+    const r = String(pixelData[i]);
+    const g = String(pixelData[i + 1]);
+    const b = String(pixelData[i + 2]);
+    const a = String(pixelData[i + 3]);
 
     // eslint-disable-next-line no-continue
     if (isNonColorPixel({ r, g, b, a })) continue;
