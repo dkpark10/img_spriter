@@ -1,15 +1,10 @@
 import { TabName, ImageState } from 'custom-type';
 import { atom, selector } from 'recoil';
 
-export const RECT_SIZE = 'rectSize';
 export const PATH_IMG_SRC = 'pathImageSrc';
 export const FILE_IMG_SRC = 'fileImageSrc';
-export const IMG_SIZE = 'imageSize';
-export const SCALE_SIZE = 'scaleSize';
-export const IMAGE_LOAD = 'imageLoad';
 export const CURRENT_TAB = 'currentTab';
 export const CURRENT_IMAGE_STATE = 'currentImageState';
-export const PIXEL_DATA = 'pixelData';
 
 export const currentTabAtom = atom<TabName>({
   key: CURRENT_TAB,
