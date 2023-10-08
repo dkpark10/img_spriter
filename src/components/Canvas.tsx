@@ -34,9 +34,10 @@ export default function Canvas() {
         ctx.current = canvasRef.current?.getContext('2d', { willReadFrequently: true });
 
         if (!ctx.current) return;
-        ctx.current.drawImage(image, 0, 0);
         const imageWidth = image.naturalWidth * imageState.scale;
         const imageHeight = image.naturalHeight * imageState.scale;
+        ctx.current.scale(imageState.scale, imageState.scale);
+        ctx.current.drawImage(image, 0, 0, imageWidth, imageHeight);
 
         const extractedColorPixelData = getCanvasImageData(
           ctx.current,
