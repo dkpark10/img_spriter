@@ -1,4 +1,5 @@
-import React, { PropsWithChildren, useEffect, useRef } from 'react';
+import { HexColor } from 'custom-type';
+import { PropsWithChildren, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { IoMdColorFill } from 'react-icons/io';
 import { TbBoxAlignBottomRightFilled, TbBoxAlignBottomRight } from 'react-icons/tb';
@@ -53,8 +54,7 @@ export default function ToolBox() {
             name="color"
             value={colorRect}
             onChange={(e) => {
-              console.log(e.target.value);
-              setColorRect(e.target.value);
+              setColorRect(e.target.value as HexColor);
             }}
           />
           <IoMdColorFill size={23} />

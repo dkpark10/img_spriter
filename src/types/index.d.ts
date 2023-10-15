@@ -40,4 +40,6 @@ declare module 'custom-type' {
     loadError: boolean;
     colorPixelData: ColorPixelDataList;
   }
+
+  type HexColor = `#${string}`;
 }
