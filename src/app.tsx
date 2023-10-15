@@ -10,7 +10,7 @@ import {
   ImageLoadError,
   ToolBox,
 } from './components';
-import { currentImageState } from '@/store/index';
+import { currentImageState } from '@/store';
 
 export default function App() {
   const imageState = useRecoilValue(currentImageState);

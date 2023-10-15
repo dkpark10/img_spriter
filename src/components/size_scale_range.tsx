@@ -1,7 +1,7 @@
 import { ImageState } from 'custom-type';
 import React, { useState } from 'react';
 import { useRecoilState } from 'recoil';
-import { currentImageState } from '@/store/index';
+import { currentImageState } from '@/store';
 import { debounce } from '@/utils/debounce';
 
 export default function ImageScaleRangeBar() {

@@ -1,7 +1,7 @@
 import type { Coord, ImageState } from 'custom-type';
 import React, { useEffect, useRef, useState } from 'react';
-import { useRecoilState } from 'recoil';
-import { currentImageState } from '@/store/index';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { currentImageState, currentRectColor } from '@/store';
 import { getCanvasImageData, isNonColorPixel } from '@/utils/get-canvas-image-data';
 import { getColorPixelMaxSize } from '@/utils/bfs-color-pixel';
 
@@ -22,6 +22,7 @@ export default function Canvas() {
 
   const [currentCoord, setCurrentCoord] = useState<Coord>({ y: 0, x: 0 });
   const [imageState, setImageState] = useRecoilState<ImageState>(currentImageState);
+  const rectColor = useRecoilValue(currentRectColor);
 
   useEffect(() => {
     const drawImage = () => {
@@ -74,7 +75,7 @@ export default function Canvas() {
       return;
     }
 
-    ctx.current.strokeStyle = '#ff0077';
+    ctx.current.strokeStyle = rectColor;
     ctx.current.lineWidth = 1;
     setMouseAction((prev) => ({ ...prev, isDown: true }));
 
