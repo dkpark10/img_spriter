@@ -7,5 +7,6 @@ import Footer from './footer';
 import SizeScaleRangeBar from './size_scale_range';
 import SlicedImage from './slicedimg';
 import ImageLoadError from './img_load_err';
+import ToolBox from './tool-box';
 
-export { Canvas, CodeArea, Header, Title, Footer, SizeScaleRangeBar, SlicedImage, DragBox, ImageLoadError };
+export { Canvas, CodeArea, Header, Title, Footer, SizeScaleRangeBar, SlicedImage, DragBox, ImageLoadError, ToolBox };
