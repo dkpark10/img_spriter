@@ -1,4 +1,4 @@
-import type { Coord, ImageState } from 'custom-type';
+import type { Coord, ImageState, ColorPixelDataList } from 'custom-type';
 import React, { useEffect, useRef, useState } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { currentImageState, currentRectColor } from '@/store';
@@ -14,6 +14,7 @@ export default function Canvas() {
   const canvasWrapperRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const ctx = useRef<CanvasRenderingContext2D | null | undefined>(null);
+  const [colorPixelData, setColorPixelData] = useState<ColorPixelDataList>([]);
 
   const [mouseAction, setMouseAction] = useState({
     isDown: false,
@@ -40,21 +41,16 @@ export default function Canvas() {
         ctx.current.scale(imageState.scale, imageState.scale);
         ctx.current.drawImage(image, 0, 0, imageWidth, imageHeight);
 
-        const extractedColorPixelData = getCanvasImageData(
-          ctx.current,
-          0,
-          0,
-          Math.floor(imageWidth),
-          Math.floor(imageHeight),
-        );
+        setColorPixelData(getCanvasImageData(ctx.current, 0, 0, Math.floor(imageWidth), Math.floor(imageHeight)));
 
-        setImageState((prev: ImageState) => ({
-          ...prev,
-          loadError: false,
-          imageSizeWidth: imageWidth,
-          imageSizeHeight: imageHeight,
-          colorPixelData: extractedColorPixelData,
-        }));
+        setImageState(
+          (prev): ImageState => ({
+            ...prev,
+            loadError: false,
+            imageSizeWidth: imageWidth,
+            imageSizeHeight: imageHeight,
+          }),
+        );
       };
 
       image.onerror = () => {
@@ -64,10 +60,7 @@ export default function Canvas() {
 
     drawImage();
     setCurrentCoord({ y: 0, x: 0 });
-    setMouseAction({
-      isDown: false,
-      isMove: false,
-    });
+    setMouseAction({ isDown: false, isMove: false });
   }, [imageState.src, setImageState, imageState.scale]);
 
   const onMouseDown = (e: React.MouseEvent<HTMLCanvasElement>) => {
@@ -118,7 +111,7 @@ export default function Canvas() {
     if (!canvasRef.current || !canvasWrapperRef.current || !ctx.current) return;
 
     const { y, x } = currentCoord;
-    const { imageSizeWidth, imageSizeHeight, colorPixelData } = imageState;
+    const { imageSizeWidth, imageSizeHeight } = imageState;
 
     /** @description 마우스를 이동하지 않고 클릭만 했다면 */
     if (colorPixelData.length >= 1 && !isNonColorPixel(colorPixelData[y][x]) && mouseAction.isMove === false) {

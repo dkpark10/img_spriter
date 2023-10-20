@@ -24,7 +24,6 @@ export const pathImageAtom = atom<ImageState>({
     imageSizeHeight: 0,
     scale: 1,
     loadError: false,
-    colorPixelData: [],
   },
 
   // default: 'https://s.pstatic.net/static/www/img/uit/sp_weather_time_b8ecd0.png',
@@ -46,7 +45,6 @@ export const fileImageAtom = atom<ImageState>({
     imageSizeHeight: 0,
     scale: 1,
     loadError: false,
-    colorPixelData: [],
   },
 });
 

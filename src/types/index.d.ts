@@ -38,7 +38,6 @@ declare module 'custom-type' {
     imageSizeHeight: number;
     scale: number;
     loadError: boolean;
-    colorPixelData: ColorPixelDataList;
   }
 
   type HexColor = `#${string}`;
