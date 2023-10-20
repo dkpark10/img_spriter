@@ -121,7 +121,7 @@ export default function Canvas() {
     const { imageSizeWidth, imageSizeHeight, colorPixelData } = imageState;
 
     /** @description 마우스를 이동하지 않고 클릭만 했다면 */
-    if (!isNonColorPixel(colorPixelData[y][x]) && mouseAction.isMove === false) {
+    if (colorPixelData.length >= 1 && !isNonColorPixel(colorPixelData[y][x]) && mouseAction.isMove === false) {
       const [left, top, drawWidth, drawHeight] = getColorPixelMaxSize(
         y,
         x,
