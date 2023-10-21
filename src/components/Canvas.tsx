@@ -68,7 +68,15 @@ export default function Canvas() {
     const imageHeight = imageRef.current.naturalHeight * imageState.scale;
     ctx.current.drawImage(imageRef.current, 0, 0, imageWidth, imageHeight);
     setColorPixelData(getCanvasImageData(ctx.current, 0, 0, Math.floor(imageWidth), Math.floor(imageHeight)));
-  }, [imageState.scale]);
+
+    setImageState(
+      (prev): ImageState => ({
+        ...prev,
+        imageSizeWidth: imageWidth,
+        imageSizeHeight: imageHeight,
+      }),
+    );
+  }, [imageState.scale, setImageState]);
 
   const onMouseDown = (e: React.MouseEvent<HTMLCanvasElement>) => {
     if (!canvasRef.current || !canvasWrapperRef.current || !ctx.current) {
