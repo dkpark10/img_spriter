@@ -13,6 +13,7 @@ const drawRect = (ctx: CanvasRenderingContext2D, l: number, t: number, w: number
 export default function Canvas() {
   const canvasWrapperRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const imageRef = useRef<HTMLImageElement>(new Image());
   const ctx = useRef<CanvasRenderingContext2D | null | undefined>(null);
   const [colorPixelData, setColorPixelData] = useState<ColorPixelDataList>([]);
 
@@ -31,17 +32,15 @@ export default function Canvas() {
       image.crossOrigin = 'Anonymous';
       image.src = imageState.src;
       image.alt = 'target_image';
+      imageRef.current = image;
 
       image.onload = () => {
         ctx.current = canvasRef.current?.getContext('2d', { willReadFrequently: true });
 
         if (!ctx.current) return;
-        const imageWidth = image.naturalWidth * imageState.scale;
-        const imageHeight = image.naturalHeight * imageState.scale;
-        ctx.current.scale(imageState.scale, imageState.scale);
+        const imageWidth = image.naturalWidth;
+        const imageHeight = image.naturalHeight;
         ctx.current.drawImage(image, 0, 0, imageWidth, imageHeight);
-
-        setColorPixelData(getCanvasImageData(ctx.current, 0, 0, Math.floor(imageWidth), Math.floor(imageHeight)));
 
         setImageState(
           (prev): ImageState => ({
@@ -61,7 +60,15 @@ export default function Canvas() {
     drawImage();
     setCurrentCoord({ y: 0, x: 0 });
     setMouseAction({ isDown: false, isMove: false });
-  }, [imageState.src, setImageState, imageState.scale]);
+  }, [imageState.src, setImageState]);
+
+  useEffect(() => {
+    if (!ctx.current) return;
+    const imageWidth = imageRef.current.naturalWidth * imageState.scale;
+    const imageHeight = imageRef.current.naturalHeight * imageState.scale;
+    ctx.current.drawImage(imageRef.current, 0, 0, imageWidth, imageHeight);
+    setColorPixelData(getCanvasImageData(ctx.current, 0, 0, Math.floor(imageWidth), Math.floor(imageHeight)));
+  }, [imageState.scale]);
 
   const onMouseDown = (e: React.MouseEvent<HTMLCanvasElement>) => {
     if (!canvasRef.current || !canvasWrapperRef.current || !ctx.current) {
