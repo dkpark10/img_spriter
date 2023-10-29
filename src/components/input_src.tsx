@@ -16,7 +16,7 @@ export default function Header() {
             ...prev,
             src: src[0],
             isLocal: false,
-            loadError: false,
+            loadSuccess: true,
           }),
         );
       }, 250),

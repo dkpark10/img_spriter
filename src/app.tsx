@@ -19,7 +19,7 @@ export default function App() {
       <ToolBox />
       <Title />
       <Header />
-      {!imageState.loadError && imageState.src ? (
+      {imageState.src ? (
         <>
           <CodeArea />
           <SizeScaleRangeBar />
