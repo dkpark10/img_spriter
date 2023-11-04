@@ -36,7 +36,6 @@ declare module 'custom-type' {
     rectHeight: number;
     imageSizeWidth: number;
     imageSizeHeight: number;
-    scale: number;
     loadSuccess: boolean;
   }
 

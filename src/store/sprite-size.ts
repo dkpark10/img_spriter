@@ -22,7 +22,6 @@ export const pathImageAtom = atom<ImageState>({
     rectHeight: 0,
     imageSizeWidth: 0,
     imageSizeHeight: 0,
-    scale: 1,
     loadSuccess: false,
   },
 
@@ -43,7 +42,6 @@ export const fileImageAtom = atom<ImageState>({
     rectHeight: 0,
     imageSizeWidth: 0,
     imageSizeHeight: 0,
-    scale: 1,
     loadSuccess: false,
   },
 });

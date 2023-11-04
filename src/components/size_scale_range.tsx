@@ -1,20 +1,27 @@
 import { ImageState } from 'custom-type';
-import React from 'react';
-import { useRecoilState } from 'recoil';
+import React, { useState } from 'react';
+import { useSetRecoilState } from 'recoil';
 import { currentImageState } from '@/store';
 
 export default function ImageScaleRangeBar() {
-  const [imageState, setImageState] = useRecoilState<ImageState>(currentImageState);
+  const setImageState = useSetRecoilState<ImageState>(currentImageState);
+
+  const [scale, setScale] = useState(1);
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setImageState((prev) => ({
-      ...prev,
-      scale: Number(e.target.value),
-      rectHeight: 0,
-      rectWidth: 0,
-      rectCoordX: 0,
-      rectCoordY: 0,
-    }));
+    const sc = Number(e.target.value);
+    setScale(sc);
+    setImageState(
+      (prev): ImageState => ({
+        ...prev,
+        imageSizeHeight: Math.floor(prev.imageSizeHeight * sc),
+        imageSizeWidth: Math.floor(prev.imageSizeWidth * sc),
+        rectHeight: 0,
+        rectWidth: 0,
+        rectCoordX: 0,
+        rectCoordY: 0,
+      }),
+    );
   };
 
   return (
@@ -22,7 +29,7 @@ export default function ImageScaleRangeBar() {
       <div>
         <div className="text-center">
           이미지 사이즈 조절:&nbsp;
-          {imageState.scale}
+          {scale}
         </div>
         <input
           data-testid="scale_bar"
@@ -32,7 +39,7 @@ export default function ImageScaleRangeBar() {
           min={0.5}
           max={1.5}
           step={0.02}
-          value={imageState.scale}
+          value={scale}
           onChange={onChange}
         />
       </div>
