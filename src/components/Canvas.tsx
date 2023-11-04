@@ -154,7 +154,6 @@ export default function Canvas() {
           ref={canvasRef}
           width={`${Math.floor(imageState.imageSizeWidth)}`}
           height={`${Math.floor(imageState.imageSizeHeight)}`}
-          style={{ backgroundImage: `url(${imageState.src})` }}
           onMouseDown={onMouseDown}
           onMouseMove={onMouseMove}
           onMouseUp={onMouseUp}
