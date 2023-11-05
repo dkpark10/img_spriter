@@ -5,6 +5,7 @@
     "moduleResolution": "node",
     "noResolve": false,
     "strictNullChecks": true,
+    "resolveJsonModule": true,
     "noImplicitAny": true, // any 타입 명시 안할 시
     "removeComments": false, // 컴파일시 주석 제거
     "sourceMap": true,
