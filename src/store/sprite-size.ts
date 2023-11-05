@@ -46,7 +46,7 @@ export const fileImageAtom = atom<ImageState>({
   },
 });
 
-export const currentImageState = selector({
+export const currentImageState = selector<ImageState>({
   key: CURRENT_IMAGE_STATE,
   get: ({ get }) => {
     const currentTab = get(currentTabAtom);
