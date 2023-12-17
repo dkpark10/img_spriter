@@ -10,7 +10,7 @@
     "cy:run": "cypress run --browser chrome --config baseUrl=http://localhost:3000",
     "dev": "webpack-dev-server --config webpack.dev.js",
     "build": "webpack --config webpack.prod.js",
-    "predeploy": "yarn build",
+    "predeploy": "pnpm build",
     "deploy": "gh-pages -d dist",
     "lint": "eslint './src/**/*.{ts,tsx,js,jsx}'",
     "lint:fix": "eslint --fix \"./src/**/*.{ts,tsx,js,jsx}\""
@@ -75,6 +75,5 @@
     "react-dom": "^18.2.0",
     "react-icons": "^4.11.0",
     "recoil": "^0.7.7"
-  },
-  "packageManager": "yarn@3.6.1"
+  }
 }
