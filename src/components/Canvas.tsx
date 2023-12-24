@@ -5,6 +5,7 @@ import { currentImageState, currentRectColor } from '@/store';
 import { getCanvasImageData, isNonColorPixel } from '@/utils/get-canvas-image-data';
 import { getColorPixelMaxSize } from '@/utils/bfs-color-pixel';
 import { drawRectMultiple } from '@/utils//draw-rect-multiple';
+import ImageError from './img_load_err';
 
 export default function Canvas() {
   const canvasWrapperRef = useRef<HTMLDivElement>(null);
@@ -62,7 +63,7 @@ export default function Canvas() {
   }, [imageState.src, setImageState, drawImage]);
 
   useEffect(() => {
-    if (!ctx.current || !imageState.loadSuccess) return;
+    if (!ctx.current || !imageState.loadSuccess || !imageState.imageSizeWidth || !imageState.imageSizeHeight) return;
 
     drawImage(imageState.imageSizeWidth, imageState.imageSizeHeight);
     const colorPixData = getCanvasImageData(ctx.current, 0, 0, imageState.imageSizeWidth, imageState.imageSizeHeight);
@@ -147,6 +148,8 @@ export default function Canvas() {
     setMouseAction({ isDown: false, isMove: false });
     setCurrentCoord((prev) => ({ ...prev, y: 0, x: 0 }));
   };
+
+  if (!imageState.loadSuccess) return <ImageError />;
 
   return (
     <main className="flex justify-center items-center">
