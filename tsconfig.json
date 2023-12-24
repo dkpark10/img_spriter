@@ -13,7 +13,6 @@
     "allowJs": true, // ts에서 js 파일을 import해서 사용할 지 여부
     "jsx": "react-jsx",
     "allowSyntheticDefaultImports": true,
-    "keyofStringsOnly": true,
     "outDir": "./build", // 컴파일 아웃풋 경로
     "strictPropertyInitialization": true, // 클래스 생성자에서 타입체크 강하게 여부
     "typeRoots": [
@@ -28,7 +27,6 @@
     "types": [
       "node",
       "cypress",
-      "@4tw/cypress-drag-drop"
     ],
     "baseUrl": ".",
     "paths": {
@@ -46,6 +44,5 @@
     "**/*.ts",
     "./src/**/*",
     "@types",
-    "cypress.config.ts"
   ],
 }

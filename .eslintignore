@@ -2,3 +2,4 @@ webpack.**.*
 **.config.*
 jest.*
 .eslintrc.*
+tests/**/*

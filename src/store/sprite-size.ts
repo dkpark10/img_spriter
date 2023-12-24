@@ -44,7 +44,7 @@ export const fileImageAtom = atom<ImageState>({
     rectHeight: 0,
     imageSizeWidth: 0,
     imageSizeHeight: 0,
-    loadSuccess: false,
+    loadSuccess: true,
     imageOriginWidth: 0,
     imageOriginHeight: 0,
   },
