@@ -14,8 +14,8 @@ export default function ImageScaleRangeBar() {
     setImageState(
       (prev): ImageState => ({
         ...prev,
-        imageSizeHeight: Math.floor(prev.imageSizeHeight * sc),
-        imageSizeWidth: Math.floor(prev.imageSizeWidth * sc),
+        imageSizeWidth: Math.floor(prev.imageOriginWidth * sc),
+        imageSizeHeight: Math.floor(prev.imageOriginHeight * sc),
         rectHeight: 0,
         rectWidth: 0,
         rectCoordX: 0,

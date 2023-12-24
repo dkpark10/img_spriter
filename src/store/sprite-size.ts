@@ -23,6 +23,8 @@ export const pathImageAtom = atom<ImageState>({
     imageSizeWidth: 0,
     imageSizeHeight: 0,
     loadSuccess: false,
+    imageOriginWidth: 0,
+    imageOriginHeight: 0,
   },
 
   // default: 'https://s.pstatic.net/static/www/img/uit/sp_weather_time_b8ecd0.png',
@@ -43,6 +45,8 @@ export const fileImageAtom = atom<ImageState>({
     imageSizeWidth: 0,
     imageSizeHeight: 0,
     loadSuccess: false,
+    imageOriginWidth: 0,
+    imageOriginHeight: 0,
   },
 });
 

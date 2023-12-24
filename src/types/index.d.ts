@@ -37,6 +37,8 @@ declare module 'custom-type' {
     imageSizeWidth: number;
     imageSizeHeight: number;
     loadSuccess: boolean;
+    imageOriginWidth: number;
+    imageOriginHeight: number;
   }
 
   type HexColor = `#${string}`;

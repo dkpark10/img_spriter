@@ -47,6 +47,8 @@ export default function Canvas() {
           loadSuccess: true,
           imageSizeWidth: w,
           imageSizeHeight: h,
+          imageOriginWidth: w,
+          imageOriginHeight: h,
         }),
       );
     };
