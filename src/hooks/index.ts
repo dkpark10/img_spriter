@@ -1,1 +1,1 @@
-export * from './useinput';
+export * from './use-input';
