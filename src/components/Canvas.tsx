@@ -47,6 +47,16 @@ export default function Canvas() {
           imageOriginHeight: h,
         }),
       );
+
+      if (!ctx.current) return;
+      ctx.current.strokeStyle = rectColor;
+      drawRectMultiple(
+        ctx.current,
+        imageState.rectCoordX,
+        imageState.rectCoordY,
+        imageState.rectWidth,
+        imageState.rectHeight,
+      );
     };
 
     image.onerror = () => {
@@ -55,7 +65,8 @@ export default function Canvas() {
 
     setCurrentCoord({ y: 0, x: 0 });
     setMouseAction({ isDown: false, isMove: false });
-  }, [imageState.src, setImageState]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [imageState.src]);
 
   useEffect(() => {
     if (!ctx.current || !imageState.loadSuccess || !imageState.imageSizeWidth || !imageState.imageSizeHeight) return;
