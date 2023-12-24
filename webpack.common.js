@@ -4,6 +4,8 @@ const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 // 정적 파일 복사 플러그인
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
+const PnpWebpackPlugin = require(`pnp-webpack-plugin`);
+
 // vanilla-extract css 사용 위한 플러그인
 const { VanillaExtractPlugin } = require('@vanilla-extract/webpack-plugin');
 
