@@ -1,5 +1,5 @@
 import type { Coord, ImageState, ColorPixelDataList } from 'custom-type';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useMemo, useEffect, useRef, useState } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { currentImageState, currentRectColor } from '@/store';
 import { getCanvasImageData, isNonColorPixel } from '@/utils/get-canvas-image-data';
@@ -13,7 +13,6 @@ export default function Canvas() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const imageRef = useRef<HTMLImageElement>(new Image());
   const ctx = useRef<CanvasRenderingContext2D | null | undefined>(null);
-  const [colorPixelData, setColorPixelData] = useState<ColorPixelDataList>([]);
 
   const [mouseAction, setMouseAction] = useState({
     isDown: false,
@@ -23,6 +22,28 @@ export default function Canvas() {
   const [currentCoord, setCurrentCoord] = useState<Coord>({ y: 0, x: 0 });
   const [imageState, setImageState] = useRecoilState<ImageState>(currentImageState);
   const rectColor = useRecoilValue(currentRectColor);
+
+  const [left, top, drawWidth, drawHeight] = useMemo(() => {
+    if (
+      !ctx.current ||
+      imageState.imageSizeWidth === 0 ||
+      imageState.imageSizeHeight === 0 ||
+      currentCoord.y === 0 ||
+      currentCoord.x === 0
+    )
+      return [0, 0, 0, 0];
+
+    const colorPixData = getCanvasImageData(ctx.current, 0, 0, imageState.imageSizeWidth, imageState.imageSizeHeight);
+
+    return getColorPixelMaxSize(
+      currentCoord.y,
+      currentCoord.x,
+      imageState.imageSizeWidth,
+      imageState.imageSizeHeight,
+      colorPixData,
+      2,
+    );
+  }, [currentCoord.y, currentCoord.x, imageState.imageSizeWidth, imageState.imageSizeHeight]);
 
   useEffect(() => {
     const image = new Image();
@@ -72,8 +93,6 @@ export default function Canvas() {
     if (!ctx.current || !imageState.loadSuccess || !imageState.imageSizeWidth || !imageState.imageSizeHeight) return;
 
     drawImage({ w: imageState.imageSizeWidth, h: imageState.imageSizeHeight, ctx, imageRef });
-    const colorPixData = getCanvasImageData(ctx.current, 0, 0, imageState.imageSizeWidth, imageState.imageSizeHeight);
-    setColorPixelData(colorPixData);
   }, [imageState.loadSuccess, setImageState, imageState.imageSizeHeight, imageState.imageSizeWidth]);
 
   const onMouseDown = (e: React.MouseEvent<HTMLCanvasElement>) => {
@@ -128,16 +147,7 @@ export default function Canvas() {
     const { imageSizeWidth, imageSizeHeight } = imageState;
 
     /** @description 마우스를 이동하지 않고 클릭만 했다면 */
-    if (colorPixelData.length >= 1 && !isNonColorPixel(colorPixelData[y][x]) && mouseAction.isMove === false) {
-      const [left, top, drawWidth, drawHeight] = getColorPixelMaxSize(
-        y,
-        x,
-        imageSizeWidth,
-        imageSizeHeight,
-        colorPixelData,
-        2,
-      );
-
+    if (mouseAction.isMove === false) {
       drawImage({ w: imageState.imageSizeWidth, h: imageState.imageSizeHeight, ctx, imageRef });
       drawRectMultiple(ctx.current, left, top, drawWidth, drawHeight);
       setImageState(

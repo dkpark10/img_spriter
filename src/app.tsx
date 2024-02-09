@@ -12,7 +12,7 @@ export default function App() {
       <CodeArea />
       <SizeScaleRangeBar />
       <Canvas />
-      <SlicedImage />
+      {/* <SlicedImage /> */}
       <Footer />
     </>
   );

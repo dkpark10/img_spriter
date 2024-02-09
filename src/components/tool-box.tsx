@@ -1,5 +1,5 @@
 import { HexColor } from 'custom-type';
-import { PropsWithChildren, useEffect, useRef } from 'react';
+import { PropsWithChildren, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { IoMdColorFill } from 'react-icons/io';
 import { TbBoxAlignBottomRightFilled, TbBoxAlignBottomRight } from 'react-icons/tb';
