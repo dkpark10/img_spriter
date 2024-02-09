@@ -6,12 +6,12 @@ import { getCanvasImageData, isNonColorPixel } from '@/utils/get-canvas-image-da
 import { getColorPixelMaxSize } from '@/utils/bfs-color-pixel';
 import { drawRectMultiple } from '@/utils//draw-rect-multiple';
 import { drawImage } from '@/utils/draw-image';
+import { useDrawImage } from '@/hooks/use-draw-image';
 import ImageError from './img_load_err';
 
 export default function Canvas() {
   const canvasWrapperRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const imageRef = useRef<HTMLImageElement>(new Image());
   const ctx = useRef<CanvasRenderingContext2D | null | undefined>(null);
 
   const [mouseAction, setMouseAction] = useState({
@@ -21,6 +21,7 @@ export default function Canvas() {
 
   const [currentCoord, setCurrentCoord] = useState<Coord>({ y: 0, x: 0 });
   const [imageState, setImageState] = useRecoilState<ImageState>(currentImageState);
+  
   const rectColor = useRecoilValue(currentRectColor);
 
   const [left, top, drawWidth, drawHeight] = useMemo(() => {
@@ -45,15 +46,12 @@ export default function Canvas() {
     );
   }, [currentCoord.y, currentCoord.x, imageState.imageSizeWidth, imageState.imageSizeHeight]);
 
-  useEffect(() => {
-    const image = new Image();
-    image.crossOrigin = 'Anonymous';
-    image.src = imageState.src;
-    image.alt = 'target_image';
-    imageRef.current = image;
-    ctx.current = canvasRef.current?.getContext('2d', { willReadFrequently: true });
+  const imageRef = useDrawImage({
+    imgSrc: imageState.src,
+    onLoad: () => {
+      ctx.current = canvasRef.current?.getContext('2d', { willReadFrequently: true });
 
-    image.onload = () => {
+      if (!imageRef.current || !ctx.current) return;
       const w = imageRef.current.naturalWidth;
       const h = imageRef.current.naturalHeight;
 
@@ -69,7 +67,6 @@ export default function Canvas() {
         }),
       );
 
-      if (!ctx.current) return;
       ctx.current.strokeStyle = rectColor;
       drawRectMultiple(
         ctx.current,
@@ -78,22 +75,21 @@ export default function Canvas() {
         imageState.rectWidth,
         imageState.rectHeight,
       );
-    };
-
-    image.onerror = () => {
+    },
+    onError: () => {
       setImageState((prev): ImageState => ({ ...prev, loadSuccess: false }));
-    };
-
-    setCurrentCoord({ y: 0, x: 0 });
-    setMouseAction({ isDown: false, isMove: false });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [imageState.src]);
+    },
+    onFinal: () => {
+      setCurrentCoord({ y: 0, x: 0 });
+      setMouseAction({ isDown: false, isMove: false });
+    }
+  });
 
   useEffect(() => {
     if (!ctx.current || !imageState.loadSuccess || !imageState.imageSizeWidth || !imageState.imageSizeHeight) return;
 
     drawImage({ w: imageState.imageSizeWidth, h: imageState.imageSizeHeight, ctx, imageRef });
-  }, [imageState.loadSuccess, setImageState, imageState.imageSizeHeight, imageState.imageSizeWidth]);
+  }, [imageState.loadSuccess, imageState.imageSizeHeight, imageState.imageSizeWidth]);
 
   const onMouseDown = (e: React.MouseEvent<HTMLCanvasElement>) => {
     if (!canvasRef.current || !canvasWrapperRef.current || !ctx.current) {
@@ -142,9 +138,6 @@ export default function Canvas() {
 
   const onMouseUp = () => {
     if (!canvasRef.current || !canvasWrapperRef.current || !ctx.current) return;
-
-    const { y, x } = currentCoord;
-    const { imageSizeWidth, imageSizeHeight } = imageState;
 
     /** @description 마우스를 이동하지 않고 클릭만 했다면 */
     if (mouseAction.isMove === false) {
