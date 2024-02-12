@@ -42,4 +42,9 @@ declare module 'custom-type' {
   }
 
   type HexColor = `#${string}`;
+
+  interface OffsetPos {
+    offsetLeft: number;
+    offsetTop: number;
+  }
 }

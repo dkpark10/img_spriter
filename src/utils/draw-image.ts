@@ -5,8 +5,9 @@ interface DrawImageArgs {
   imageRef: React.MutableRefObject<HTMLImageElement | null>;
 }
 
-export const drawImage = ({ w, h, ctx, imageRef }: DrawImageArgs) => {
-  if (!ctx.current || !imageRef.current) return;
+export const drawImage = ({ w, h, ctx, imageRef }: DrawImageArgs): void => {
+  if (ctx.current === null || ctx.current === undefined) return;
+  if (imageRef.current === null) return;
   ctx.current.clearRect(0, 0, w, h);
   ctx.current.drawImage(imageRef.current, 0, 0, w, h);
 };

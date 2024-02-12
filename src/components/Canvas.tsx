@@ -1,4 +1,4 @@
-import type { Coord, ImageState } from 'custom-type';
+import type { Coord, ImageState, OffsetPos } from 'custom-type';
 import React, { useMemo, useEffect, useRef, useState } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { currentImageState, currentRectColor } from '@/store';
@@ -11,6 +11,11 @@ import ImageError from './img_load_err';
 
 export default function Canvas(): JSX.Element {
   const canvasWrapperRef = useRef<HTMLDivElement>(null);
+  const canvasWrapperOffset = useRef<OffsetPos>({
+    offsetLeft: 0,
+    offsetTop: 0,
+  });
+
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const ctx = useRef<CanvasRenderingContext2D | null | undefined>(null);
 
@@ -111,7 +116,7 @@ export default function Canvas(): JSX.Element {
     ctx.current.lineWidth = 1;
     setMouseAction((prev) => ({ ...prev, isDown: true }));
 
-    const { offsetTop, offsetLeft } = canvasWrapperRef.current;
+    const { offsetTop, offsetLeft } = canvasWrapperOffset.current;
     const y = e.pageY - offsetTop;
     const x = e.pageX - offsetLeft;
 
@@ -125,7 +130,7 @@ export default function Canvas(): JSX.Element {
 
     setMouseAction((prev) => ({ ...prev, isMove: true }));
 
-    const { offsetLeft, offsetTop } = canvasWrapperRef.current;
+    const { offsetTop, offsetLeft } = canvasWrapperOffset.current;
     const mouseCoordY = e.pageY - offsetTop;
     const mouseCoordX = e.pageX - offsetLeft;
 
@@ -176,7 +181,18 @@ export default function Canvas(): JSX.Element {
 
   return (
     <main className="flex justify-center items-center">
-      <div className="relative border border-solid border-zinc-700" ref={canvasWrapperRef}>
+      <div
+        className="relative border border-solid border-zinc-700"
+        ref={(el) => {
+          if (el === null || el === undefined) return;
+          // @ts-expect-error: 린트 규칙 ...
+          canvasWrapperRef.current = el;
+          canvasWrapperOffset.current = {
+            offsetLeft: canvasWrapperRef.current.offsetLeft,
+            offsetTop: canvasWrapperRef.current.offsetTop,
+          };
+        }}
+      >
         <canvas
           className="bg-cover"
           ref={canvasRef}
