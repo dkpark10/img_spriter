@@ -25,7 +25,7 @@ declare module 'custom-type' {
     a: string;
   }
 
-  type ColorPixelDataList = Array<Array<ColorPixelData>>;
+  type ColorPixelDataList = ColorPixelData[][];
 
   interface ImageState {
     src: string;

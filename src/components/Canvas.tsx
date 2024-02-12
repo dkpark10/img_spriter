@@ -121,6 +121,7 @@ export default function Canvas(): JSX.Element {
   const onMouseMove = (e: React.MouseEvent<HTMLCanvasElement>): void => {
     if (ctx.current === null || ctx.current === undefined) return;
     if (canvasWrapperRef.current === null || canvasWrapperRef.current === undefined) return;
+    if (!mouseAction.isDown) return;
 
     setMouseAction((prev) => ({ ...prev, isMove: true }));
 
@@ -150,6 +151,7 @@ export default function Canvas(): JSX.Element {
   const onMouseUp = (): void => {
     if (ctx.current === null || ctx.current === undefined) return;
     if (canvasWrapperRef.current === null || canvasWrapperRef.current === undefined) return;
+    if (!mouseAction.isDown) return;
 
     /** @description 마우스를 이동하지 않고 클릭만 했다면 */
     if (!mouseAction.isMove) {
