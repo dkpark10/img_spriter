@@ -30,7 +30,7 @@ export default function App(): JSX.Element {
 
   return (
     <>
-      <span className="hidden" data-version={packageInfo.version ?? '1.5.1'} />
+      <span className="hidden" data-version={packageInfo.version ?? '1.6.0'} />
       <ToolBox />
       <Title />
       <Header />
