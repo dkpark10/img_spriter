@@ -1,9 +1,7 @@
-/* eslint-disable react/jsx-one-expression-per-line */
-import React from 'react';
 import { useRecoilValue } from 'recoil';
 import { currentImageState } from '../store/index';
 
-export default function CodeArea() {
+export default function CodeArea(): JSX.Element {
   const imageState = useRecoilValue(currentImageState);
 
   return (

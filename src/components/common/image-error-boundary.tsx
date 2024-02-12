@@ -1,4 +1,4 @@
-import React, { ReactNode, type PropsWithChildren } from 'react';
+import React, { type ReactNode, type PropsWithChildren } from 'react';
 
 interface ErrorBoundaryProps extends PropsWithChildren {
   fallback: ReactNode;
@@ -14,15 +14,15 @@ export default class ImageErrorBoundary extends React.Component<ErrorBoundaryPro
     this.state = { hasError: false };
   }
 
-  static getDerivedStateFromError() {
+  static getDerivedStateFromError(): ErrorBoundaryState {
     return { hasError: true };
   }
 
-  componentDidCatch(error: Error) {
+  componentDidCatch(error: Error): void {
     console.error(error);
   }
 
-  render() {
+  render(): ReactNode {
     const { hasError } = this.state;
     const { children, fallback } = this.props;
 

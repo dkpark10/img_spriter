@@ -1,14 +1,14 @@
-import { ImageState } from 'custom-type';
+import type { ImageState } from 'custom-type';
 import React, { useState } from 'react';
 import { useSetRecoilState } from 'recoil';
 import { currentImageState } from '@/store';
 
-export default function ImageScaleRangeBar() {
+export default function ImageScaleRangeBar(): JSX.Element {
   const setImageState = useSetRecoilState<ImageState>(currentImageState);
 
   const [scale, setScale] = useState(1);
 
-  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const sc = Number(e.target.value);
     setScale(sc);
     setImageState(

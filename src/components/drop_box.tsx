@@ -1,20 +1,20 @@
-import { ImageState } from 'custom-type';
+import type { ImageState } from 'custom-type';
 import React, { useRef, useState } from 'react';
 import { useSetRecoilState } from 'recoil';
 import { fileImageAtom } from '@/store';
 
-export default function DropDropBox() {
+export default function DropDropBox(): JSX.Element {
   const setImageSrc = useSetRecoilState<ImageState>(fileImageAtom);
 
   const inputFileRef = useRef<HTMLInputElement>(null);
 
   const [isDarg, setIsDrag] = useState(false);
 
-  const onClick = () => {
+  const onClick = (): void => {
     inputFileRef.current?.click();
   };
 
-  const readFile = (file: File) => {
+  const readFile = (file: File): void => {
     const reader = new FileReader();
     reader.onload = (event: ProgressEvent<FileReader>) => {
       if (typeof event.target?.result !== 'string') {
@@ -33,32 +33,30 @@ export default function DropDropBox() {
     reader.readAsDataURL(file);
   };
 
-  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!e.target.files) {
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    if (e.target.files === null) {
       return;
     }
 
     readFile(e.target.files[0]);
   };
 
-  const onDragEnter = (e: React.DragEvent<HTMLButtonElement>) => {
+  const onDragEnter = (e: React.DragEvent<HTMLButtonElement>): void => {
     e.preventDefault();
     e.stopPropagation();
     setIsDrag(true);
   };
 
-  const onDragLeave = (e: React.DragEvent<HTMLButtonElement>) => {
+  const onDragLeave = (e: React.DragEvent<HTMLButtonElement>): void => {
     e.preventDefault();
     e.stopPropagation();
     setIsDrag(false);
   };
 
-  const onDrop = (e: React.DragEvent<HTMLButtonElement>) => {
+  const onDrop = (e: React.DragEvent<HTMLButtonElement>): void => {
     e.preventDefault();
     e.stopPropagation();
-    if (isDarg === false) {
-      return;
-    }
+    if (!isDarg) return;
 
     readFile(e.dataTransfer?.files[0]);
   };

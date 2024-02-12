@@ -1,12 +1,12 @@
-import { TabName } from 'custom-type';
+import type { TabName } from 'custom-type';
 import { useRecoilState } from 'recoil';
+import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import InputSrc from './input_src';
 import DropBox from './drop_box';
 import { currentTabAtom } from '@/store';
-import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
 
-export default function Header() {
+export default function Header(): JSX.Element {
   const tabNames: TabName[] = ['이미지 경로 검색', '이미지 파일 업로드'];
 
   const [currentTab, setCurrentTab] = useRecoilState<TabName>(currentTabAtom);
@@ -16,8 +16,14 @@ export default function Header() {
   return (
     <>
       <header>
-        <Tabs className="w-full flex justify-center items-center my-8 border-b-2 border-solid border-blue-600" selectedIndex={tabIndex} onSelect={(idx) => setCurrentTab(tabNames[idx])}>
-          <TabList className='flex justify-between'>
+        <Tabs
+          className="w-full flex justify-center items-center my-8 border-b-2 border-solid border-blue-600"
+          selectedIndex={tabIndex}
+          onSelect={(idx) => {
+            setCurrentTab(tabNames[idx]);
+          }}
+        >
+          <TabList className="flex justify-between">
             {tabNames.map((tabName, idx) => {
               const currentTabClass = currentTab === tabName ? 'text-white bg-blue-600' : '';
 

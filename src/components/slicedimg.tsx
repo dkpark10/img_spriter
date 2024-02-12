@@ -1,9 +1,9 @@
-import { ImageState } from 'custom-type';
+import type { ImageState } from 'custom-type';
 import React, { useEffect } from 'react';
 import { useRecoilState } from 'recoil';
 import { currentImageState } from '../store/index';
 
-export default function SlicedImage() {
+export default function SlicedImage(): JSX.Element {
   const [imageState, setImageState] = useRecoilState<ImageState>(currentImageState);
 
   useEffect(() => {

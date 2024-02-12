@@ -1,11 +1,11 @@
-import { ImageState } from 'custom-type';
+import type { ImageState } from 'custom-type';
 import { useMemo } from 'react';
 import { useRecoilState } from 'recoil';
 import { pathImageAtom } from '@/store';
 import { debounce } from '@/utils';
 import { useInput } from '@/hooks';
 
-export default function Header() {
+export default function Header(): JSX.Element {
   const [imgSrc, setImageSrc] = useRecoilState<ImageState>(pathImageAtom);
 
   const debounceChangeSrc = useMemo(

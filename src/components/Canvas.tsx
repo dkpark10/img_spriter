@@ -1,15 +1,15 @@
-import type { Coord, ImageState, ColorPixelDataList } from 'custom-type';
+import type { Coord, ImageState } from 'custom-type';
 import React, { useMemo, useEffect, useRef, useState } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { currentImageState, currentRectColor } from '@/store';
-import { getCanvasImageData, isNonColorPixel } from '@/utils/get-canvas-image-data';
+import { getCanvasImageData } from '@/utils/get-canvas-image-data';
 import { getColorPixelMaxSize } from '@/utils/bfs-color-pixel';
 import { drawRectMultiple } from '@/utils//draw-rect-multiple';
 import { drawImage } from '@/utils/draw-image';
 import { useDrawImage } from '@/hooks/use-draw-image';
 import ImageError from './img_load_err';
 
-export default function Canvas() {
+export default function Canvas(): JSX.Element {
   const canvasWrapperRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const ctx = useRef<CanvasRenderingContext2D | null | undefined>(null);
@@ -21,12 +21,13 @@ export default function Canvas() {
 
   const [currentCoord, setCurrentCoord] = useState<Coord>({ y: 0, x: 0 });
   const [imageState, setImageState] = useRecoilState<ImageState>(currentImageState);
-  
+
   const rectColor = useRecoilValue(currentRectColor);
 
   const [left, top, drawWidth, drawHeight] = useMemo(() => {
     if (
-      !ctx.current ||
+      ctx.current === undefined ||
+      ctx.current === null ||
       imageState.imageSizeWidth === 0 ||
       imageState.imageSizeHeight === 0 ||
       currentCoord.y === 0 ||
@@ -51,7 +52,9 @@ export default function Canvas() {
     onLoad: () => {
       ctx.current = canvasRef.current?.getContext('2d', { willReadFrequently: true });
 
-      if (!imageRef.current || !ctx.current) return;
+      if (imageRef.current === null || ctx.current === null) return;
+      if (ctx.current === null || ctx.current === undefined) return;
+
       const w = imageRef.current.naturalWidth;
       const h = imageRef.current.naturalHeight;
 
@@ -82,19 +85,26 @@ export default function Canvas() {
     onFinal: () => {
       setCurrentCoord({ y: 0, x: 0 });
       setMouseAction({ isDown: false, isMove: false });
-    }
+    },
   });
 
   useEffect(() => {
-    if (!ctx.current || !imageState.loadSuccess || !imageState.imageSizeWidth || !imageState.imageSizeHeight) return;
-
-    drawImage({ w: imageState.imageSizeWidth, h: imageState.imageSizeHeight, ctx, imageRef });
-  }, [imageState.loadSuccess, imageState.imageSizeHeight, imageState.imageSizeWidth]);
-
-  const onMouseDown = (e: React.MouseEvent<HTMLCanvasElement>) => {
-    if (!canvasRef.current || !canvasWrapperRef.current || !ctx.current) {
+    if (
+      ctx.current === undefined ||
+      ctx.current === null ||
+      !imageState.loadSuccess ||
+      imageState.imageSizeWidth === null ||
+      imageState.imageSizeHeight === null
+    ) {
       return;
     }
+
+    drawImage({ w: imageState.imageSizeWidth, h: imageState.imageSizeHeight, ctx, imageRef });
+  }, [imageState.loadSuccess, imageState.imageSizeHeight, imageState.imageSizeWidth, imageRef]);
+
+  const onMouseDown = (e: React.MouseEvent<HTMLCanvasElement>): void => {
+    if (ctx.current === null || ctx.current === undefined) return;
+    if (canvasWrapperRef.current === null || canvasWrapperRef.current === undefined) return;
 
     drawImage({ w: imageState.imageSizeWidth, h: imageState.imageSizeHeight, ctx, imageRef });
     ctx.current.strokeStyle = rectColor;
@@ -108,8 +118,9 @@ export default function Canvas() {
     setCurrentCoord((prev) => ({ ...prev, y, x }));
   };
 
-  const onMouseMove = (e: React.MouseEvent<HTMLCanvasElement>) => {
-    if (!canvasRef.current || !canvasWrapperRef.current || !ctx.current || mouseAction.isDown === false) return;
+  const onMouseMove = (e: React.MouseEvent<HTMLCanvasElement>): void => {
+    if (ctx.current === null || ctx.current === undefined) return;
+    if (canvasWrapperRef.current === null || canvasWrapperRef.current === undefined) return;
 
     setMouseAction((prev) => ({ ...prev, isMove: true }));
 
@@ -117,30 +128,31 @@ export default function Canvas() {
     const mouseCoordY = e.pageY - offsetTop;
     const mouseCoordX = e.pageX - offsetLeft;
 
-    const left = Math.min(mouseCoordX, currentCoord.x);
-    const top = Math.min(mouseCoordY, currentCoord.y);
-    const width = Math.abs(mouseCoordX - currentCoord.x);
-    const height = Math.abs(mouseCoordY - currentCoord.y);
+    const rectCoordX = Math.min(mouseCoordX, currentCoord.x);
+    const rectCoordY = Math.min(mouseCoordY, currentCoord.y);
+    const rectWidth = Math.abs(mouseCoordX - currentCoord.x);
+    const rectHeight = Math.abs(mouseCoordY - currentCoord.y);
 
     setImageState(
       (prev): ImageState => ({
         ...prev,
-        rectCoordX: left,
-        rectCoordY: top,
-        rectWidth: width,
-        rectHeight: height,
+        rectCoordX,
+        rectCoordY,
+        rectWidth,
+        rectHeight,
       }),
     );
 
     drawImage({ w: imageState.imageSizeWidth, h: imageState.imageSizeHeight, ctx, imageRef });
-    drawRectMultiple(ctx.current, left, top, width, height);
+    drawRectMultiple(ctx.current, left, top, rectWidth, rectHeight);
   };
 
-  const onMouseUp = () => {
-    if (!canvasRef.current || !canvasWrapperRef.current || !ctx.current) return;
+  const onMouseUp = (): void => {
+    if (ctx.current === null || ctx.current === undefined) return;
+    if (canvasWrapperRef.current === null || canvasWrapperRef.current === undefined) return;
 
     /** @description 마우스를 이동하지 않고 클릭만 했다면 */
-    if (mouseAction.isMove === false) {
+    if (!mouseAction.isMove) {
       drawImage({ w: imageState.imageSizeWidth, h: imageState.imageSizeHeight, ctx, imageRef });
       drawRectMultiple(ctx.current, left, top, drawWidth, drawHeight);
       setImageState(
