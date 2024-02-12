@@ -24,7 +24,7 @@ export default function Canvas(): JSX.Element {
 
   const rectColor = useRecoilValue(currentRectColor);
 
-  const [left, top, drawWidth, drawHeight] = useMemo(() => {
+  const [colorPixelLeft, colorPixelTop, drawWidth, drawHeight] = useMemo(() => {
     if (
       ctx.current === undefined ||
       ctx.current === null ||
@@ -145,7 +145,7 @@ export default function Canvas(): JSX.Element {
     );
 
     drawImage({ w: imageState.imageSizeWidth, h: imageState.imageSizeHeight, ctx, imageRef });
-    drawRectMultiple(ctx.current, left, top, rectWidth, rectHeight);
+    drawRectMultiple(ctx.current, rectCoordX, rectCoordY, rectWidth, rectHeight);
   };
 
   const onMouseUp = (): void => {
@@ -156,12 +156,12 @@ export default function Canvas(): JSX.Element {
     /** @description 마우스를 이동하지 않고 클릭만 했다면 */
     if (!mouseAction.isMove) {
       drawImage({ w: imageState.imageSizeWidth, h: imageState.imageSizeHeight, ctx, imageRef });
-      drawRectMultiple(ctx.current, left, top, drawWidth, drawHeight);
+      drawRectMultiple(ctx.current, colorPixelLeft, colorPixelTop, drawWidth, drawHeight);
       setImageState(
         (prev): ImageState => ({
           ...prev,
-          rectCoordX: left,
-          rectCoordY: top,
+          rectCoordX: colorPixelLeft,
+          rectCoordY: colorPixelTop,
           rectWidth: drawWidth,
           rectHeight: drawHeight,
         }),
