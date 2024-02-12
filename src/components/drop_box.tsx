@@ -22,12 +22,14 @@ export default function DropDropBox(): JSX.Element {
       }
 
       const imageSrc = event.target?.result;
-      setImageSrc((prev) => ({
-        ...prev,
-        src: imageSrc,
-        loadError: false,
-        isLocal: true,
-      }));
+      setImageSrc(
+        (prev): ImageState => ({
+          ...prev,
+          src: imageSrc,
+          loadSuccess: true,
+          isLocal: true,
+        }),
+      );
     };
 
     reader.readAsDataURL(file);
