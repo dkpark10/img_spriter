@@ -109,7 +109,6 @@ export default function Canvas(): JSX.Element {
 
   const onMouseDown = (e: React.MouseEvent<HTMLCanvasElement>): void => {
     if (ctx.current === null || ctx.current === undefined) return;
-    if (canvasWrapperRef.current === null || canvasWrapperRef.current === undefined) return;
 
     drawImage({ w: imageState.imageSizeWidth, h: imageState.imageSizeHeight, ctx, imageRef });
     ctx.current.strokeStyle = rectColor;
@@ -125,7 +124,6 @@ export default function Canvas(): JSX.Element {
 
   const onMouseMove = (e: React.MouseEvent<HTMLCanvasElement>): void => {
     if (ctx.current === null || ctx.current === undefined) return;
-    if (canvasWrapperRef.current === null || canvasWrapperRef.current === undefined) return;
     if (!mouseAction.isDown) return;
 
     setMouseAction((prev) => ({ ...prev, isMove: true }));
