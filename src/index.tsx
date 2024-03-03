@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { RecoilRoot } from 'recoil';
 import './index.css';
+import { OverlayProvider } from '@toss/use-overlay';
 import App from './app';
 
 // eslint-disable-next-line @typescript-eslint/non-nullable-type-assertion-style
@@ -10,8 +11,10 @@ const root = ReactDOM.createRoot(rootElement);
 
 root.render(
   <React.StrictMode>
-    <RecoilRoot>
-      <App />
-    </RecoilRoot>
+    <OverlayProvider>
+      <RecoilRoot>
+        <App />
+      </RecoilRoot>
+    </OverlayProvider>
   </React.StrictMode>,
 );
