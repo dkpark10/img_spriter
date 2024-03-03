@@ -1,9 +1,19 @@
-import { HexColor } from 'custom-type';
+import { type HexColor } from 'custom-type';
 import { atom } from 'recoil';
 
-export const RECT_COLOR_KEY = 'RECT_COLOR_KEY';
+export interface CurrentToolAtom {
+  color: HexColor;
+  autoDrawing: boolean;
+  drawBorder: boolean;
+}
 
-export const currentRectColor = atom<HexColor>({
-  key: RECT_COLOR_KEY,
-  default: '#ff0077',
+export const TOOL_STATE = 'TOOL_STATE';
+
+export const currentToolAtom = atom<CurrentToolAtom>({
+  key: TOOL_STATE,
+  default: {
+    color: '#ff0077',
+    autoDrawing: false,
+    drawBorder: true,
+  },
 });

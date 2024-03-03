@@ -1,7 +1,7 @@
 import type { Coord, ImageState, OffsetPos } from 'custom-type';
 import React, { useMemo, useEffect, useRef, useState } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
-import { currentImageState, currentRectColor } from '@/store';
+import { currentImageState, currentToolAtom } from '@/store';
 import { getCanvasImageData } from '@/utils/get-canvas-image-data';
 import { getColorPixelMaxSize } from '@/utils/bfs-color-pixel';
 import { drawRectMultiple } from '@/utils//draw-rect-multiple';
@@ -27,7 +27,7 @@ export default function Canvas(): JSX.Element {
   const [currentCoord, setCurrentCoord] = useState<Coord>({ y: 0, x: 0 });
   const [imageState, setImageState] = useRecoilState<ImageState>(currentImageState);
 
-  const rectColor = useRecoilValue(currentRectColor);
+  const toolState = useRecoilValue(currentToolAtom);
 
   const [colorPixelLeft, colorPixelTop, drawWidth, drawHeight] = useMemo(() => {
     if (
@@ -75,7 +75,7 @@ export default function Canvas(): JSX.Element {
         }),
       );
 
-      ctx.current.strokeStyle = rectColor;
+      ctx.current.strokeStyle = toolState.color;
       drawRectMultiple(
         ctx.current,
         imageState.rectCoordX,
@@ -111,7 +111,7 @@ export default function Canvas(): JSX.Element {
     if (ctx.current === null || ctx.current === undefined) return;
 
     drawImage({ w: imageState.imageSizeWidth, h: imageState.imageSizeHeight, ctx, imageRef });
-    ctx.current.strokeStyle = rectColor;
+    ctx.current.strokeStyle = toolState.color;
     ctx.current.lineWidth = 1;
     setMouseAction((prev) => ({ ...prev, isDown: true }));
 

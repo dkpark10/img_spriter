@@ -1,68 +1,14 @@
-import { type HexColor } from 'custom-type';
-import { type PropsWithChildren, useRef } from 'react';
 import { createPortal } from 'react-dom';
-import { IoMdColorFill } from 'react-icons/io';
-import { TbBoxAlignBottomRightFilled, TbBoxAlignBottomRight } from 'react-icons/tb';
-import { MdAutoFixHigh } from 'react-icons/md';
-import { useRecoilState } from 'recoil';
-import { currentRectColor } from '@/store';
-
-interface IconContainerProps extends PropsWithChildren {
-  onClick?: () => void;
-}
-
-function IconContainer({ children, onClick }: IconContainerProps): JSX.Element {
-  return (
-    <div
-      onClick={onClick}
-      role="button"
-      tabIndex={0}
-      onKeyDown={onClick}
-      className="flex items-center p-2 justify-center hover:border border-solid border-zinc-700"
-    >
-      {children}
-    </div>
-  );
-}
-
-IconContainer.defaultProps = {
-  onClick: () => {},
-};
+import { ToolItems } from '@/components/tool-box-item';
 
 export default function ToolBox(): JSX.Element {
-  const [colorRect, setColorRect] = useRecoilState(currentRectColor);
-
-  const colorElementRef = useRef<HTMLInputElement>(null);
-
-  const onClickColorTool = (): void => {
-    if (colorElementRef.current === null) return;
-    colorElementRef.current.click();
-  };
+  const className = 'border border-solid border-[#292c39] flex items-center p-2 justify-center hover:bg-[#e0e0e0]';
 
   return createPortal(
-    <div className="absolute top-40 rounded left-11 border border-neutral-600">
-      <IconContainer onClick={onClickColorTool}>
-        <input
-          ref={colorElementRef}
-          className="w-0 h-0"
-          type="color"
-          name="color"
-          value={colorRect}
-          onChange={(e) => {
-            setColorRect(e.target.value as HexColor);
-          }}
-        />
-        <IoMdColorFill size={23} />
-      </IconContainer>
-      <IconContainer>
-        <MdAutoFixHigh size={23} />
-      </IconContainer>
-      <IconContainer>
-        <TbBoxAlignBottomRightFilled size={23} />
-      </IconContainer>
-      <IconContainer>
-        <TbBoxAlignBottomRight size={23} />
-      </IconContainer>
+    <div className="absolute top-40 rounded left-11 grid gap-1">
+      <ToolItems.Color className={className} />
+      <ToolItems.AutoDrawing className={className} />
+      <ToolItems.DrawBorder className={className} />
     </div>,
     document.getElementById('portal') as Element,
   );

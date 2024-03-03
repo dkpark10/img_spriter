@@ -7,7 +7,12 @@ interface UseDrawImageParams {
   onFinal?: () => void;
 }
 
-export const useDrawImage = ({ imgSrc, onLoad, onError, onFinal }: UseDrawImageParams) => {
+export const useDrawImage = ({
+  imgSrc,
+  onLoad,
+  onError,
+  onFinal,
+}: UseDrawImageParams): React.MutableRefObject<HTMLImageElement | null> => {
   const imageRef = useRef<HTMLImageElement | null>(null);
 
   useEffect(() => {
@@ -26,6 +31,7 @@ export const useDrawImage = ({ imgSrc, onLoad, onError, onFinal }: UseDrawImageP
     };
 
     onFinal?.();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [imgSrc]);
 
   return imageRef;
