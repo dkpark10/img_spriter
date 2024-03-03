@@ -1,5 +1,5 @@
-import { HexColor } from 'custom-type';
-import { PropsWithChildren, useRef } from 'react';
+import { type HexColor } from 'custom-type';
+import { type PropsWithChildren, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { IoMdColorFill } from 'react-icons/io';
 import { TbBoxAlignBottomRightFilled, TbBoxAlignBottomRight } from 'react-icons/tb';
@@ -11,14 +11,14 @@ interface IconContainerProps extends PropsWithChildren {
   onClick?: () => void;
 }
 
-function IconContainer({ children, onClick }: IconContainerProps) {
+function IconContainer({ children, onClick }: IconContainerProps): JSX.Element {
   return (
     <div
       onClick={onClick}
       role="button"
       tabIndex={0}
       onKeyDown={onClick}
-      className="flex items-center p-2 justify-center"
+      className="flex items-center p-2 justify-center hover:border border-solid border-zinc-700"
     >
       {children}
     </div>
@@ -29,13 +29,13 @@ IconContainer.defaultProps = {
   onClick: () => {},
 };
 
-export default function ToolBox() {
+export default function ToolBox(): JSX.Element {
   const [colorRect, setColorRect] = useRecoilState(currentRectColor);
 
   const colorElementRef = useRef<HTMLInputElement>(null);
 
-  const onClickColorTool = () => {
-    if (!colorElementRef.current) return;
+  const onClickColorTool = (): void => {
+    if (colorElementRef.current === null) return;
     colorElementRef.current.click();
   };
 
