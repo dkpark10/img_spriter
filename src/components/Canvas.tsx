@@ -4,8 +4,8 @@ import { useRecoilState, useRecoilValue } from 'recoil';
 import { currentImageState, currentToolAtom } from '@/store';
 import { getCanvasImageData } from '@/utils/get-canvas-image-data';
 import { getColorPixelMaxSize } from '@/utils/bfs-color-pixel';
-import { drawRectMultiple } from '@/utils//draw-rect-multiple';
 import { drawImage } from '@/utils/draw-image';
+import { RectDrawHandlerBuilder } from '@/utils/rect-draw-handler';
 import { useDrawImage } from '@/hooks/use-draw-image';
 import ImageError from './img_load_err';
 
@@ -28,6 +28,16 @@ export default function Canvas(): JSX.Element {
   const [imageState, setImageState] = useRecoilState<ImageState>(currentImageState);
 
   const toolState = useRecoilValue(currentToolAtom);
+  const drawRectHandler = useMemo(
+    () =>
+      new RectDrawHandlerBuilder()
+        .setCtx(ctx.current)
+        .setColor(toolState.color)
+        .setOnlyBorderDraw(toolState.drawBorder)
+        .build(),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [ctx.current, toolState.color, toolState.drawBorder],
+  );
 
   const [colorPixelLeft, colorPixelTop, drawWidth, drawHeight] = useMemo(() => {
     if (
@@ -58,8 +68,6 @@ export default function Canvas(): JSX.Element {
       ctx.current = canvasRef.current?.getContext('2d', { willReadFrequently: true });
 
       if (imageRef.current === null || ctx.current === null) return;
-      if (ctx.current === null || ctx.current === undefined) return;
-
       const w = imageRef.current.naturalWidth;
       const h = imageRef.current.naturalHeight;
 
@@ -75,17 +83,12 @@ export default function Canvas(): JSX.Element {
         }),
       );
 
-      ctx.current.strokeStyle = toolState.color;
-      ctx.current.fillStyle = toolState.color;
-
-      drawRectMultiple(
-        ctx.current,
-        imageState.rectCoordX,
-        imageState.rectCoordY,
-        imageState.rectWidth,
-        imageState.rectHeight,
-        toolState.drawBorder,
-      );
+      drawRectHandler.draw({
+        x: imageState.rectCoordX,
+        y: imageState.rectCoordY,
+        width: imageState.rectWidth,
+        height: imageState.rectHeight,
+      });
     },
     onError: () => {
       setImageState((prev): ImageState => ({ ...prev, loadSuccess: false }));
@@ -111,23 +114,17 @@ export default function Canvas(): JSX.Element {
   }, [imageState.loadSuccess, imageState.imageSizeHeight, imageState.imageSizeWidth, imageRef]);
 
   const onMouseDown = (e: React.MouseEvent<HTMLCanvasElement>): void => {
-    if (ctx.current === null || ctx.current === undefined) return;
-
     drawImage({ w: imageState.imageSizeWidth, h: imageState.imageSizeHeight, ctx, imageRef });
-    ctx.current.strokeStyle = toolState.color;
-    ctx.current.fillStyle = toolState.color;
-    ctx.current.lineWidth = 1;
     setMouseAction((prev) => ({ ...prev, isDown: true }));
 
     const { offsetTop, offsetLeft } = canvasWrapperOffset.current;
     const y = e.pageY - offsetTop;
     const x = e.pageX - offsetLeft;
 
-    setCurrentCoord((prev) => ({ ...prev, y, x }));
+    setCurrentCoord((prev): Coord => ({ ...prev, y, x }));
   };
 
   const onMouseMove = (e: React.MouseEvent<HTMLCanvasElement>): void => {
-    if (ctx.current === null || ctx.current === undefined) return;
     if (!mouseAction.isDown) return;
 
     setMouseAction((prev) => ({ ...prev, isMove: true }));
@@ -152,18 +149,15 @@ export default function Canvas(): JSX.Element {
     );
 
     drawImage({ w: imageState.imageSizeWidth, h: imageState.imageSizeHeight, ctx, imageRef });
-    drawRectMultiple(ctx.current, rectCoordX, rectCoordY, rectWidth, rectHeight, toolState.drawBorder);
+    drawRectHandler.draw({ x: rectCoordX, y: rectCoordY, width: rectWidth, height: rectHeight });
   };
 
   const onMouseUp = (): void => {
-    if (ctx.current === null || ctx.current === undefined) return;
-    if (canvasWrapperRef.current === null || canvasWrapperRef.current === undefined) return;
-    if (!mouseAction.isDown) return;
-
     /** @description 마우스를 이동하지 않고 클릭만 했다면 */
     if (!mouseAction.isMove) {
       drawImage({ w: imageState.imageSizeWidth, h: imageState.imageSizeHeight, ctx, imageRef });
-      drawRectMultiple(ctx.current, colorPixelLeft, colorPixelTop, drawWidth, drawHeight, toolState.drawBorder);
+      drawRectHandler.draw({ x: colorPixelLeft, y: colorPixelTop, width: drawWidth, height: drawHeight });
+
       setImageState(
         (prev): ImageState => ({
           ...prev,
