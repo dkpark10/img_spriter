@@ -76,12 +76,15 @@ export default function Canvas(): JSX.Element {
       );
 
       ctx.current.strokeStyle = toolState.color;
+      ctx.current.fillStyle = toolState.color;
+
       drawRectMultiple(
         ctx.current,
         imageState.rectCoordX,
         imageState.rectCoordY,
         imageState.rectWidth,
         imageState.rectHeight,
+        toolState.drawBorder,
       );
     },
     onError: () => {
@@ -112,6 +115,7 @@ export default function Canvas(): JSX.Element {
 
     drawImage({ w: imageState.imageSizeWidth, h: imageState.imageSizeHeight, ctx, imageRef });
     ctx.current.strokeStyle = toolState.color;
+    ctx.current.fillStyle = toolState.color;
     ctx.current.lineWidth = 1;
     setMouseAction((prev) => ({ ...prev, isDown: true }));
 
@@ -148,7 +152,7 @@ export default function Canvas(): JSX.Element {
     );
 
     drawImage({ w: imageState.imageSizeWidth, h: imageState.imageSizeHeight, ctx, imageRef });
-    drawRectMultiple(ctx.current, rectCoordX, rectCoordY, rectWidth, rectHeight);
+    drawRectMultiple(ctx.current, rectCoordX, rectCoordY, rectWidth, rectHeight, toolState.drawBorder);
   };
 
   const onMouseUp = (): void => {
@@ -159,7 +163,7 @@ export default function Canvas(): JSX.Element {
     /** @description 마우스를 이동하지 않고 클릭만 했다면 */
     if (!mouseAction.isMove) {
       drawImage({ w: imageState.imageSizeWidth, h: imageState.imageSizeHeight, ctx, imageRef });
-      drawRectMultiple(ctx.current, colorPixelLeft, colorPixelTop, drawWidth, drawHeight);
+      drawRectMultiple(ctx.current, colorPixelLeft, colorPixelTop, drawWidth, drawHeight, toolState.drawBorder);
       setImageState(
         (prev): ImageState => ({
           ...prev,
