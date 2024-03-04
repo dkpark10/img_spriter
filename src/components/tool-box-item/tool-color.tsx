@@ -30,7 +30,7 @@ function DescriptionModal({ isOpen, close }: ModalProps): JSX.Element {
   );
 }
 
-export default function ToolColor({ ...restProps }): JSX.Element {
+export default function ToolColor(): JSX.Element {
   const [currentToolState, setCurrentToolState] = useRecoilState(currentToolAtom);
 
   const colorElementRef = useRef<HTMLInputElement>(null);
@@ -57,8 +57,7 @@ export default function ToolColor({ ...restProps }): JSX.Element {
       onFocus={() => setHover(true)}
       onMouseOut={() => setHover(false)}
       onBlur={() => setHover(false)}
-      // eslint-disable-next-line react/jsx-props-no-spreading
-      {...restProps}
+      className="border border-solid border-[#292c39] flex items-center p-2 justify-center hover:bg-[#e0e0e0]"
     >
       <input
         ref={colorElementRef}

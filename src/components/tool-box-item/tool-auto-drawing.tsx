@@ -2,8 +2,9 @@
 import { createPortal } from 'react-dom';
 import { useEffect, useState } from 'react';
 import { MdAutoFixHigh } from 'react-icons/md';
-import { useSetRecoilState } from 'recoil';
+import { useRecoilState } from 'recoil';
 import { useOverlay } from '@toss/use-overlay';
+import clsx from 'clsx';
 import { currentToolAtom, type CurrentToolAtom } from '@/store';
 
 interface ModalProps {
@@ -29,8 +30,8 @@ function DescriptionModal({ isOpen, close }: ModalProps): JSX.Element {
   );
 }
 
-export default function ToolAutoDrawing({ ...restProps }): JSX.Element {
-  const setCurrentToolState = useSetRecoilState(currentToolAtom);
+export default function ToolAutoDrawing(): JSX.Element {
+  const [currentToolState, setCurrentToolState] = useRecoilState(currentToolAtom);
 
   const [hover, setHover] = useState(false);
   const overlay = useOverlay();
@@ -54,8 +55,10 @@ export default function ToolAutoDrawing({ ...restProps }): JSX.Element {
       onFocus={() => setHover(true)}
       onMouseOut={() => setHover(false)}
       onBlur={() => setHover(false)}
-      // eslint-disable-next-line react/jsx-props-no-spreading
-      {...restProps}
+      className={clsx([
+        currentToolState.autoDrawing && 'bg-[#e0e0e0]',
+        'border border-solid border-[#292c39] flex items-center p-2 justify-center hover:bg-[#e0e0e0]',
+      ])}
     >
       <MdAutoFixHigh size={23} />
     </button>

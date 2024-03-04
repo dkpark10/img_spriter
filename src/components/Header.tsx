@@ -17,7 +17,7 @@ export default function Header(): JSX.Element {
     <>
       <header>
         <Tabs
-          className="w-full flex justify-center items-center my-8 border-b-2 border-solid border-blue-600"
+          className="w-full flex justify-center items-center my-8 border-b-2 border-solid border-primary-color"
           selectedIndex={tabIndex}
           onSelect={(idx) => {
             setCurrentTab(tabNames[idx]);
@@ -25,7 +25,7 @@ export default function Header(): JSX.Element {
         >
           <TabList className="flex justify-between">
             {tabNames.map((tabName, idx) => {
-              const currentTabClass = currentTab === tabName ? 'text-white bg-blue-600' : '';
+              const currentTabClass = currentTab === tabName ? 'text-white bg-primary-color' : '';
 
               return (
                 <Tab key={tabName} className="">
