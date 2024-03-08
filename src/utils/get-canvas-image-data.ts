@@ -1,6 +1,6 @@
 import type { ColorPixelData, ColorPixelDataList } from 'custom-type';
 
-export const isNonColorPixel = (colorPixelData: ColorPixelData) => {
+export const isNonColorPixel = (colorPixelData: ColorPixelData): boolean => {
   const { r, g, b, a } = colorPixelData;
   return r === '0' || g === '0' || b === '0' || a === '0';
 };
@@ -11,7 +11,7 @@ export const getCanvasImageData = (
   y: number,
   width: number,
   height: number,
-) => {
+): ColorPixelDataList => {
   const imageData = ctx.getImageData(x, y, width, height);
   const pixelData = imageData.data;
   const colorPixelData: ColorPixelDataList = Array.from({ length: height }, () =>

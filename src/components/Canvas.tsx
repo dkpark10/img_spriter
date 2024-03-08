@@ -156,7 +156,6 @@ export default function Canvas(): JSX.Element {
     /** @description 마우스를 이동하지 않고 클릭만 했다면 */
     if (!mouseAction.isMove) {
       drawImage({ w: imageState.imageSizeWidth, h: imageState.imageSizeHeight, ctx, imageRef });
-      drawRectHandler.draw({ x: colorPixelLeft, y: colorPixelTop, width: drawWidth, height: drawHeight });
 
       setImageState(
         (prev): ImageState => ({
