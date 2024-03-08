@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 /* eslint-disable max-classes-per-file */
 import type { HexColor, RectState } from 'custom-type';
 
@@ -16,9 +17,15 @@ class RectDrawHandler {
     this.ctx = builder.getCtx();
   }
 
-  public draw({ x, y, width, height }: RectState): void {
+  public draw({ x, y, width, height }: RectState, drawSquare = false): void {
     if (this.ctx === null || this.ctx === undefined) return;
     this.ctx.lineWidth = 1;
+
+    if (drawSquare) {
+      width = width < height ? width : height;
+      height = width > height ? height : width;
+    }
+
     for (let i = 0; i < this.DRAW_COUNT; i += 1) {
       if (this.onlyBorderDraw) {
         this.ctx.strokeStyle = this.color;

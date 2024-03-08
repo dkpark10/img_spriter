@@ -149,7 +149,7 @@ export default function Canvas(): JSX.Element {
     );
 
     drawImage({ w: imageState.imageSizeWidth, h: imageState.imageSizeHeight, ctx, imageRef });
-    drawRectHandler.draw({ x: rectCoordX, y: rectCoordY, width: rectWidth, height: rectHeight });
+    drawRectHandler.draw({ x: rectCoordX, y: rectCoordY, width: rectWidth, height: rectHeight }, toolState.drawSquare);
   };
 
   const onMouseUp = (): void => {

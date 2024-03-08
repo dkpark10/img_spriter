@@ -7,6 +7,7 @@ export default function ToolBox(): JSX.Element {
       <ToolItems.Color />
       <ToolItems.AutoDrawing />
       <ToolItems.DrawBorder />
+      <ToolItems.DrawSquare />
     </div>,
     document.getElementById('portal') as Element,
   );
