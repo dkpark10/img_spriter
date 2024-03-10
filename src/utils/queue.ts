@@ -1,19 +1,19 @@
 export class Queue<T> {
-  constructor(private readonly q: Array<T> = []) {}
+  constructor(private readonly q: T[] = []) {}
 
-  push(value: T) {
+  push(value: T): void {
     this.q.push(value);
   }
 
-  pop() {
-    return this.q.shift();
+  pop(): T {
+    return this.q.shift() as T;
   }
 
-  size() {
+  size(): number {
     return this.q.length;
   }
 
-  isEmpty() {
+  isEmpty(): boolean {
     return this.q.length <= 0;
   }
 }

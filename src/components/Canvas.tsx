@@ -1,12 +1,11 @@
-import type { Coord, ImageState, OffsetPos } from 'custom-type';
-import React, { useMemo, useEffect, useRef, useState } from 'react';
+import type { MouseAction, Coord, ImageState, OffsetPos } from 'custom-type';
+import React, { useEffect, useRef, useState } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { currentImageState, currentToolAtom } from '@/store';
-import { getCanvasImageData } from '@/utils/get-canvas-image-data';
-import { getColorPixelMaxSize } from '@/utils/bfs-color-pixel';
 import { drawImage } from '@/utils/draw-image';
 import { RectDrawHandlerBuilder } from '@/utils/rect-draw-handler';
 import { useDrawImage } from '@/hooks/use-draw-image';
+import { useGetPixelData } from '@/hooks/use-pixel-data';
 import ImageError from './img_load_err';
 
 export default function Canvas(): JSX.Element {
@@ -15,7 +14,7 @@ export default function Canvas(): JSX.Element {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const ctx = useRef<CanvasRenderingContext2D | null | undefined>(null);
 
-  const [mouseAction, setMouseAction] = useState({
+  const [mouseAction, setMouseAction] = useState<MouseAction>({
     isDown: false,
     isMove: false,
   });
@@ -24,39 +23,13 @@ export default function Canvas(): JSX.Element {
   const [imageState, setImageState] = useRecoilState<ImageState>(currentImageState);
 
   const toolState = useRecoilValue(currentToolAtom);
-  const drawRectHandler = useMemo(
-    () =>
-      new RectDrawHandlerBuilder()
-        .setCtx(ctx.current)
-        .setColor(toolState.color)
-        .setOnlyBorderDraw(toolState.drawBorder)
-        .build(),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [ctx.current, toolState.color, toolState.drawBorder],
-  );
+  const drawRectHandler = new RectDrawHandlerBuilder()
+    .setCtx(ctx.current)
+    .setColor(toolState.color)
+    .setOnlyBorderDraw(toolState.drawBorder)
+    .build();
 
-  const [colorPixelLeft, colorPixelTop, drawWidth, drawHeight] = useMemo(() => {
-    if (
-      ctx.current === undefined ||
-      ctx.current === null ||
-      imageState.imageSizeWidth === 0 ||
-      imageState.imageSizeHeight === 0 ||
-      currentCoord.y === 0 ||
-      currentCoord.x === 0
-    )
-      return [0, 0, 0, 0];
-
-    const colorPixData = getCanvasImageData(ctx.current, 0, 0, imageState.imageSizeWidth, imageState.imageSizeHeight);
-
-    return getColorPixelMaxSize(
-      currentCoord.y,
-      currentCoord.x,
-      imageState.imageSizeWidth,
-      imageState.imageSizeHeight,
-      colorPixData,
-      2,
-    );
-  }, [currentCoord.y, currentCoord.x, imageState.imageSizeWidth, imageState.imageSizeHeight]);
+  const [colorPixelLeft, colorPixelTop, drawWidth, drawHeight] = useGetPixelData(ctx, imageState, currentCoord);
 
   const imageRef = useDrawImage({
     imgSrc: imageState.src,
@@ -150,8 +123,6 @@ export default function Canvas(): JSX.Element {
   const onMouseUp = (): void => {
     /** @description 마우스를 이동하지 않고 클릭만 했다면 */
     if (!mouseAction.isMove) {
-      drawImage({ w: imageState.imageSizeWidth, h: imageState.imageSizeHeight, ctx, imageRef });
-
       setImageState(
         (prev): ImageState => ({
           ...prev,
@@ -162,6 +133,7 @@ export default function Canvas(): JSX.Element {
         }),
       );
 
+      drawImage({ w: imageState.imageSizeWidth, h: imageState.imageSizeHeight, ctx, imageRef });
       drawRectHandler.draw(
         { x: colorPixelLeft, y: colorPixelTop, width: drawWidth, height: drawHeight },
         toolState.drawSquare,

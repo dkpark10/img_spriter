@@ -16,6 +16,11 @@ declare module 'custom-type' {
     isLocal: boolean;
   }
 
+  interface MouseAction {
+    isDown: boolean;
+    isMove: boolean;
+  }
+
   type TabName = '이미지 경로 검색' | '이미지 파일 업로드';
 
   interface ColorPixelData {

@@ -1,9 +1,10 @@
 /* eslint-disable no-continue */
-import type { ColorPixelDataList, ColorPixelData, Coord } from 'custom-type';
+import type { ColorPixelDataList, Coord } from 'custom-type';
 import { Queue } from './queue';
 import { isNonColorPixel } from './get-canvas-image-data';
 
-const outOfRange = (x: number, y: number, width: number, height: number) => x < 0 || y < 0 || x >= width || y >= height;
+const outOfRange = (x: number, y: number, width: number, height: number): boolean =>
+  x < 0 || y < 0 || x >= width || y >= height;
 
 /** @description canvas 에서 색이 있는 픽셀 클릭 시 dfs로 순회하여 최대 가로, 세로를 구하는 함수 */
 export const getColorPixelMaxSize = (
@@ -13,7 +14,7 @@ export const getColorPixelMaxSize = (
   height: number,
   pixelColorList: ColorPixelDataList,
   thresHold: number,
-) => {
+): number[] => {
   const tempPixelColorList = pixelColorList;
   let left = initX;
   let top = initY;
@@ -28,7 +29,7 @@ export const getColorPixelMaxSize = (
   q.push({ y: initY, x: initX });
 
   while (!q.isEmpty()) {
-    const { y: currentY, x: currentX } = q.pop() as Coord;
+    const { y: currentY, x: currentX } = q.pop();
     visited[currentY][currentX] = true;
     left = Math.min(left, currentX);
     top = Math.min(top, currentY);
