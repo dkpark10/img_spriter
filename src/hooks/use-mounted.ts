@@ -2,12 +2,17 @@ import { useEffect, useRef } from 'react';
 
 interface UseDrawImageParams {
   imgSrc: string;
-  onLoad?: (img: HTMLImageElement | null) => void;
+  onLoad?: () => void;
   onError?: () => void;
   onFinal?: () => void;
 }
 
-export const useDrawImage = ({ imgSrc, onLoad, onError, onFinal }: UseDrawImageParams): HTMLImageElement | null => {
+export const useDrawImage = ({
+  imgSrc,
+  onLoad,
+  onError,
+  onFinal,
+}: UseDrawImageParams): React.MutableRefObject<HTMLImageElement | null> => {
   const imageRef = useRef<HTMLImageElement | null>(null);
 
   useEffect(() => {
@@ -18,7 +23,7 @@ export const useDrawImage = ({ imgSrc, onLoad, onError, onFinal }: UseDrawImageP
     imageRef.current = image;
 
     image.onload = () => {
-      onLoad?.(imageRef.current);
+      onLoad?.();
     };
 
     image.onerror = () => {
@@ -29,5 +34,5 @@ export const useDrawImage = ({ imgSrc, onLoad, onError, onFinal }: UseDrawImageP
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [imgSrc]);
 
-  return imageRef.current;
+  return imageRef;
 };

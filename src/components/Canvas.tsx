@@ -31,16 +31,14 @@ export default function Canvas(): JSX.Element {
 
   const [colorPixelLeft, colorPixelTop, drawWidth, drawHeight] = useGetPixelData(ctx, imageState, currentCoord);
 
-  const imageRef = useDrawImage({
+  const imageData = useDrawImage({
     imgSrc: imageState.src,
-    onLoad: () => {
+    onLoad: (img) => {
       ctx.current = canvasRef.current?.getContext('2d', { willReadFrequently: true });
+      if (img === null || ctx.current === null) return;
+      const w = img.naturalWidth;
+      const h = img.naturalHeight;
 
-      if (imageRef.current === null || ctx.current === null) return;
-      const w = imageRef.current.naturalWidth;
-      const h = imageRef.current.naturalHeight;
-
-      drawImage({ w, h, ctx, imageRef });
       setImageState(
         (prev): ImageState => ({
           ...prev,
@@ -52,6 +50,7 @@ export default function Canvas(): JSX.Element {
         }),
       );
 
+      drawImage({ w, h, ctx, imageData: img });
       drawRectHandler.draw({
         x: imageState.rectCoordX,
         y: imageState.rectCoordY,
@@ -78,13 +77,13 @@ export default function Canvas(): JSX.Element {
     )
       return;
 
-    drawImage({ w: imageState.imageSizeWidth, h: imageState.imageSizeHeight, ctx, imageRef });
-  }, [imageState.loadSuccess, imageState.imageSizeHeight, imageState.imageSizeWidth, imageRef]);
+    drawImage({ w: imageState.imageSizeWidth, h: imageState.imageSizeHeight, ctx, imageData });
+  }, [imageState.loadSuccess, imageState.imageSizeHeight, imageState.imageSizeWidth, imageData]);
 
   const onMouseDown = (e: React.MouseEvent<HTMLCanvasElement>): void => {
     if (pageOffSet.current === null) return;
-    drawImage({ w: imageState.imageSizeWidth, h: imageState.imageSizeHeight, ctx, imageRef });
-    setMouseAction((prev) => ({ ...prev, isDown: true }));
+    drawImage({ w: imageState.imageSizeWidth, h: imageState.imageSizeHeight, ctx, imageData });
+    setMouseAction((prev): MouseAction => ({ ...prev, isDown: true }));
 
     const { offsetTop, offsetLeft } = pageOffSet.current;
     const y = e.pageY - offsetTop;
@@ -95,7 +94,7 @@ export default function Canvas(): JSX.Element {
   const onMouseMove = (e: React.MouseEvent<HTMLCanvasElement>): void => {
     if (!mouseAction.isDown || pageOffSet.current === null) return;
 
-    setMouseAction((prev) => ({ ...prev, isMove: true }));
+    setMouseAction((prev): MouseAction => ({ ...prev, isMove: true }));
 
     const { offsetTop, offsetLeft } = pageOffSet.current;
     const mouseCoordY = e.pageY - offsetTop;
@@ -116,7 +115,7 @@ export default function Canvas(): JSX.Element {
       }),
     );
 
-    drawImage({ w: imageState.imageSizeWidth, h: imageState.imageSizeHeight, ctx, imageRef });
+    drawImage({ w: imageState.imageSizeWidth, h: imageState.imageSizeHeight, ctx, imageData });
     drawRectHandler.draw({ x: rectCoordX, y: rectCoordY, width: rectWidth, height: rectHeight }, toolState.drawSquare);
   };
 
@@ -133,7 +132,7 @@ export default function Canvas(): JSX.Element {
         }),
       );
 
-      drawImage({ w: imageState.imageSizeWidth, h: imageState.imageSizeHeight, ctx, imageRef });
+      drawImage({ w: imageState.imageSizeWidth, h: imageState.imageSizeHeight, ctx, imageData });
       drawRectHandler.draw(
         { x: colorPixelLeft, y: colorPixelTop, width: drawWidth, height: drawHeight },
         toolState.drawSquare,
@@ -141,7 +140,7 @@ export default function Canvas(): JSX.Element {
     }
 
     setMouseAction({ isDown: false, isMove: false });
-    setCurrentCoord((prev) => ({ ...prev, y: 0, x: 0 }));
+    setCurrentCoord((prev): Coord => ({ ...prev, y: 0, x: 0 }));
   };
 
   if (!imageState.loadSuccess) return <ImageError />;
