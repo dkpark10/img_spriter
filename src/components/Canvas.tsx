@@ -10,11 +10,7 @@ import { useDrawImage } from '@/hooks/use-draw-image';
 import ImageError from './img_load_err';
 
 export default function Canvas(): JSX.Element {
-  const canvasWrapperRef = useRef<HTMLDivElement>(null);
-  const canvasWrapperOffset = useRef<OffsetPos>({
-    offsetLeft: 0,
-    offsetTop: 0,
-  });
+  const pageOffSet = useRef<OffsetPos | null>(null);
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const ctx = useRef<CanvasRenderingContext2D | null | undefined>(null);
@@ -106,30 +102,29 @@ export default function Canvas(): JSX.Element {
       !imageState.loadSuccess ||
       imageState.imageSizeWidth === null ||
       imageState.imageSizeHeight === null
-    ) {
+    )
       return;
-    }
 
     drawImage({ w: imageState.imageSizeWidth, h: imageState.imageSizeHeight, ctx, imageRef });
   }, [imageState.loadSuccess, imageState.imageSizeHeight, imageState.imageSizeWidth, imageRef]);
 
   const onMouseDown = (e: React.MouseEvent<HTMLCanvasElement>): void => {
+    if (pageOffSet.current === null) return;
     drawImage({ w: imageState.imageSizeWidth, h: imageState.imageSizeHeight, ctx, imageRef });
     setMouseAction((prev) => ({ ...prev, isDown: true }));
 
-    const { offsetTop, offsetLeft } = canvasWrapperOffset.current;
+    const { offsetTop, offsetLeft } = pageOffSet.current;
     const y = e.pageY - offsetTop;
     const x = e.pageX - offsetLeft;
-
     setCurrentCoord((prev): Coord => ({ ...prev, y, x }));
   };
 
   const onMouseMove = (e: React.MouseEvent<HTMLCanvasElement>): void => {
-    if (!mouseAction.isDown) return;
+    if (!mouseAction.isDown || pageOffSet.current === null) return;
 
     setMouseAction((prev) => ({ ...prev, isMove: true }));
 
-    const { offsetTop, offsetLeft } = canvasWrapperOffset.current;
+    const { offsetTop, offsetLeft } = pageOffSet.current;
     const mouseCoordY = e.pageY - offsetTop;
     const mouseCoordX = e.pageX - offsetLeft;
 
@@ -166,6 +161,11 @@ export default function Canvas(): JSX.Element {
           rectHeight: drawHeight,
         }),
       );
+
+      drawRectHandler.draw(
+        { x: colorPixelLeft, y: colorPixelTop, width: drawWidth, height: drawHeight },
+        toolState.drawSquare,
+      );
     }
 
     setMouseAction({ isDown: false, isMove: false });
@@ -176,28 +176,23 @@ export default function Canvas(): JSX.Element {
 
   return (
     <main className="flex justify-center items-center">
-      <div
-        className="relative border border-solid border-zinc-700"
+      <canvas
+        className="bg-cover relative border border-solid border-zinc-700"
         ref={(el) => {
           if (el === null || el === undefined) return;
           // @ts-expect-error: 린트 규칙 ...
-          canvasWrapperRef.current = el;
-          canvasWrapperOffset.current = {
-            offsetLeft: canvasWrapperRef.current.offsetLeft,
-            offsetTop: canvasWrapperRef.current.offsetTop,
+          canvasRef.current = el;
+          pageOffSet.current = {
+            offsetLeft: el.offsetLeft,
+            offsetTop: el.offsetTop,
           };
         }}
-      >
-        <canvas
-          className="bg-cover"
-          ref={canvasRef}
-          width={`${Math.floor(imageState.imageSizeWidth)}`}
-          height={`${Math.floor(imageState.imageSizeHeight)}`}
-          onMouseDown={onMouseDown}
-          onMouseMove={onMouseMove}
-          onMouseUp={onMouseUp}
-        />
-      </div>
+        width={`${Math.floor(imageState.imageSizeWidth)}`}
+        height={`${Math.floor(imageState.imageSizeHeight)}`}
+        onMouseDown={onMouseDown}
+        onMouseMove={onMouseMove}
+        onMouseUp={onMouseUp}
+      />
     </main>
   );
 }
