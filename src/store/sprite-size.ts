@@ -1,4 +1,4 @@
-import { TabName, ImageState } from 'custom-type';
+import { type TabName, type ImageState } from 'custom-type';
 import { atom, selector } from 'recoil';
 
 export const PATH_IMG_SRC = 'pathImageSrc';
