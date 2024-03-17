@@ -70,7 +70,6 @@ export default function Canvas(): JSX.Element {
   useEffect(() => {
     if (
       ctx.current === undefined ||
-      ctx.current === null ||
       !imageState.loadSuccess ||
       imageState.imageSizeWidth === null ||
       imageState.imageSizeHeight === null
@@ -150,7 +149,7 @@ export default function Canvas(): JSX.Element {
       <canvas
         className="bg-cover relative border border-solid border-zinc-700"
         ref={(el) => {
-          if (el === null || el === undefined) return;
+          if (el === null) return;
           // @ts-expect-error: 린트 규칙 ...
           canvasRef.current = el;
           pageOffSet.current = {
