@@ -16,7 +16,6 @@ export default function Header(): JSX.Element {
             ...prev,
             src: src[0],
             isLocal: false,
-            loadSuccess: true,
           }),
         );
       }, 250),

@@ -1,5 +1,5 @@
 import type { MouseAction, Coord, ImageState, OffsetPos } from 'custom-type';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { currentImageState, currentToolAtom } from '@/store';
 import { drawImage } from '@/utils/draw-image';
@@ -62,18 +62,6 @@ export default function Canvas(): JSX.Element {
       setMouseAction({ isDown: false, isMove: false });
     },
   });
-
-  useEffect(() => {
-    if (
-      ctx.current === undefined ||
-      !imageState.loadSuccess ||
-      imageState.imageSizeWidth === null ||
-      imageState.imageSizeHeight === null
-    )
-      return;
-
-    drawImage({ w: imageState.imageSizeWidth, h: imageState.imageSizeHeight, ctx, imageData });
-  }, [imageState.loadSuccess, imageState.imageSizeHeight, imageState.imageSizeWidth, imageData]);
 
   const onMouseDown = (e: React.MouseEvent<HTMLCanvasElement>): void => {
     if (pageOffSet.current === null) return;
