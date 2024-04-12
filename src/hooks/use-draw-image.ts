@@ -19,13 +19,14 @@ export const useDrawImage = ({ imgSrc, onLoad, onError, onFinal }: UseDrawImageP
 
     image.onload = () => {
       onLoad?.(imageRef.current);
+      onFinal?.();
     };
 
-    image.onerror = () => {
+    image.onerror = (error) => {
+      console.error(error);
       onError?.();
+      onFinal?.();
     };
-
-    onFinal?.();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [imgSrc]);
 
