@@ -1,37 +1,35 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable max-classes-per-file */
-import type { HexColor, RectState } from 'custom-type';
+import type { RectState } from 'custom-type';
+import { type CurrentToolAtom, currentToolDefault } from '@/store';
+
+const DRAW_COUNT = 2;
 
 class RectDrawHandler {
   private readonly ctx: CanvasRenderingContext2D | null | undefined = null;
 
-  private readonly color: HexColor = '#ffffff';
-
-  private readonly onlyBorderDraw: boolean = true;
-
-  private readonly DRAW_COUNT = 2;
+  private readonly tool: CurrentToolAtom = currentToolDefault;
 
   constructor(builder: RectDrawHandlerBuilder) {
-    this.color = builder.getColor();
-    this.onlyBorderDraw = builder.getOnlyBorderDraw();
+    this.tool = builder.getTool();
     this.ctx = builder.getCtx();
   }
 
-  public draw({ x, y, width, height }: RectState, drawSquare = false): void {
+  public draw({ x, y, width, height }: RectState): void {
     if (this.ctx === null || this.ctx === undefined) return;
     this.ctx.lineWidth = 1;
 
-    if (drawSquare) {
+    if (this.tool.drawSquare) {
       width = width < height ? width : height;
       height = width > height ? height : width;
     }
 
-    for (let i = 0; i < this.DRAW_COUNT; i += 1) {
-      if (this.onlyBorderDraw) {
-        this.ctx.strokeStyle = this.color;
+    for (let i = 0; i < DRAW_COUNT; i += 1) {
+      if (this.tool.drawBorder) {
+        this.ctx.strokeStyle = this.tool.color;
         this.ctx.strokeRect(x, y, width, height);
       } else {
-        this.ctx.fillStyle = this.color;
+        this.ctx.fillStyle = this.tool.color;
         this.ctx.globalAlpha = 0.2;
         this.ctx.fillRect(x, y, width, height);
         this.ctx.globalAlpha = 1;
@@ -43,9 +41,7 @@ class RectDrawHandler {
 export class RectDrawHandlerBuilder {
   private ctx: CanvasRenderingContext2D | null | undefined = null;
 
-  private color: HexColor = '#ffffff';
-
-  private onlyBorderDraw = true;
+  private tool: CurrentToolAtom = currentToolDefault;
 
   public setCtx(ctx: CanvasRenderingContext2D | null | undefined): this {
     this.ctx = ctx;
@@ -56,22 +52,13 @@ export class RectDrawHandlerBuilder {
     return this.ctx;
   }
 
-  public setColor(color: HexColor): this {
-    this.color = color;
+  public setTool(tool: CurrentToolAtom): this {
+    this.tool = tool;
     return this;
   }
 
-  public getColor(): HexColor {
-    return this.color;
-  }
-
-  public setOnlyBorderDraw(onlyBorderDraw: boolean): this {
-    this.onlyBorderDraw = onlyBorderDraw;
-    return this;
-  }
-
-  public getOnlyBorderDraw(): boolean {
-    return this.onlyBorderDraw;
+  public getTool(): CurrentToolAtom {
+    return this.tool;
   }
 
   public build(): RectDrawHandler {

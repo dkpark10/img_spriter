@@ -44,7 +44,9 @@ export default function App(): JSX.Element {
             >
               <CodeArea />
               <SizeScaleRangeBar />
-              <Canvas />
+              <main className="flex justify-center items-center">
+                <Canvas />
+              </main>
             </div>
           )}
         </Transition>

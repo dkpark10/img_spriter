@@ -23,11 +23,7 @@ export default function Canvas(): JSX.Element {
   const [imageState, setImageState] = useRecoilState<ImageState>(currentImageState);
 
   const toolState = useRecoilValue(currentToolAtom);
-  const drawRectHandler = new RectDrawHandlerBuilder()
-    .setCtx(ctx.current)
-    .setColor(toolState.color)
-    .setOnlyBorderDraw(toolState.drawBorder)
-    .build();
+  const drawRectHandler = new RectDrawHandlerBuilder().setCtx(ctx.current).setTool(toolState).build();
 
   const [colorPixelLeft, colorPixelTop, drawWidth, drawHeight] = useGetPixelData(ctx, imageState, currentCoord);
 
@@ -115,11 +111,10 @@ export default function Canvas(): JSX.Element {
     );
 
     drawImage({ w: imageState.imageSizeWidth, h: imageState.imageSizeHeight, ctx, imageData });
-    drawRectHandler.draw({ x: rectCoordX, y: rectCoordY, width: rectWidth, height: rectHeight }, toolState.drawSquare);
+    drawRectHandler.draw({ x: rectCoordX, y: rectCoordY, width: rectWidth, height: rectHeight });
   };
 
   const onMouseUp = (): void => {
-    /** @description 마우스를 이동하지 않고 클릭만 했다면 */
     if (!mouseAction.isMove) {
       setImageState(
         (prev): ImageState => ({
@@ -132,10 +127,7 @@ export default function Canvas(): JSX.Element {
       );
 
       drawImage({ w: imageState.imageSizeWidth, h: imageState.imageSizeHeight, ctx, imageData });
-      drawRectHandler.draw(
-        { x: colorPixelLeft, y: colorPixelTop, width: drawWidth, height: drawHeight },
-        toolState.drawSquare,
-      );
+      drawRectHandler.draw({ x: colorPixelLeft, y: colorPixelTop, width: drawWidth, height: drawHeight });
     }
 
     setMouseAction({ isDown: false, isMove: false });
@@ -145,24 +137,22 @@ export default function Canvas(): JSX.Element {
   if (!imageState.loadSuccess) return <ImageError />;
 
   return (
-    <main className="flex justify-center items-center">
-      <canvas
-        className="bg-cover relative border border-solid border-zinc-700"
-        ref={(el) => {
-          if (el === null) return;
-          // @ts-expect-error: 린트 규칙 ...
-          canvasRef.current = el;
-          pageOffSet.current = {
-            offsetLeft: el.offsetLeft,
-            offsetTop: el.offsetTop,
-          };
-        }}
-        width={`${Math.floor(imageState.imageSizeWidth)}`}
-        height={`${Math.floor(imageState.imageSizeHeight)}`}
-        onMouseDown={onMouseDown}
-        onMouseMove={onMouseMove}
-        onMouseUp={onMouseUp}
-      />
-    </main>
+    <canvas
+      className="bg-cover relative border border-solid border-zinc-700"
+      ref={(el) => {
+        if (el === null) return;
+        // @ts-expect-error: 린트 규칙 ...
+        canvasRef.current = el;
+        pageOffSet.current = {
+          offsetLeft: el.offsetLeft,
+          offsetTop: el.offsetTop,
+        };
+      }}
+      width={`${Math.floor(imageState.imageSizeWidth)}`}
+      height={`${Math.floor(imageState.imageSizeHeight)}`}
+      onMouseDown={onMouseDown}
+      onMouseMove={onMouseMove}
+      onMouseUp={onMouseUp}
+    />
   );
 }
