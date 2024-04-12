@@ -1,4 +1,4 @@
-import type { MouseAction, Coord, ImageState, OffsetPos } from 'custom-type';
+import type { MouseAction, Coord, ImageState } from 'custom-type';
 import React, { useRef, useState } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { currentImageState, currentToolAtom } from '@/store';
@@ -8,8 +8,6 @@ import { useDrawImage } from '@/hooks/use-draw-image';
 import { useGetPixelData } from '@/hooks/use-pixel-data';
 
 export default function Canvas(): JSX.Element {
-  const pageOffSet = useRef<OffsetPos | null>(null);
-
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const ctx = useRef<CanvasRenderingContext2D | null | undefined>(null);
 
@@ -63,22 +61,22 @@ export default function Canvas(): JSX.Element {
   });
 
   const onMouseDown = (e: React.MouseEvent<HTMLCanvasElement>): void => {
-    if (pageOffSet.current === null) return;
+    if (canvasRef.current === null) return;
     drawImage({ w: imageState.imageSizeWidth, h: imageState.imageSizeHeight, ctx, imageData });
     setMouseAction((prev): MouseAction => ({ ...prev, isDown: true }));
 
-    const { offsetTop, offsetLeft } = pageOffSet.current;
+    const { offsetTop, offsetLeft } = canvasRef.current;
     const y = e.pageY - offsetTop;
     const x = e.pageX - offsetLeft;
     setCurrentCoord((prev): Coord => ({ ...prev, y, x }));
   };
 
   const onMouseMove = (e: React.MouseEvent<HTMLCanvasElement>): void => {
-    if (!mouseAction.isDown || pageOffSet.current === null) return;
+    if (!mouseAction.isDown || canvasRef.current === null) return;
 
     setMouseAction((prev): MouseAction => ({ ...prev, isMove: true }));
 
-    const { offsetTop, offsetLeft } = pageOffSet.current;
+    const { offsetTop, offsetLeft } = canvasRef.current;
     const mouseCoordY = e.pageY - offsetTop;
     const mouseCoordX = e.pageX - offsetLeft;
 
@@ -124,14 +122,7 @@ export default function Canvas(): JSX.Element {
   return (
     <canvas
       className="bg-cover relative border border-solid border-zinc-700"
-      ref={(el) => {
-        // @ts-expect-error: 린트 규칙 ...
-        canvasRef.current = el;
-        pageOffSet.current = {
-          offsetLeft: el?.offsetLeft ?? 0,
-          offsetTop: el?.offsetTop ?? 0,
-        };
-      }}
+      ref={canvasRef}
       width={`${Math.floor(imageState.imageSizeWidth)}`}
       height={`${Math.floor(imageState.imageSizeHeight)}`}
       onMouseDown={onMouseDown}
