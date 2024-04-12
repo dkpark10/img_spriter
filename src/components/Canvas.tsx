@@ -1,5 +1,5 @@
 import type { MouseAction, Coord, ImageState } from 'custom-type';
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { currentImageState, currentToolAtom } from '@/store';
 import { drawImage } from '@/utils/draw-image';
@@ -59,6 +59,12 @@ export default function Canvas(): JSX.Element {
       setMouseAction({ isDown: false, isMove: false });
     },
   });
+
+  /** @description 이전 이미지에서 또 다른 이미지에서 로드 성공 후 캔버스에 안나타나는 문제를 수정하기 위한 로직 */
+  useEffect(() => {
+    drawImage({ w: imageState.imageSizeWidth, h: imageState.imageSizeHeight, ctx, imageData });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [imageState.imageSizeWidth, imageState.imageSizeHeight]);
 
   const onMouseDown = (e: React.MouseEvent<HTMLCanvasElement>): void => {
     if (canvasRef.current === null) return;
