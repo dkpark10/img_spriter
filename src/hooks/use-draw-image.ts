@@ -22,8 +22,7 @@ export const useDrawImage = ({ imgSrc, onLoad, onError, onFinal }: UseDrawImageP
       onFinal?.();
     };
 
-    image.onerror = (error) => {
-      console.error(error);
+    image.onerror = () => {
       onError?.();
       onFinal?.();
     };

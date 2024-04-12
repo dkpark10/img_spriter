@@ -6,7 +6,6 @@ import { drawImage } from '@/utils/draw-image';
 import { RectDrawHandlerBuilder } from '@/utils/rect-draw-handler';
 import { useDrawImage } from '@/hooks/use-draw-image';
 import { useGetPixelData } from '@/hooks/use-pixel-data';
-import ImageError from './img_load_err';
 
 export default function Canvas(): JSX.Element {
   const pageOffSet = useRef<OffsetPos | null>(null);
@@ -31,7 +30,7 @@ export default function Canvas(): JSX.Element {
     imgSrc: imageState.src,
     onLoad: (img) => {
       ctx.current = canvasRef.current?.getContext('2d', { willReadFrequently: true });
-      if (img === null || ctx.current === null) return;
+      if (img === null || canvasRef.current === null) return;
       const w = img.naturalWidth;
       const h = img.naturalHeight;
 
@@ -122,18 +121,15 @@ export default function Canvas(): JSX.Element {
     setCurrentCoord((prev): Coord => ({ ...prev, y: 0, x: 0 }));
   };
 
-  if (!imageState.loadSuccess) return <ImageError />;
-
   return (
     <canvas
       className="bg-cover relative border border-solid border-zinc-700"
       ref={(el) => {
-        if (el === null) return;
         // @ts-expect-error: 린트 규칙 ...
         canvasRef.current = el;
         pageOffSet.current = {
-          offsetLeft: el.offsetLeft,
-          offsetTop: el.offsetTop,
+          offsetLeft: el?.offsetLeft ?? 0,
+          offsetTop: el?.offsetTop ?? 0,
         };
       }}
       width={`${Math.floor(imageState.imageSizeWidth)}`}
