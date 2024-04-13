@@ -7,13 +7,12 @@ export const isNonColorPixel = (colorPixelData: ColorPixelData): boolean => {
 
 export const getCanvasImageData = (
   ctx: CanvasRenderingContext2D,
-  x: number,
-  y: number,
   width: number,
   height: number,
 ): ColorPixelDataList => {
-  const imageData = ctx.getImageData(x, y, width, height);
+  const imageData = ctx.getImageData(0, 0, width, height);
   const pixelData = imageData.data;
+
   const colorPixelData: ColorPixelDataList = Array.from({ length: height }, () =>
     Array.from({ length: width }, () => ({ r: '0', g: '0', b: '0', a: '0' })),
   );
