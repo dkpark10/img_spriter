@@ -11,20 +11,25 @@ export const currentTabAtom = atom<TabName>({
   default: '이미지 경로 검색',
 });
 
+const defaultImageAtom: Omit<ImageState, 'src' | 'isLocal'> = {
+  rectCoordX: 0,
+  rectCoordY: 0,
+  rectWidth: 0,
+  rectHeight: 0,
+  imageSizeWidth: 0,
+  imageSizeHeight: 0,
+  loadSuccess: false,
+  imageOriginWidth: 0,
+  imageOriginHeight: 0,
+  scale: 1,
+};
+
 export const pathImageAtom = atom<ImageState>({
   key: PATH_IMG_SRC,
   default: {
+    ...defaultImageAtom,
     src: 'sample.png',
     isLocal: false,
-    rectCoordX: 0,
-    rectCoordY: 0,
-    rectWidth: 0,
-    rectHeight: 0,
-    imageSizeWidth: 0,
-    imageSizeHeight: 0,
-    loadSuccess: true,
-    imageOriginWidth: 0,
-    imageOriginHeight: 0,
   },
 
   // default: 'https://s.pstatic.net/static/www/img/uit/sp_weather_time_b8ecd0.png',
@@ -36,17 +41,9 @@ export const pathImageAtom = atom<ImageState>({
 export const fileImageAtom = atom<ImageState>({
   key: FILE_IMG_SRC,
   default: {
+    ...defaultImageAtom,
     src: '',
     isLocal: true,
-    rectCoordX: 0,
-    rectCoordY: 0,
-    rectWidth: 0,
-    rectHeight: 0,
-    imageSizeWidth: 0,
-    imageSizeHeight: 0,
-    loadSuccess: true,
-    imageOriginWidth: 0,
-    imageOriginHeight: 0,
   },
 });
 
