@@ -17,7 +17,10 @@ export default function Canvas(): JSX.Element {
   });
 
   const [currentCoord, setCurrentCoord] = useState<Coord>({ y: 0, x: 0 });
-  const [{ src, imageSizeHeight, imageSizeWidth }, setImageState] = useRecoilState<ImageState>(currentImageState);
+  const [
+    { src, imageSizeHeight, imageSizeWidth, scale, rectCoordX, rectCoordY, rectWidth, rectHeight },
+    setImageState,
+  ] = useRecoilState<ImageState>(currentImageState);
 
   const toolState = useRecoilValue(currentToolAtom);
   const drawRectHandler = new RectDrawHandlerBuilder().setCtx(ctx.current).setTool(toolState).build();
@@ -57,8 +60,14 @@ export default function Canvas(): JSX.Element {
   /** @description 이전 이미지에서 또 다른 이미지에서 로드 성공 후 캔버스에 안나타나는 문제를 수정하기 위한 로직 */
   useEffect(() => {
     drawImage({ w: imageSizeWidth, h: imageSizeHeight, ctx, imageData });
+    drawRectHandler.draw({
+      x: Math.floor(rectCoordX * scale),
+      y: Math.floor(rectCoordY * scale),
+      width: Math.floor(rectWidth * scale),
+      height: Math.floor(rectHeight * scale),
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [imageSizeWidth, imageSizeHeight]);
+  }, [scale]);
 
   const onMouseDown = (e: React.MouseEvent<HTMLCanvasElement>): void => {
     if (canvasRef.current === null) return;
@@ -80,18 +89,18 @@ export default function Canvas(): JSX.Element {
     const mouseCoordY = e.pageY - offsetTop;
     const mouseCoordX = e.pageX - offsetLeft;
 
-    const rectCoordX = Math.min(mouseCoordX, currentCoord.x);
-    const rectCoordY = Math.min(mouseCoordY, currentCoord.y);
-    const rectWidth = Math.abs(mouseCoordX - currentCoord.x);
-    const rectHeight = Math.abs(mouseCoordY - currentCoord.y);
+    const currentRectCoordX = Math.min(mouseCoordX, currentCoord.x);
+    const currentRectCoordY = Math.min(mouseCoordY, currentCoord.y);
+    const currentRectWidth = Math.abs(mouseCoordX - currentCoord.x);
+    const currentRectHeight = Math.abs(mouseCoordY - currentCoord.y);
 
     setImageState(
       (prev): ImageState => ({
         ...prev,
-        rectCoordX,
-        rectCoordY,
-        rectWidth,
-        rectHeight,
+        rectCoordX: currentRectCoordX,
+        rectCoordY: currentRectCoordY,
+        rectWidth: currentRectWidth,
+        rectHeight: currentRectHeight,
       }),
     );
 
