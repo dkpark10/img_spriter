@@ -20,7 +20,6 @@ export const useGetPixelData = (
       return [0, 0, 0, 0];
 
     const colorPixData = getCanvasImageData(ctx.current, imageState.imageSizeWidth, imageState.imageSizeHeight);
-
     return getColorPixelMaxSize(
       currentCoord.y,
       currentCoord.x,

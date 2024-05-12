@@ -1,11 +1,20 @@
 import type { MouseAction, Coord, ImageState } from 'custom-type';
 import React, { useEffect, useRef, useState } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
+import memoizeOne from 'memoize-one';
+import isDeepEqual from 'lodash.isequal';
 import { currentImageState, currentToolAtom } from '@/store';
 import { drawImage } from '@/utils/draw-image';
 import { RectDrawHandlerBuilder } from '@/utils/rect-draw-handler';
 import { useDrawImage } from '@/hooks/use-draw-image';
-// import { useGetPixelData } from '@/hooks/use-pixel-data';
+import { getCanvasImageData } from '@/utils/get-canvas-image-data';
+import { getColorPixelMaxSize } from '@/utils/bfs-color-pixel';
+
+const memoizedImgPixelData = memoizeOne(
+  (ctx: CanvasRenderingContext2D, width: number, height: number) => getCanvasImageData(ctx, width, height),
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+  isDeepEqual,
+);
 
 export default function Canvas(): JSX.Element {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -24,8 +33,6 @@ export default function Canvas(): JSX.Element {
 
   const toolState = useRecoilValue(currentToolAtom);
   const drawRectHandler = new RectDrawHandlerBuilder().setCtx(ctx.current).setTool(toolState).build();
-
-  // const [colorPixelLeft, colorPixelTop, drawWidth, drawHeight] = useGetPixelData(ctx, imageState, currentCoord);
 
   const imageData = useDrawImage({
     imgSrc: src,
@@ -109,20 +116,32 @@ export default function Canvas(): JSX.Element {
   };
 
   const onMouseUp = (): void => {
-    // if (!mouseAction.isMove) {
-    //   setImageState(
-    //     (prev): ImageState => ({
-    //       ...prev,
-    //       rectCoordX: colorPixelLeft,
-    //       rectCoordY: colorPixelTop,
-    //       rectWidth: drawWidth,
-    //       rectHeight: drawHeight,
-    //     }),
-    //   );
+    if (ctx.current === null || ctx.current === undefined) return;
+    if (!mouseAction.isMove) {
+      const colorPixelData = memoizedImgPixelData(ctx.current, imageSizeWidth, imageSizeHeight);
 
-    //   drawImage({ w: imageSizeWidth, h: imageSizeHeight, ctx, imageData });
-    //   drawRectHandler.draw({ x: colorPixelLeft, y: colorPixelTop, width: drawWidth, height: drawHeight });
-    // }
+      const [colorPixelLeft, colorPixelTop, drawWidth, drawHeight] = getColorPixelMaxSize(
+        currentCoord.y,
+        currentCoord.x,
+        imageSizeWidth,
+        imageSizeHeight,
+        colorPixelData,
+        2,
+      );
+
+      setImageState(
+        (prev): ImageState => ({
+          ...prev,
+          rectCoordX: colorPixelLeft,
+          rectCoordY: colorPixelTop,
+          rectWidth: drawWidth,
+          rectHeight: drawHeight,
+        }),
+      );
+
+      drawImage({ w: imageSizeWidth, h: imageSizeHeight, ctx, imageData });
+      drawRectHandler.draw({ x: colorPixelLeft, y: colorPixelTop, width: drawWidth, height: drawHeight });
+    }
 
     setMouseAction({ isDown: false, isMove: false });
     setCurrentCoord((prev): Coord => ({ ...prev, y: 0, x: 0 }));
