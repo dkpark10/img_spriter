@@ -52,7 +52,6 @@ export default function Canvas(): JSX.Element {
           imageOriginHeight: h,
         }),
       );
-
       drawImage({ w, h, ctx, imageData: img });
     },
     onError: () => {
@@ -74,7 +73,7 @@ export default function Canvas(): JSX.Element {
       height: Math.floor(rectHeight * scale),
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [scale]);
+  }, [scale, imageSizeHeight, imageSizeHeight, src]);
 
   const onMouseDown = (e: React.MouseEvent<HTMLCanvasElement>): void => {
     if (canvasRef.current === null) return;
