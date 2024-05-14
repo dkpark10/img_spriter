@@ -34,10 +34,9 @@ export default function App(): JSX.Element {
       <Title />
       <Header />
       <TransitionGroup>
-        <Transition timeout={TIMEOUT} key={currentTab}>
+        <Transition nodeRef={ref} timeout={TIMEOUT} key={currentTab}>
           {(status) => (
             <div
-              ref={ref}
               style={{
                 ...getTransitionStyles[status],
               }}
