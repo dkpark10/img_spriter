@@ -30,7 +30,7 @@ export default defineConfig({
     trace: 'on-first-retry',
   },
 
-  timeout: 10000,
+  timeout: 5_000,
 
   webServer: {
     command: 'pnpm run dev',

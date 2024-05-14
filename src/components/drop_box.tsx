@@ -70,7 +70,7 @@ export default function DropDropBox(): JSX.Element {
         className="relative bg-[#a5a6a9] w-[354px] h-[186px] hover:bg-[#352772]
         hover:text-[white] text-[#252525] rounded-md cursor-pointer"
         type="button"
-        data-test-id="file_button"
+        data-testid="file_button"
         onClick={onClick}
         onDragEnter={onDragEnter}
         onDragOver={onDragEnter}

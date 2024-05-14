@@ -30,11 +30,11 @@ export default function CodeArea(): JSX.Element {
         </div>
         <div>
           &nbsp;&nbsp;&nbsp;width:&nbsp;
-          <span className="text-[#f08a15]">{`${imageState.rectWidth}px`}</span>;
+          <span data-testid="code-width" className="text-[#f08a15]">{`${imageState.rectWidth}px`}</span>;
         </div>
         <div>
           &nbsp;&nbsp;&nbsp;height:&nbsp;
-          <span className="text-[#f08a15]">{`${imageState.rectHeight}px`}</span>;
+          <span data-testid="code-height" className="text-[#f08a15]">{`${imageState.rectHeight}px`}</span>;
         </div>
         <div>{'}'}</div>
       </div>
