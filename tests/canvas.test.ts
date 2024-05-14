@@ -4,13 +4,10 @@ test.beforeEach(async ({ page }) => {
   await page.goto('http://localhost:3000');
 });
 
-test('탭 전환 드로잉 테스트', async ({ page }) => {
-  const canvas = await page.locator('canvas');
-  const boundingBox = await canvas.boundingBox();
+test('탭 전환 후에도 이전 렌더링 정보가 남아야 한다.', async ({ page }) => {
+  const boundingBox = await page.locator('canvas').boundingBox();
+  if (!boundingBox) throw new Error('empty src canvas');
 
-  if (!boundingBox) throw new Error('empty canvas');
-
-  expect(canvas).toBeVisible();
   await page.mouse.move(boundingBox.x, boundingBox.y);
   await page.mouse.down();
 
@@ -19,15 +16,34 @@ test('탭 전환 드로잉 테스트', async ({ page }) => {
   }
 
   await page.mouse.up();
-  await page.screenshot({ path: './tests/canvas.png' });
+  await page.screenshot({ path: './tests/canvas-src.png' });
 
   expect(await page.getByTestId('code-width').textContent()).toBe('100px');
   expect(await page.getByTestId('code-height').textContent()).toBe('100px');
 
-  // await page.getByRole('tab', { name: /이미지 파일 업로드/i }).click();
+  await page.getByRole('tab', { name: /이미지 파일 업로드/i }).click();
 
-  // const fileChooserPromise = page.waitForEvent('filechooser');
-  // await page.getByTestId('file_button').click();
-  // const fileChooser = await fileChooserPromise;
-  // await fileChooser.setFiles('../public/sample2.png');
+  await page.getByTestId('file_button').click();
+  await page.locator('input[type=file]').setInputFiles('./tests/sample2.png');
+
+  await page.screenshot({ path: './tests/canvas-file.png' });
+
+  const boundingBox2 = await page.locator('canvas').boundingBox();
+  if (!boundingBox2) throw new Error('empty file canvas');
+
+  await page.mouse.move(boundingBox2.x, boundingBox2.y);
+  await page.mouse.down();
+
+  /** @fix 60까지 밖에 드래그가 안됨 */
+  for (let i = 0; i <= 60; i += 10) {
+    await page.mouse.move(boundingBox2.x + i, boundingBox2.y + i);
+  }
+  
+  await page.mouse.up();  
+  expect(await page.getByTestId('code-width').textContent()).toBe('60px');
+  expect(await page.getByTestId('code-height').textContent()).toBe('60px');
+
+  await page.getByRole('tab', { name: /이미지 경로 검색/i }).click();
+  expect(await page.getByTestId('code-width').textContent()).toBe('100px');
+  expect(await page.getByTestId('code-height').textContent()).toBe('100px');
 });

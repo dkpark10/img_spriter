@@ -10,10 +10,6 @@ export default function DropDropBox(): JSX.Element {
 
   const [isDarg, setIsDrag] = useState(false);
 
-  const onClick = (): void => {
-    inputFileRef.current?.click();
-  };
-
   const readFile = (file: File): void => {
     const reader = new FileReader();
     reader.onload = (event: ProgressEvent<FileReader>) => {
@@ -71,7 +67,9 @@ export default function DropDropBox(): JSX.Element {
         hover:text-[white] text-[#252525] rounded-md cursor-pointer"
         type="button"
         data-testid="file_button"
-        onClick={onClick}
+        onClick={() => {
+          inputFileRef.current?.click();
+        }}
         onDragEnter={onDragEnter}
         onDragOver={onDragEnter}
         onDragLeave={onDragLeave}
