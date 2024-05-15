@@ -20,12 +20,11 @@ export default function ImageScaleRangeBar(): JSX.Element {
   return (
     <div className="flex items-center justify-center mt-5">
       <div>
-        <div className="text-center">
+        <label htmlFor="scale_bar" className="text-center block">
           이미지 사이즈 조절:&nbsp;
           {scale}
-        </div>
+        </label>
         <input
-          data-testid="scale_bar"
           className="w-96"
           type="range"
           name="scale_bar"
