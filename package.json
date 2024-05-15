@@ -5,6 +5,7 @@
   "license": "MIT",
   "scripts": {
     "preinstall": "npx only-allow pnpm",
+    "test": "pnpm playwright test",
     "test:ui": "pnpm playwright test --ui",
     "cy:open": "cypress open",
     "cy:run": "cypress run --browser chrome --config baseUrl=http://localhost:3000",
