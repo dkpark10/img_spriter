@@ -1,12 +1,32 @@
 import { useRecoilValue } from 'recoil';
-import { currentImageState } from '../store/index';
+import toast, { Toaster } from 'react-hot-toast';
+import { currentImageState } from '@/store/index';
 
 export default function CodeArea(): JSX.Element {
   const imageState = useRecoilValue(currentImageState);
 
+  const copy = (e: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>): void => {
+    const text = e.currentTarget.textContent ?? '';
+    window.navigator.clipboard
+      .writeText(text)
+      .then(() => {
+        toast.success('복사가 완료되었습니다.');
+      })
+      .catch(() => {
+        toast.error('복사가 실패했습니다.');
+      });
+  };
+
   return (
-    <code className="flex items-center justify-center m-3">
-      <div className="bg-[#292c39] text-[#cacaca] rounded-md p-4">
+    <code className="flex items-center justify-center m-3 relative">
+      <Toaster position="bottom-center" />
+      <div
+        tabIndex={0}
+        onClick={copy}
+        onKeyDown={copy}
+        role="button"
+        className="bg-[#292c39] text-[#cacaca] rounded-md p-4"
+      >
         <div>{'.sprite_img {'}</div>
         <div>
           &nbsp;&nbsp;&nbsp;background-image:&nbsp;
