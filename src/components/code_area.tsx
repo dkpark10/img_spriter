@@ -18,9 +18,10 @@ export default function CodeArea(): JSX.Element {
   };
 
   return (
-    <code className="flex items-center justify-center m-3 relative">
+    <div className="flex items-center justify-center m-3 relative">
       <Toaster position="bottom-center" />
-      <div
+      <code
+        data-testid="code-area"
         tabIndex={0}
         onClick={copy}
         onKeyDown={copy}
@@ -57,7 +58,7 @@ export default function CodeArea(): JSX.Element {
           <span data-testid="code-height" className="text-[#f08a15]">{`${imageState.rectHeight}px`}</span>;
         </div>
         <div>{'}'}</div>
-      </div>
-    </code>
+      </code>
+    </div>
   );
 }
