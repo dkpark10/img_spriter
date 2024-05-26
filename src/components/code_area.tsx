@@ -12,7 +12,8 @@ export default function CodeArea(): JSX.Element {
       .then(() => {
         toast.success('복사가 완료되었습니다.');
       })
-      .catch(() => {
+      .catch((error) => {
+        console.error(error);
         toast.error('복사가 실패했습니다.');
       });
   };

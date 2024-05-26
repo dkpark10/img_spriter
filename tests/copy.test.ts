@@ -4,8 +4,10 @@ test.beforeEach(async ({ page }) => {
   await page.goto('/');
 });
 
-test.skip('복사 테스트.', async ({ page }) => {
+test('복사 테스트.', async ({ page }) => {
   await page.getByTestId('code-area').click();
+
+  await expect(page.getByText('복사가 완료되었습니다.')).toBeVisible();
 
   const text = await page.evaluate(() => {
     /** @fix readText 권한 거절 수정 */
