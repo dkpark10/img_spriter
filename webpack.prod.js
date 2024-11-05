@@ -1,6 +1,7 @@
 const { merge } = require('webpack-merge');
 const webpackCommonConfig = require('./webpack.common.js');
 const path = require('path');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 module.exports = merge(webpackCommonConfig, {
   mode: 'production',
@@ -16,4 +17,5 @@ module.exports = merge(webpackCommonConfig, {
     maxEntrypointSize: 512000,
     maxAssetSize: 512000,
   },
+  plugins: [new BundleAnalyzerPlugin()],
 });
