@@ -3,6 +3,8 @@ const webpackCommonConfig = require('./webpack.common.js');
 const path = require('path');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
+const isRunBundle = process.env.RUN_BUNDLE === 'true';
+
 module.exports = merge(webpackCommonConfig, {
   mode: 'production',
   output: {
@@ -17,5 +19,5 @@ module.exports = merge(webpackCommonConfig, {
     maxEntrypointSize: 512000,
     maxAssetSize: 512000,
   },
-  plugins: [new BundleAnalyzerPlugin()],
+  plugins: [(isRunBundle && new BundleAnalyzerPlugin())],
 });
