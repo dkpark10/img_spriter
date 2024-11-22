@@ -10,6 +10,10 @@ interface UseDrawImageParams {
 export const useDrawImage = ({ imgSrc, onLoad, onError, onFinal }: UseDrawImageParams): HTMLImageElement | null => {
   const imageRef = useRef<HTMLImageElement | null>(null);
 
+  const onLoadRef = useRef(onLoad);
+  const onErrorRef = useRef(onError);
+  const onFinalRef = useRef(onFinal);
+
   useEffect(() => {
     const image = new Image();
     image.crossOrigin = 'Anonymous';
@@ -18,15 +22,14 @@ export const useDrawImage = ({ imgSrc, onLoad, onError, onFinal }: UseDrawImageP
     imageRef.current = image;
 
     image.onload = () => {
-      onLoad?.(imageRef.current);
-      onFinal?.();
+      onLoadRef.current?.(imageRef.current);
+      onFinalRef.current?.();
     };
 
     image.onerror = () => {
-      onError?.();
-      onFinal?.();
+      onErrorRef.current?.();
+      onFinalRef.current?.();
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [imgSrc]);
 
   return imageRef.current;
