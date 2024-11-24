@@ -27,9 +27,10 @@ export default function App(): JSX.Element {
   const ref = useRef<HTMLDivElement>(null);
   const currentTab = useRecoilValue<TabName>(currentTabAtom);
 
+  console.log(packageInfo.version);
   return (
     <>
-      <span className="hidden" data-version={packageInfo.version ?? '1.6.1'} />
+      <span className="hidden" data-version={packageInfo.version ?? '1.7.0'} />
       <ToolBox />
       <Title />
       <Header />
