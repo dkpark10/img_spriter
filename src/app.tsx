@@ -29,7 +29,7 @@ export default function App(): JSX.Element {
 
   return (
     <>
-      <span className="hidden" data-version={packageInfo.version ?? '1.6.1'} />
+      <span className="hidden" data-version={packageInfo.version ?? '1.7.0'} />
       <ToolBox />
       <Title />
       <Header />
