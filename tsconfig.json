@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "target": "es5", // 컴파일 했을 시 생성되는 JS 버전
-    "module": "es6", // import 문법 어떤걸 사용할지??
+    "module": "esnext", // import 문법 어떤걸 사용할지??
     "moduleResolution": "node",
     "noResolve": false,
     "strictNullChecks": true,
