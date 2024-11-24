@@ -21,9 +21,9 @@ function DescriptionModal({ isOpen, close }: ModalProps): JSX.Element {
   if (!isOpen) return <></>;
 
   return createPortal(
-    <div className="absolute top-[258px] left-[90px]">
+    <div className="absolute top-[213px] left-[90px]">
       <span className="p-1 bg-white rounded text-sm border border-solid border-[#292c39]">
-        사각형 색상을 채우는 모드입니다.
+        그려지는 영역의 색상을 채웁니다.
       </span>
     </div>,
     document.getElementById('portal') as Element,
@@ -56,7 +56,7 @@ export default function ToolDrawBorder(): JSX.Element {
       onMouseOut={() => setHover(false)}
       onBlur={() => setHover(false)}
       className={clsx([
-        !currentToolState.drawBorder && 'bg-[#e0e0e0]',
+        !currentToolState.drawBorder && 'bg-[#e0e0e0] hover:bg-[#e0e0e0]',
         'border border-solid border-[#292c39] flex items-center p-2 justify-center hover:bg-[#e0e0e0]',
       ])}
     >

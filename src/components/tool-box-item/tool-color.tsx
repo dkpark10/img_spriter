@@ -23,7 +23,7 @@ function DescriptionModal({ isOpen, close }: ModalProps): JSX.Element {
   return createPortal(
     <div className="absolute top-[167px] left-[90px]">
       <span className="p-1 bg-white rounded text-sm border border-solid border-[#292c39]">
-        사각형의 색상을 조정합니다.
+        그려지는 영역의 색상을 조정합니다.
       </span>
     </div>,
     document.getElementById('portal') as Element,
