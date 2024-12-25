@@ -25,6 +25,7 @@ const getTransitionStyles: {
 
 export default function App(): JSX.Element {
   const ref = useRef<HTMLDivElement>(null);
+
   const currentTab = useRecoilValue<TabName>(currentTabAtom);
 
   return (

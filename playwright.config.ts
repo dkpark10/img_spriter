@@ -29,7 +29,7 @@ export default defineConfig({
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
 
-    permissions: ["clipboard-read", "clipboard-write"],
+    permissions: ["clipboard-read"],
   },
 
   timeout: 5_000,
