@@ -26,6 +26,9 @@ dependencies:
   react-icons:
     specifier: ^4.11.0
     version: 4.11.0(react@18.2.0)
+  react-strawberry-toast:
+    specifier: 1.0.0-alpha.2
+    version: 1.0.0-alpha.2(react-dom@18.2.0)(react@18.2.0)
   react-tabs:
     specifier: ^6.0.2
     version: 6.0.2(react@18.2.0)
@@ -7782,6 +7785,16 @@ packages:
   /react-is@18.2.0:
     resolution: {integrity: sha512-xWGDIW6x921xtzPkhiULtthJHoJvBbF3q26fzloPCK0hsvxtPVelvftw3zjbHWSkR2km9Z+4uxbDDK/6Zw9B8w==}
     dev: true
+
+  /react-strawberry-toast@1.0.0-alpha.2(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-apzxJvL+O/O//MLZhDa2wfhurhtJIsr+OUaFVb3A+63hp3nzoCjndWqRT9+S5D1TiU+M0xv6iVvrQdOyO9gUng==}
+    peerDependencies:
+      react: '>=18'
+      react-dom: '>=18'
+    dependencies:
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+    dev: false
 
   /react-tabs@6.0.2(react@18.2.0):
     resolution: {integrity: sha512-aQXTKolnM28k3KguGDBSAbJvcowOQr23A+CUJdzJtOSDOtTwzEaJA+1U4KwhNL9+Obe+jFS7geuvA7ICQPXOnQ==}

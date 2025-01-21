@@ -1,6 +1,8 @@
 import { useRecoilValue } from 'recoil';
-import toast, { Toaster } from 'react-hot-toast';
+import { toast, ToastContainer } from 'react-strawberry-toast';
 import { currentImageState } from '@/store/index';
+
+import 'react-strawberry-toast/dist/index.css';
 
 export default function CodeArea(): JSX.Element {
   const imageState = useRecoilValue(currentImageState);
@@ -20,7 +22,7 @@ export default function CodeArea(): JSX.Element {
 
   return (
     <div className="flex items-center justify-center m-3 relative">
-      <Toaster position="bottom-center" />
+      <ToastContainer position="bottom-center" />
       <code
         data-testid="code-area"
         tabIndex={0}
