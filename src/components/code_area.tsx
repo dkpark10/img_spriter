@@ -2,7 +2,7 @@ import { useRecoilValue } from 'recoil';
 import { toast, ToastContainer } from 'react-strawberry-toast';
 import { currentImageState } from '@/store/index';
 
-import 'react-strawberry-toast/dist/index.css';
+import 'react-strawberry-toast/dist/style.css';
 
 export default function CodeArea(): JSX.Element {
   const imageState = useRecoilValue(currentImageState);

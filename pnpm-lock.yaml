@@ -20,15 +20,12 @@ dependencies:
   react-dom:
     specifier: ^18.2.0
     version: 18.2.0(react@18.2.0)
-  react-hot-toast:
-    specifier: ^2.4.1
-    version: 2.4.1(csstype@3.1.2)(react-dom@18.2.0)(react@18.2.0)
   react-icons:
     specifier: ^4.11.0
     version: 4.11.0(react@18.2.0)
   react-strawberry-toast:
-    specifier: 1.0.0-alpha.2
-    version: 1.0.0-alpha.2(react-dom@18.2.0)(react@18.2.0)
+    specifier: ^1.2.0
+    version: 1.2.0(react-dom@18.2.0)(react@18.2.0)
   react-tabs:
     specifier: ^6.0.2
     version: 6.0.2(react@18.2.0)
@@ -5995,14 +5992,6 @@ packages:
       slash: 4.0.0
     dev: true
 
-  /goober@2.1.14(csstype@3.1.2):
-    resolution: {integrity: sha512-4UpC0NdGyAFqLNPnhCT2iHpza2q+RAY3GV85a/mRPdzyPQMsj0KmMMuetdIkzWRbJ+Hgau1EZztq8ImmiMGhsg==}
-    peerDependencies:
-      csstype: ^3.0.10
-    dependencies:
-      csstype: 3.1.2
-    dev: false
-
   /gopd@1.0.1:
     resolution: {integrity: sha512-d65bNlIadxvpb/A2abVdlqKqV563juRnZ1Wtk6s1sIR8uNsXR70xqIzVqxVf1eTqDunwT2MkczEeaezCKTZhwA==}
     dependencies:
@@ -7753,20 +7742,6 @@ packages:
       react: 18.2.0
     dev: true
 
-  /react-hot-toast@2.4.1(csstype@3.1.2)(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-j8z+cQbWIM5LY37pR6uZR6D4LfseplqnuAO4co4u8917hBUvXlEqyP1ZzqVLcqoyUesZZv/ImreoCeHVDpE5pQ==}
-    engines: {node: '>=10'}
-    peerDependencies:
-      react: '>=16'
-      react-dom: '>=16'
-    dependencies:
-      goober: 2.1.14(csstype@3.1.2)
-      react: 18.2.0
-      react-dom: 18.2.0(react@18.2.0)
-    transitivePeerDependencies:
-      - csstype
-    dev: false
-
   /react-icons@4.11.0(react@18.2.0):
     resolution: {integrity: sha512-V+4khzYcE5EBk/BvcuYRq6V/osf11ODUM2J8hg2FDSswRrGvqiYUYPRy4OdrWaQOBj4NcpJfmHZLNaD+VH0TyA==}
     peerDependencies:
@@ -7786,8 +7761,8 @@ packages:
     resolution: {integrity: sha512-xWGDIW6x921xtzPkhiULtthJHoJvBbF3q26fzloPCK0hsvxtPVelvftw3zjbHWSkR2km9Z+4uxbDDK/6Zw9B8w==}
     dev: true
 
-  /react-strawberry-toast@1.0.0-alpha.2(react-dom@18.2.0)(react@18.2.0):
-    resolution: {integrity: sha512-apzxJvL+O/O//MLZhDa2wfhurhtJIsr+OUaFVb3A+63hp3nzoCjndWqRT9+S5D1TiU+M0xv6iVvrQdOyO9gUng==}
+  /react-strawberry-toast@1.2.0(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-qeqHMEW2eHs/tFE65rGfW07fTpOYh7pQZlVShofVWDFRpUwJWe/oqH0ZMDAPNxusKA5kBArv2B292iG6CQ/WtQ==}
     peerDependencies:
       react: '>=18'
       react-dom: '>=18'
